@@ -1,6 +1,6 @@
 # RMIT SEPT 2020 Major Project
 
-# Group 00
+# Group wed-18-30-5
 
 ## Members
 * Kennedy, Neil (s3561388)
@@ -11,7 +11,7 @@
 
 ## Records
 
-* Github repository : https://github.com/RMIT-SEPT/MajorProject/Groupx
+* Github repository : https://github.com/RMIT-SEPT/majorproject-wed-18-30-5.git
 * ClickUp Workspace : https://app.clickup.com/xxxx/yyyy
 
 
