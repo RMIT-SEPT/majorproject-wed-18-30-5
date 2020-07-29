@@ -5,7 +5,7 @@
 ## Members
 * Kennedy, Neil (s3561388)
 * Sulakshana, Moditha (s3756843)
-* SURNAME, GivenName (sXXXX)
+* Yao, Boyan (s3694150)
 * SURNAME, GivenName (sXXXX)
 * SURNAME, GivenName (sXXXX)
 
