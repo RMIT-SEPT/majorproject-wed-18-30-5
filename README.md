@@ -6,8 +6,8 @@
 * Kennedy, Neil (s3561388)
 * Sulakshana, Moditha (s3756843)
 * Yao, Boyan (s3694150)
-* SURNAME, GivenName (sXXXX)
-* SURNAME, GivenName (sXXXX)
+* Anning, Michael (s3720132)
+* Hollis-London, Jack (s3585034)
 
 ## Records
 
