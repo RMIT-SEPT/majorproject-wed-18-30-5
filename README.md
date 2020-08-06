@@ -22,7 +22,7 @@
 
 * Pull from development to get latest code from all users(may be broken)
 * Pull from master(origin) to get the last stable build(if the build is broken)
-* [Pull request movie](/docs/PullRequest_example.mov) in `docs` folder
+* [Pull request movie](/docs/PullRequest_example720.mov) in `docs` folder
 
 ## Code documentation
 
