@@ -21,6 +21,9 @@
 * Personal : personal branch, push all your iterative changes to your own branch, once feature is complete,
              create a pull request for merging into development.
 
+* Pull from development to get latest code from all users(may be broken)
+* Pull from master(origin) to get the last stable build(if the build is broken)
+
 ## Code documentation
 
 [Quick Start](/docs/README.md) in `docs` folder
