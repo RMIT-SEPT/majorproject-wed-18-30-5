@@ -12,6 +12,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 // import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+// imp
+
+// import org.hibernate.validator.constraints.NotBlank;
 
 //Relation example: https://www.baeldung.com/jpa-one-to-one
 
@@ -23,7 +27,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @NotBlank(message = "username is required")
     private String username;
+    @NotBlank(message = "password is required")
     private String password;
     private String contactNumber;
     @OneToOne

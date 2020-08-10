@@ -23,7 +23,7 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class);
 	}
 
-	//Comment out CommandLineRunner when not using it for testing
+	// //Comment out CommandLineRunner when not using it for testing
 	// @Bean 
   	// public CommandLineRunner demo(User_Repository repository) {
     // 	return (args) -> {
