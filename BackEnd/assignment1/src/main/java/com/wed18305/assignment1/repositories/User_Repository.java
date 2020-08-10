@@ -8,4 +8,5 @@ public interface User_Repository extends CrudRepository<User, Long>{
     @Override
     Iterable<User> findAllById(Iterable<Long> iterable);
 
+    User findByNameAndPassword(String name, String password);
 }
