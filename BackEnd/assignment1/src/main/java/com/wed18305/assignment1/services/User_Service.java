@@ -14,4 +14,8 @@ public class User_Service {
     public User saveOrUpdateUser(User user){
         return userRepository.save(user);
     }
+
+    public User findByNameAndPassword(String name, String password){
+        return userRepository.findByNameAndPassword(name, password);
+    }
 }
