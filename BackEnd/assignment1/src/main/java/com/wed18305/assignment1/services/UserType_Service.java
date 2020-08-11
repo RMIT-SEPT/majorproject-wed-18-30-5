@@ -1,6 +1,6 @@
 package com.wed18305.assignment1.services;
 
-
+import java.util.Optional;
 import com.wed18305.assignment1.model.UserType;
 import com.wed18305.assignment1.repositories.UserType_Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,5 +14,9 @@ public class UserType_Service {
     public UserType saveNewUserType(UserType userType) {
         //TODO check if this updates if so dont allow it.
         return userTypeRepository.save(userType);
+    }
+
+    public Optional<UserType> findById(Long id){
+        return userTypeRepository.findById(id);
     }
 }

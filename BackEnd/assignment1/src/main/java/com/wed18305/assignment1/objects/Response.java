@@ -1,4 +1,4 @@
-package com.wed18305.assignment1.model;
+package com.wed18305.assignment1.objects;
 
 /**Use for returning all POST GET requests
 Example, body can be whatever we want to return, this example the body is a user entity

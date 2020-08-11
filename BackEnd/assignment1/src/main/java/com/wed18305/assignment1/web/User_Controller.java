@@ -4,15 +4,17 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import com.wed18305.assignment1.model.Response;
+import com.wed18305.assignment1.objects.Response;
+import com.wed18305.assignment1.objects.User_Advanced;
 import com.wed18305.assignment1.model.User;
+import com.wed18305.assignment1.model.UserType;
+import com.wed18305.assignment1.services.UserType_Service;
 import com.wed18305.assignment1.services.User_Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,17 +26,19 @@ public class User_Controller {
 
     @Autowired
     private User_Service userService;
+    @Autowired
+    private UserType_Service userTypeService;
 
     /**
-     * Create new user 
-     * POST ENDPOINT: http://localhost:8080/api/user 
+     * Create new (customer)user 
+     * POST ENDPOINT: http://localhost:8080/api/user/create
      * INPUT JSON {"name":"neil", 
      *             "username":"neil", 
      *             "password":"1234",
      *             "contactNumber":"0425000000"}
      * UserType NOT CURRENTLY IMPLEMENTED
      */
-    @PostMapping()
+    @PostMapping("createCustomer")
     public ResponseEntity<Response> createNewUser(@Valid @RequestBody User user, BindingResult result) {
         // Binding validation checks
         if (result.hasErrors()) {
@@ -45,6 +49,10 @@ public class User_Controller {
         // Save new User
         User user1 = null;
         try {
+            //Get the userType from the database and add to the user
+            Optional<UserType> ut = userTypeService.findById((long)3);
+            user.setType(ut.get());
+            //Save user
             user1 = userService.saveOrUpdateUser(user);
         } catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
@@ -61,13 +69,138 @@ public class User_Controller {
         }
     }
 
+
+
+    /**
+     * Create new (employee)user, requires a requestID(userID) that is attempting to create the new employee
+     * POST ENDPOINT: http://localhost:8080/api/user/createEmployee
+     * INPUT JSON {"name":"neil", 
+     *             "username":"neilk", 
+     *             "password":"1234",
+     *             "contactNumber":"0425000000",
+     *             "requestID":"111"}
+     * type ID not required it will be assinged here.
+     * @param employee
+     * @param result
+     * @return Response object, if successfull the user is returned in the body
+     * otherwise the error object will contain either a single string or array of field errors 
+     */
+    @PostMapping("createEmployee")
+    public ResponseEntity<Response> createNewEmployeeUser(@Valid @RequestBody User_Advanced employee, BindingResult result) {
+        // Binding validation checks
+        if (result.hasErrors()) {
+            Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        //Check that the requestID is an admin
+        Optional<User> adminRequest = userService.findById(employee.getRequestID());
+        if(!adminRequest.isPresent()){
+            //No user found with that ID
+            Response response = new Response(false, "ERROR!", "Not a valid request!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }else{
+            if(adminRequest.get().getType().getId().intValue() != 1){
+                //Not a valid admin user request
+                Response response = new Response(false, "ERROR!", "Not a valid request!", null);
+                return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        User user1 = null;
+        // Save new User
+        try {
+            //Get the userType from the database and add to the user
+            Optional<UserType> ut = userTypeService.findById((long)2);//Set type of user here TEMP 2 is employee
+            employee.setType(ut.get());
+            //Save user
+            user1 = userService.saveOrUpdateUser(employee);
+        } catch (Exception e) {
+            Response response = new Response(false, "ERROR!", e.getMessage(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Check user result
+        if (user1 == null) {
+            Response response = new Response(false, "ERROR!", "User not created!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        } else {
+            Response response = new Response(true, "User created!", null, user1);
+            return new ResponseEntity<Response>(response, HttpStatus.CREATED);
+        }
+    }
+
+
+
+
+    /**
+     * Create new (admin)user, requires a requestID(Admin) that is attempting to create the new employee
+     * POST ENDPOINT: http://localhost:8080/api/user/createEmployee
+     * INPUT JSON {"name":"neil", 
+     *             "username":"neilk", 
+     *             "password":"1234",
+     *             "contactNumber":"0425000000",
+     *             "requestID":"111"}
+     * type ID not required it will be assinged here.
+     * @param admin
+     * @param result
+     * @return Response object, if successfull the user is returned in the body
+     * otherwise the error object will contain either a single string or array of field errors 
+     */
+    @PostMapping("createAdmin")
+    public ResponseEntity<Response> createNewAdminUser(@Valid @RequestBody User_Advanced admin, BindingResult result) {
+        // Binding validation checks
+        if (result.hasErrors()) {
+            Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        //Check that the requestID is an admin(only an admin can create an admin)
+        Optional<User> adminRequest = userService.findById(admin.getRequestID());
+        if(!adminRequest.isPresent()){
+            //No user found with that ID
+            Response response = new Response(false, "ERROR!", "Not a valid request!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }else{
+            if(adminRequest.get().getType().getId().intValue() != 1){
+                //Not a valid admin user request
+                Response response = new Response(false, "ERROR!", "Not a valid request!", null);
+                return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        User user1 = null;
+        // Save new User
+        try {
+            //Get the userType from the database and add to the user
+            Optional<UserType> ut = userTypeService.findById((long)1);//Set type of user here TEMP 1 is admin
+            admin.setType(ut.get());
+            //Save user
+            user1 = userService.saveOrUpdateUser(admin);
+        } catch (Exception e) {
+            Response response = new Response(false, "ERROR!", e.getMessage(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Check user result
+        if (user1 == null) {
+            Response response = new Response(false, "ERROR!", "User not created!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        } else {
+            Response response = new Response(true, "User created!", null, user1);
+            return new ResponseEntity<Response>(response, HttpStatus.CREATED);
+        }
+    }
+
+
+
     /**
      * Get user via username and password
-     * GET ENDPOINT: http://localhost:8080/api/user
+     * GET ENDPOINT: http://localhost:8080/api/user/find
      * INPUT JSON{"name":"neil", 
      *            "password":"1234"} 
      */
-    @GetMapping()
+    @PostMapping("find")
     public ResponseEntity<Response> findByUsernameAndPassword(@Valid @RequestBody User user, BindingResult result) {
         // Binding validation checks
         if (result.hasErrors()) {

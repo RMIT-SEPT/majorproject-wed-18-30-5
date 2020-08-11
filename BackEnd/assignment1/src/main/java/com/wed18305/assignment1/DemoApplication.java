@@ -30,16 +30,19 @@ public class DemoApplication {
 	// public CommandLineRunner demo(User_Repository UserRepository, UserType_Repository TypeRepository) {
 	// 	return (args) -> {
 	// 		//save the three types
-	// 		TypeRepository.save(new UserType("admin"));
-	// 		TypeRepository.save(new UserType("employee"));
-	// 		TypeRepository.save(new UserType("customer"));
+	// 		UserType admin = new UserType("admin");
+	// 		UserType employee = new UserType("employee");
+	// 		UserType customer = new UserType("employee");
+	// 		TypeRepository.save(admin);//1
+	// 		TypeRepository.save(employee);//2
+	// 		TypeRepository.save(customer);//3
 			
 	// 		// save a few customers
-	// 		UserRepository.save(new User("Jack", "Jacky", "1234", "0000000000", (long) 1));
-	// 		UserRepository.save(new User("Chloe", "O'Brian", "1234", "0000000000", (long) 1));
-	// 		UserRepository.save(new User("Kim", "Bauer", "1234", "0000000000", (long) 1));
-	// 		UserRepository.save(new User("David", "Palmer", "1234", "0000000000", (long) 1));
-	// 		UserRepository.save(new User("Michelle", "Dessler", "1234", "0000000000", (long) 1));
+	// 		UserRepository.save(new User("Jack", "Jacky", "1234", "0000000000", customer));
+	// 		UserRepository.save(new User("Chloe", "O'Brian", "1234", "0000000000", customer));
+	// 		UserRepository.save(new User("Kim", "Bauer", "1234", "0000000000", customer));
+	// 		UserRepository.save(new User("David", "Palmer", "1234", "0000000000", admin));
+	// 		UserRepository.save(new User("Michelle", "Dessler", "1234", "0000000000", employee));
 
 	// 		// fetch all types
 	// 		log.info("User types found with findAll():");
