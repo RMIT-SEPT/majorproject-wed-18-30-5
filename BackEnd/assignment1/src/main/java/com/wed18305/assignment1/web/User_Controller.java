@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import com.wed18305.assignment1.Responses.Response;
 import com.wed18305.assignment1.Requests.Admin_Request;
 import com.wed18305.assignment1.Requests.Employee_Request;
+import com.wed18305.assignment1.Requests.Login_Request;
 import com.wed18305.assignment1.Requests.Customer_Request;
 import com.wed18305.assignment1.model.User;
 import com.wed18305.assignment1.model.UserType;
@@ -212,7 +213,7 @@ public class User_Controller {
      *            "password":"1234"} 
      */
     @PostMapping("find")
-    public ResponseEntity<Response> findByUsernameAndPassword(@Valid @RequestBody User user, BindingResult result) {
+    public ResponseEntity<Response> findByUsernameAndPassword(@Valid @RequestBody Login_Request lr, BindingResult result) {
         // Binding validation checks
         if (result.hasErrors()) {
             Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
@@ -222,7 +223,7 @@ public class User_Controller {
         // Find the user
         Optional<User> user1 = null;
         try {
-            user1 = userService.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+            user1 = userService.findByUsernameAndPassword(lr.getUsername(), lr.getPassword());
         } catch (Exception e) {
             Response response = new Response(false,"ERROR!",e.getMessage(),null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
