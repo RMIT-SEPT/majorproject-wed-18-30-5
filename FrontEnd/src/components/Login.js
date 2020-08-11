@@ -11,6 +11,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useAPI } from "../api/Api";
 
 
 function Copyright() {
@@ -45,14 +46,42 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+export default function SendLoginData({ setResult, username, password }) {
+
+    const [data] = useState(() => JSON.stringify({
+        username,
+        password
+    }))
+
+    const { response, error } = Api.login.post(data)
+    useEffect(() => {
+        if (response) {
+            console.log(response);
+            setResult(response);
+        } else if (error) {
+            console.log(error);
+            alert("error check console");
+        }
+    }, [response, error, setResult]);
+    return (
+        <>
+            {loading && < p > Loading...Please wait...</p >}
+        </>
+    )
+}
+
 export default function SignIn() {
     const classes = useStyles();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    const [submit, setSubmit] = useState(false);
+    const [loginResult, setLoginResult] = useState("");
+
     return (
         <Container component="main" maxWidth="xs">
+            <div>{JSON.stringify(loginResult)}</div>
             <CssBaseline />
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
@@ -91,29 +120,33 @@ export default function SignIn() {
                         control={<Checkbox value="remember" color="primary" />}
                         label="Remember me"
                     />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
+                    {submit ? (
+                        <SendLoginData setResult={setLoginResult} username={username} password={password} />
+                    ) : (
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                                onClick={() => setSubmit(true)}
 
 
-                    >
-                        Sign In
+                            >
+                                Sign In
                     </Button>
-                    <Grid container>
-                        <Grid item xs>
-                            <Link href="forgetpassword" variant="body2">
-                                Forgot password?
+                            <Grid container>
+                                <Grid item xs>
+                                    <Link href="forgetpassword" variant="body2">
+                                        Forgot password?
                             </Link>
-                        </Grid>
-                        <Grid item>
-                            <Link href="#" variant="body2">
-                                {"Don't have an account? Sign Up"}
-                            </Link>
-                        </Grid>
-                    </Grid>
+                                </Grid>
+                                <Grid item>
+                                    <Link href="#" variant="body2">
+                                        {"Don't have an account? Sign Up"}
+                                    </Link>
+                                </Grid>
+                            </Grid>
                 </form>
             </div>
             <Box mt={8}>
@@ -122,3 +155,5 @@ export default function SignIn() {
         </Container>
     );
 }
+
+

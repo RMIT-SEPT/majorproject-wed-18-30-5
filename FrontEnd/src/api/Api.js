@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 
 /*
- * credit to https://medium.com/better-programming/
- * learn-to-create-your-own-usefetch-react-hook-9cc31b038e53
- * credit to https://wanago.io/2019/11/18/useeffect-hook-in-react-custom-hooks
+ * https://medium.com/better-programming/learn-to-create-your-own-usefetch-react-hook-9cc31b038e53
+ * https://wanago.io/2019/11/18/useeffect-hook-in-react-custom-hooks
  */
-export const createUseFetch = (url, options) => (callback = undefined) => {
+export const makeUseFetch = (url, options) => (callback = undefined) => {
     const [response, setResponse] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -50,17 +49,28 @@ const GET_SAME_ORIGIN_JSON = {
     redirect: "manual",
 };
 export const useAPI = {
+    login: {
+        post: (jsonData) =>
+            makeUseFetch("http://localhost:8080/api/user/find", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData)
+            })
+    },
     voice: {
         post: (formData) =>
-            createUseFetch("/api/voice", {
+            makeUseFetch("/api/voice", {
                 headers: { Accept: "application/json" },
                 method: "POST",
                 body: formData,
             }),
-        ping: createUseFetch("api/voice/ping", GET_SAME_ORIGIN_JSON),
+        ping: makeUseFetch("api/voice/ping", GET_SAME_ORIGIN_JSON),
     },
     search_data: {
         get: (selectOptionsURI) =>
-            createUseFetch(selectOptionsURI, GET_SAME_ORIGIN_JSON),
+            makeUseFetch(selectOptionsURI, GET_SAME_ORIGIN_JSON),
     },
 };
