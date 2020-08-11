@@ -65,9 +65,6 @@ public class User {
     public Long getId() {
         return this.id;
     }
-    public void setId(Long id) {
-        this.id = id;
-    }
     public String getName() {
         return this.name;
     }
@@ -95,10 +92,7 @@ public class User {
     public UserType getType() {
         return this.userType;
     }
-    public void setType(UserType type) {
-        //TODO need table check.
-        this.userType = type;
-    }
+
 
     //Comparisons
     @Override

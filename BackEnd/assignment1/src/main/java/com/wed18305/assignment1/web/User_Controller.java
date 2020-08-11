@@ -4,8 +4,10 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import com.wed18305.assignment1.objects.Response;
-import com.wed18305.assignment1.objects.User_Advanced;
+import com.wed18305.assignment1.Responses.Response;
+import com.wed18305.assignment1.Requests.Admin_Request;
+import com.wed18305.assignment1.Requests.Employee_Request;
+import com.wed18305.assignment1.Requests.Customer_Request;
 import com.wed18305.assignment1.model.User;
 import com.wed18305.assignment1.model.UserType;
 import com.wed18305.assignment1.services.UserType_Service;
@@ -39,7 +41,7 @@ public class User_Controller {
      * UserType NOT CURRENTLY IMPLEMENTED
      */
     @PostMapping("createCustomer")
-    public ResponseEntity<Response> createNewUser(@Valid @RequestBody User user, BindingResult result) {
+    public ResponseEntity<Response> createNewUser(@Valid @RequestBody Customer_Request cr, BindingResult result) {
         // Binding validation checks
         if (result.hasErrors()) {
             Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
@@ -49,9 +51,12 @@ public class User_Controller {
         // Save new User
         User user1 = null;
         try {
-            //Get the userType from the database and add to the user
-            Optional<UserType> ut = userTypeService.findById((long)3);
-            user.setType(ut.get());
+            //Create a User entity using the Customer_Request
+            User user = new User(cr.getName(),
+                                 cr.getUsername(),
+                                 cr.getPassword(),
+                                 cr.getContactNumber().toString(),
+                                 userTypeService.findById((long)3).get());
             //Save user
             user1 = userService.saveOrUpdateUser(user);
         } catch (Exception e) {
@@ -86,7 +91,7 @@ public class User_Controller {
      * otherwise the error object will contain either a single string or array of field errors 
      */
     @PostMapping("createEmployee")
-    public ResponseEntity<Response> createNewEmployeeUser(@Valid @RequestBody User_Advanced employee, BindingResult result) {
+    public ResponseEntity<Response> createNewEmployeeUser(@Valid @RequestBody Employee_Request er, BindingResult result) {
         // Binding validation checks
         if (result.hasErrors()) {
             Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
@@ -94,7 +99,7 @@ public class User_Controller {
         }
 
         //Check that the requestID is an admin
-        Optional<User> adminRequest = userService.findById(employee.getRequestID());
+        Optional<User> adminRequest = userService.findById(er.getRequestID());
         if(!adminRequest.isPresent()){
             //No user found with that ID
             Response response = new Response(false, "ERROR!", "Not a valid request!", null);
@@ -107,14 +112,17 @@ public class User_Controller {
             }
         }
 
-        User user1 = null;
         // Save new User
+        User user1 = null;
         try {
-            //Get the userType from the database and add to the user
-            Optional<UserType> ut = userTypeService.findById((long)2);//Set type of user here TEMP 2 is employee
-            employee.setType(ut.get());
+             //Create a User entity using the Employee_Request
+             User user = new User(er.getName(),
+                                  er.getUsername(),
+                                  er.getPassword(),
+                                  er.getContactNumber().toString(),
+                                  userTypeService.findById((long)2).get());
             //Save user
-            user1 = userService.saveOrUpdateUser(employee);
+            user1 = userService.saveOrUpdateUser(user);
         } catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
@@ -148,7 +156,7 @@ public class User_Controller {
      * otherwise the error object will contain either a single string or array of field errors 
      */
     @PostMapping("createAdmin")
-    public ResponseEntity<Response> createNewAdminUser(@Valid @RequestBody User_Advanced admin, BindingResult result) {
+    public ResponseEntity<Response> createNewAdminUser(@Valid @RequestBody Admin_Request ar, BindingResult result) {
         // Binding validation checks
         if (result.hasErrors()) {
             Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
@@ -156,7 +164,7 @@ public class User_Controller {
         }
 
         //Check that the requestID is an admin(only an admin can create an admin)
-        Optional<User> adminRequest = userService.findById(admin.getRequestID());
+        Optional<User> adminRequest = userService.findById(ar.getRequestID());
         if(!adminRequest.isPresent()){
             //No user found with that ID
             Response response = new Response(false, "ERROR!", "Not a valid request!", null);
@@ -172,11 +180,14 @@ public class User_Controller {
         User user1 = null;
         // Save new User
         try {
-            //Get the userType from the database and add to the user
-            Optional<UserType> ut = userTypeService.findById((long)1);//Set type of user here TEMP 1 is admin
-            admin.setType(ut.get());
+             //Create a User entity using the Admin_Request
+             User user = new User(ar.getName(),
+                                  ar.getUsername(),
+                                  ar.getPassword(),
+                                  ar.getContactNumber().toString(),
+                                  userTypeService.findById((long)1).get());
             //Save user
-            user1 = userService.saveOrUpdateUser(admin);
+            user1 = userService.saveOrUpdateUser(user);
         } catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);

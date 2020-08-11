@@ -32,7 +32,7 @@ public class DemoApplication {
 	// 		//save the three types
 	// 		UserType admin = new UserType("admin");
 	// 		UserType employee = new UserType("employee");
-	// 		UserType customer = new UserType("employee");
+	// 		UserType customer = new UserType("customer");
 	// 		TypeRepository.save(admin);//1
 	// 		TypeRepository.save(employee);//2
 	// 		TypeRepository.save(customer);//3
