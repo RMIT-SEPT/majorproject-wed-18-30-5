@@ -212,7 +212,7 @@ public class User_Controller {
      * INPUT JSON{"name":"neil", 
      *            "password":"1234"} 
      */
-    @PostMapping("find")
+    @PostMapping("Login")
     public ResponseEntity<Response> findByUsernameAndPassword(@Valid @RequestBody Login_Request lr, BindingResult result) {
         // Binding validation checks
         if (result.hasErrors()) {
