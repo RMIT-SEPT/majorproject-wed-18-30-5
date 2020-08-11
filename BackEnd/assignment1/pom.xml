@@ -58,6 +58,20 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>5.2.4.Final</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.lettuce</groupId>
+			<artifactId>lettuce-core</artifactId>
+		<version>5.2.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>5.2.6.RELEASE</version>
+		</dependency>
 	</dependencies>
 
 	<build>
