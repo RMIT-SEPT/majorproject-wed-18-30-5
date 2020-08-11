@@ -10,7 +10,6 @@ import com.wed18305.assignment1.Requests.Employee_Request;
 import com.wed18305.assignment1.Requests.Login_Request;
 import com.wed18305.assignment1.Requests.Customer_Request;
 import com.wed18305.assignment1.model.User;
-import com.wed18305.assignment1.model.UserType;
 import com.wed18305.assignment1.services.UserType_Service;
 import com.wed18305.assignment1.services.User_Service;
 
