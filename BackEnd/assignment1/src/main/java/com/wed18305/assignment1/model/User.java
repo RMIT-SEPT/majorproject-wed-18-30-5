@@ -2,7 +2,6 @@ package com.wed18305.assignment1.model;
 
 import java.util.Date;
 import java.util.Objects;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,8 +12,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 // import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-// imp
-
 // import org.hibernate.validator.constraints.NotBlank;
 
 //Relation example: https://www.baeldung.com/jpa-one-to-one
@@ -25,17 +22,17 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
+    protected Long id;
+    protected String name;
     @NotBlank(message = "username is required")
-    private String username;
+    protected String username;
     @NotBlank(message = "password is required")
-    private String password;
-    private String contactNumber;
+    protected String password;
+    protected String contactNumber;
     @OneToOne
     @JoinColumn(name = "type_id", referencedColumnName = "id")
-    private UserType userType;
-    private String services; //Optional, not sure if we need a list of services here.
+    protected UserType userType;
+    protected String services; //Optional, not sure if we need a list of services here.
 
     private Date created_at;
     private Date updated_at;
@@ -56,20 +53,17 @@ public class User {
                 String username,
                 String password,
                 String contactNumber,
-                Long typeID) {
+                UserType type) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.contactNumber = contactNumber;
-        // this.type = typeID;
+        this.userType = type;
     }
 
     //Getters/Setters
     public Long getId() {
         return this.id;
-    }
-    public void setId(Long id) {
-        this.id = id;
     }
     public String getName() {
         return this.name;
@@ -98,10 +92,7 @@ public class User {
     public UserType getType() {
         return this.userType;
     }
-    public void setType(UserType type) {
-        //TODO need table check.
-        this.userType = type;
-    }
+
 
     //Comparisons
     @Override
