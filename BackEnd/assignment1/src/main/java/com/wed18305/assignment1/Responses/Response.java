@@ -1,4 +1,4 @@
-package com.wed18305.assignment1.model;
+package com.wed18305.assignment1.Responses;
 
 /**Use for returning all POST GET requests
 Example, body can be whatever we want to return, this example the body is a user entity
@@ -21,27 +21,16 @@ public class Response {
     private Object errors; 
     private Object body;
 
-    /**
-     * @return the success
-     */
+    //Getters
     public Boolean getSuccess() {
         return success;
     }
-    /**
-     * @return the message
-     */
     public String getMessage() {
         return message;
     }
-    /**
-     * @return the error
-     */
     public Object getErrors() {
         return errors;
     }
-    /**
-     * @return the body
-     */
     public Object getBody() {
         return body;
     }
