@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,7 +11,8 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { useAPI } from "../api/Api";
+import { Api } from "../api/Index";
+import { navigate } from "@reach/router"
 
 
 function Copyright() {
@@ -46,14 +47,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SendLoginData({ setResult, username, password }) {
+function SendLoginData({ setResult, username, password }) {
 
     const [data] = useState(() => JSON.stringify({
         username,
         password
     }))
 
-    const { response, error } = Api.login.post(data)
+    const { response, error, loading } = Api.login.post(data)()
     useEffect(() => {
         if (response) {
             console.log(response);
@@ -61,7 +62,9 @@ export default function SendLoginData({ setResult, username, password }) {
         } else if (error) {
             console.log(error);
             alert("error check console");
+            setResult(null);
         }
+
     }, [response, error, setResult]);
     return (
         <>
@@ -78,6 +81,16 @@ export default function SignIn() {
 
     const [submit, setSubmit] = useState(false);
     const [loginResult, setLoginResult] = useState("");
+
+    useEffect(() => {
+        if (!loginResult) {
+            setSubmit(false);
+        } else if (loginResult) {
+            navigate(`/signup`)
+        }
+    }, [loginResult, setSubmit]);
+
+
 
     return (
         <Container component="main" maxWidth="xs">
@@ -100,7 +113,7 @@ export default function SignIn() {
                         name="email"
                         autoComplete="email"
                         autoFocus
-                        onChange={setUsername}
+                        onChange={e => setUsername(e.target.value)}
                         value={username}
                     />
                     <TextField
@@ -113,7 +126,7 @@ export default function SignIn() {
                         type="password"
                         id="password"
                         autoComplete="current-password"
-                        onChange={setPassword}
+                        onChange={e => setPassword(e.target.value)}
                         value={password}
                     />
                     <FormControlLabel
@@ -134,19 +147,20 @@ export default function SignIn() {
 
                             >
                                 Sign In
-                    </Button>
-                            <Grid container>
-                                <Grid item xs>
-                                    <Link href="forgetpassword" variant="body2">
-                                        Forgot password?
+                            </Button>
+                        )}
+                    <Grid container>
+                        <Grid item xs>
+                            <Link href="forgetpassword" variant="body2">
+                                Forgot password?
                             </Link>
-                                </Grid>
-                                <Grid item>
-                                    <Link href="#" variant="body2">
-                                        {"Don't have an account? Sign Up"}
-                                    </Link>
-                                </Grid>
-                            </Grid>
+                        </Grid>
+                        <Grid item>
+                            <Link href="#" variant="body2">
+                                {"Don't have an account? Sign Up"}
+                            </Link>
+                        </Grid>
+                    </Grid>
                 </form>
             </div>
             <Box mt={8}>
