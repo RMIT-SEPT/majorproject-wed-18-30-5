@@ -38,7 +38,6 @@ public class User_Controller {
      *             "username":"neil", 
      *             "password":"1234",
      *             "contactNumber":"0425000000"}
-     * UserType NOT CURRENTLY IMPLEMENTED
      */
     @PostMapping("createCustomer")
     public ResponseEntity<Response> createNewUser(@Valid @RequestBody Customer_Request cr, BindingResult result) {
@@ -84,7 +83,6 @@ public class User_Controller {
      *             "password":"1234",
      *             "contactNumber":"0425000000",
      *             "requestID":"111"}
-     * type ID not required it will be assinged here.
      * @param employee
      * @param result
      * @return Response object, if successfull the user is returned in the body
@@ -149,7 +147,6 @@ public class User_Controller {
      *             "password":"1234",
      *             "contactNumber":"0425000000",
      *             "requestID":"111"}
-     * type ID not required it will be assinged here.
      * @param admin
      * @param result
      * @return Response object, if successfull the user is returned in the body
@@ -230,7 +227,7 @@ public class User_Controller {
 
         //Check the user result
         if(!user1.isPresent()){
-            Response response = new Response(false,"user not found!",null,null);
+            Response response = new Response(false,"ERROR!","user not found!",null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }else{
             Response response = new Response(true,"user found!",null,user1.get());
