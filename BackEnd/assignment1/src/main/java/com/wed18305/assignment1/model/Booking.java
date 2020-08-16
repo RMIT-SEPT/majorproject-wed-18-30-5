@@ -1,5 +1,7 @@
 package com.wed18305.assignment1.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -18,8 +20,8 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected long id;
 
-    protected Date startDateTime;
-    protected Date endDateTime;
+    protected LocalDateTime startDateTime;
+    protected LocalDateTime endDateTime;
     
     private Date created_at;
     private Date updated_at;
@@ -39,8 +41,8 @@ public class Booking {
     /// Constructor
     public Booking() {
     }
-    public Booking(Date startDateTime,
-                Date endDateTime) {
+    public Booking(LocalDateTime startDateTime,
+                LocalDateTime endDateTime) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
     }
@@ -48,11 +50,11 @@ public class Booking {
     /// Getters/Setters
     public Long getId() { return id; }
 
-    public Date getStartDateTime()             { return startDateTime; }
-    public void setStartDateTime(Date newTime) { startDateTime = newTime; }
+    public LocalDateTime getStartDateTime()             { return startDateTime; }
+    public void setStartDateTime(LocalDateTime newTime) { startDateTime = newTime; }
 
-    public Date getEndDateTime()             { return endDateTime; }
-    public void setEndDateTime(Date newTime) { endDateTime = newTime; }
+    public LocalDateTime getEndDateTime()             { return endDateTime; }
+    public void setEndDateTime(LocalDateTime newTime) { endDateTime = newTime; }
 
     /// Comparisons
     @Override

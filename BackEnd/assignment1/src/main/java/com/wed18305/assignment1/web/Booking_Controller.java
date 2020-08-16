@@ -28,8 +28,8 @@ public class Booking_Controller {
     /**
      * Create new (customer)user 
      * POST ENDPOINT: http://localhost:8080/api/booking/createBooking
-     * INPUT JSON {"startDateTime":"yyyy-mm-ddThh:mm:ss.iii+0000", (Format)
-     *             "endDateTime"  :"2012-02-13T14:21:14.258+0000
+     * INPUT JSON {"startDateTime":"yyyy-mm-dd hh:MM", (Format)
+     *             "endDateTime"  :"2012-02-13 12:30"
      */
     @PostMapping("createBooking")
     public ResponseEntity<Response> createNewBooking(@Valid @RequestBody Booking_Request br, BindingResult result) {
