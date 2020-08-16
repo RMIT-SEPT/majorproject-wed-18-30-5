@@ -5,7 +5,12 @@ terraform.tfstate
 terraform.tfstate.backup
 tmp/
 
+# IDE Folders
+.idea
 .vscode
+
+# Local Database
+data
 
 .idea/workspace.xml
 .idea/libraries –
