@@ -32,7 +32,10 @@ public class Booking_Controller {
      * Create new (customer)user 
      * POST ENDPOINT: http://localhost:8080/api/booking/createBooking
      * INPUT JSON {"startDateTime":"yyyy-mm-dd hh:MM", (Format)
-     *             "endDateTime"  :"2012-02-13 12:30"
+     *             "endDateTime"  :"2012-02-13 12:30",
+     *             "customer_ids": ["1", "2"], // Input an Array of Values (Considered valid)
+     *             "worker_ids": ["5"], // Array with one (Both equally possible!)
+     *             "requestID":"1"
      */
     @PostMapping("createBooking")
     public ResponseEntity<Response> createNewBooking(@Valid @RequestBody Booking_Request br, BindingResult result) {
@@ -51,8 +54,8 @@ public class Booking_Controller {
             // Create a Booking entity using the Booking_Request
             Booking booking = new Booking(br.getStartDate(),
                                           br.getEndDate(),
-                                          userService.findById(br.getCustomerId()).get(),
-                                          userService.findById(br.getWorkerId()).get());
+                                          userService.findManyById(br.getCustomerIds()),
+                                          userService.findManyById(br.getWorkerIds()));
 
             // Save Booking
             booking1 = bookingService.saveOrUpdateBooking(booking);

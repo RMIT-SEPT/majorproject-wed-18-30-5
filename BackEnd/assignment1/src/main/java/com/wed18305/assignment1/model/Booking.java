@@ -2,7 +2,9 @@ package com.wed18305.assignment1.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -26,13 +29,13 @@ public class Booking {
     protected LocalDateTime endDateTime;
 
     // Relations
-    @OneToOne
+    @OneToMany
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    protected User customer;
+    protected List<User> customer;
 
-    @OneToOne
+    @OneToMany
     @JoinColumn(name = "worker_id", referencedColumnName = "id")
-    protected User worker;
+    protected List<User> employee;
 
     // @OneToOne
     // @JoinColumn(name = "service_id", referencedColumnName = "id")
@@ -59,12 +62,12 @@ public class Booking {
     }
     public Booking(LocalDateTime startDateTime,
                    LocalDateTime endDateTime,
-                   User customer,
-                   User worker) {
+                   List<User> customer,
+                   List<User> employee) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.customer = customer;
-        this.worker = worker;
+        this.employee = employee;
     }
 
     /// Getters/Setters
@@ -76,11 +79,11 @@ public class Booking {
     public LocalDateTime getEndDateTime()             { return endDateTime;    }
     public void setEndDateTime(LocalDateTime newTime) { endDateTime = newTime; }
 
-    public User getCustomer()              { return customer;          }
-    public void setCustomer(User customer) { this.customer = customer; }
+    public List<User> getCustomer()              { return customer;          }
+    public void setCustomer(List<User> customer) { this.customer = customer; }
 
-    public User getWorker()            { return customer;      }
-    public void setWorker(User worker) { this.worker = worker; }
+    public List<User> getWorker()            { return customer;        }
+    public void setWorker(List<User> worker) { this.employee = worker; }
 
     /// Comparisons
     @Override

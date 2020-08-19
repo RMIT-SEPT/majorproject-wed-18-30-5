@@ -19,9 +19,9 @@ public class Booking_Request {
     // @NotBlank(message = "A EndDate is required.")
     protected LocalDateTime endDateTime;
     // @NotBlank(message = "Please assign a customer to this booking.")
-    protected long customer_id;
+    protected Long[] customer_ids;
     // @NotBlank(message = "Please assign a worker to this booking.")
-    protected long worker_id;
+    protected Long[] worker_ids;
     @NotNull(message = "request ID is required.")
     protected Long requestID;
 
@@ -30,20 +30,20 @@ public class Booking_Request {
     //Constructors
     public Booking_Request(String startDateTime,
                            String endDateTime,
-                           long customer_id,
-                           long worker_id,
+                           Long[] customer_ids,
+                           Long[] worker_ids,
                            Long requestID) {
-        this.startDateTime = LocalDateTime.parse(startDateTime, formatter);
-        this.endDateTime   = LocalDateTime.parse(endDateTime, formatter);
-        this.customer_id   = customer_id;
-        this.worker_id     = worker_id;
-        this.requestID     = requestID;
+        this.startDateTime  = LocalDateTime.parse(startDateTime, formatter);
+        this.endDateTime    = LocalDateTime.parse(endDateTime, formatter);
+        this.customer_ids   = customer_ids;
+        this.worker_ids     = worker_ids;
+        this.requestID      = requestID;
     }
 
     // Getters
-    public LocalDateTime getStartDate()   { return startDateTime;    }
-    public LocalDateTime getEndDate()     { return endDateTime;      }
-    public Long getCustomerId()           { return customer_id;      }
-    public Long getWorkerId()             { return worker_id;        }
-    public Long getRequestID()            { return requestID;        }
+    public LocalDateTime getStartDate()      { return startDateTime;     }
+    public LocalDateTime getEndDate()        { return endDateTime;       }
+    public Long[] getCustomerIds()           { return customer_ids;      }
+    public Long[] getWorkerIds()             { return worker_ids;        }
+    public Long getRequestID()               { return requestID;         }
 }
