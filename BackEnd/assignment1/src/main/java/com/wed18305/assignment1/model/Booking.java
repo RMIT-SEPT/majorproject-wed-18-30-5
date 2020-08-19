@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
@@ -22,7 +24,21 @@ public class Booking {
 
     protected LocalDateTime startDateTime;
     protected LocalDateTime endDateTime;
+
+    // Relations
+    @OneToOne
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    protected User customer;
+
+    @OneToOne
+    @JoinColumn(name = "worker_id", referencedColumnName = "id")
+    protected User worker;
+
+    // @OneToOne
+    // @JoinColumn(name = "service_id", referencedColumnName = "id")
+    // protected Service service;
     
+    // Created/Updated Recordings
     private Date created_at;
     private Date updated_at;
 
@@ -42,19 +58,29 @@ public class Booking {
     public Booking() {
     }
     public Booking(LocalDateTime startDateTime,
-                LocalDateTime endDateTime) {
+                   LocalDateTime endDateTime,
+                   User customer,
+                   User worker) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
+        this.customer = customer;
+        this.worker = worker;
     }
 
     /// Getters/Setters
     public Long getId() { return id; }
 
-    public LocalDateTime getStartDateTime()             { return startDateTime; }
+    public LocalDateTime getStartDateTime()             { return startDateTime;    }
     public void setStartDateTime(LocalDateTime newTime) { startDateTime = newTime; }
 
-    public LocalDateTime getEndDateTime()             { return endDateTime; }
+    public LocalDateTime getEndDateTime()             { return endDateTime;    }
     public void setEndDateTime(LocalDateTime newTime) { endDateTime = newTime; }
+
+    public User getCustomer()              { return customer;          }
+    public void setCustomer(User customer) { this.customer = customer; }
+
+    public User getWorker()            { return customer;      }
+    public void setWorker(User worker) { this.worker = worker; }
 
     /// Comparisons
     @Override
@@ -78,6 +104,10 @@ public class Booking {
             return false;
         }
         final User other = (User) obj;
+
+        /*
+            Add Other Comparisons With Other Variables
+        */
 
         return Objects.equals(this.id, other.id);
     }

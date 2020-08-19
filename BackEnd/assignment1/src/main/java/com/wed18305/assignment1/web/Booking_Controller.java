@@ -8,6 +8,7 @@ import com.wed18305.assignment1.Responses.Response;
 import com.wed18305.assignment1.Requests.Booking_Request;
 import com.wed18305.assignment1.model.Booking;
 import com.wed18305.assignment1.services.Booking_Service;
+import com.wed18305.assignment1.services.User_Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,8 @@ public class Booking_Controller {
 
     @Autowired
     private Booking_Service bookingService;
+    @Autowired
+    private User_Service userService;
 
     /**
      * Create new (customer)user 
@@ -47,7 +50,9 @@ public class Booking_Controller {
 
             // Create a Booking entity using the Booking_Request
             Booking booking = new Booking(br.getStartDate(),
-                                          br.getEndDate());
+                                          br.getEndDate(),
+                                          userService.findById(br.getCustomerId()).get(),
+                                          userService.findById(br.getWorkerId()).get());
 
             // Save Booking
             booking1 = bookingService.saveOrUpdateBooking(booking);
