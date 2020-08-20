@@ -8,6 +8,7 @@ import com.wed18305.assignment1.Responses.Response;
 import com.wed18305.assignment1.Requests.Booking_Request;
 import com.wed18305.assignment1.model.Booking;
 import com.wed18305.assignment1.services.Booking_Service;
+import com.wed18305.assignment1.services.Service_Service;
 import com.wed18305.assignment1.services.User_Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class Booking_Controller {
     private Booking_Service bookingService;
     @Autowired
     private User_Service userService;
+    @Autowired
+    private Service_Service serviceService;
 
     /**
      * Create New Booking 
@@ -35,6 +38,7 @@ public class Booking_Controller {
      *             "endDateTime"  :"2012-02-13 12:30",
      *             "customer_ids": ["1", "2"], // Input an Array of Values (Considered valid)
      *             "worker_ids": ["5"], // Array with one (Both equally possible!)
+     *             "service_id" : 1,
      *             "requestID":"1"
      */
     @PostMapping("createBooking")
@@ -55,7 +59,8 @@ public class Booking_Controller {
             Booking booking = new Booking(br.getStartDate(),
                                           br.getEndDate(),
                                           userService.findManyById(br.getCustomerIds()),
-                                          userService.findManyById(br.getWorkerIds()));
+                                          userService.findManyById(br.getWorkerIds()),
+                                          serviceService.findById(br.getServiceId()).get());
 
             // Save Booking
             booking1 = bookingService.saveOrUpdateBooking(booking);

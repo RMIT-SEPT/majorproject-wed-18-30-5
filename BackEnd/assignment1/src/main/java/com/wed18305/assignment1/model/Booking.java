@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -34,12 +35,12 @@ public class Booking {
     protected List<User> customer;
 
     @OneToMany
-    @JoinColumn(name = "worker_id", referencedColumnName = "id")
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
     protected List<User> employee;
 
-    // @OneToOne
-    // @JoinColumn(name = "service_id", referencedColumnName = "id")
-    // protected Service service;
+    @ManyToOne
+    @JoinColumn(name = "service_id", referencedColumnName = "id")
+    protected Service service;
     
     // Created/Updated Recordings
     private Date created_at;
@@ -63,14 +64,26 @@ public class Booking {
     public Booking(LocalDateTime startDateTime,
                    LocalDateTime endDateTime,
                    List<User> customer,
-                   List<User> employee) {
+                   List<User> employee,
+                   Service service) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.customer = customer;
         this.employee = employee;
+        this.service = service;
     }
 
     /// Getters/Setters
+
+    /*
+        Fun fact: Getter's are used by Springboot to display JSON object data.
+        I forgot to include a getter for the 'service' variable, and thus, the returned JSON excluded that data.
+        Even if you don't call a get method, Springboot automatically calls it for you to printout the data.
+        Neat!
+    */
+
+    // Whatever the getter's name is, that'll be used to represent a section of data in a JSON object.
+
     public Long getId() { return id; }
 
     public LocalDateTime getStartDateTime()             { return startDateTime;    }
@@ -82,8 +95,11 @@ public class Booking {
     public List<User> getCustomer()              { return customer;          }
     public void setCustomer(List<User> customer) { this.customer = customer; }
 
-    public List<User> getWorker()            { return customer;        }
-    public void setWorker(List<User> worker) { this.employee = worker; }
+    public List<User> getEmployee()              { return customer;          }
+    public void setEmployee(List<User> employee) { this.employee = employee; }
+
+    public Service getService()                 { return service;           }
+    public void setSerivce(Service service)     { this.service = service;   }
 
     /// Comparisons
     @Override
