@@ -23,7 +23,7 @@ public class Booking {
     /// Variables
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected long id;
+    protected Long id;
 
     protected LocalDateTime startDateTime;
     protected LocalDateTime endDateTime;
@@ -92,6 +92,8 @@ public class Booking {
         //change as we require
         int hash = 7;
         hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 79 * hash + Objects.hashCode(this.startDateTime);
+        hash = 79 * hash + Objects.hashCode(this.endDateTime);
         return hash;
     } 
 
@@ -106,11 +108,14 @@ public class Booking {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final User other = (User) obj;
 
-        /*
-            Add Other Comparisons With Other Variables
-        */
+        final Booking other = (Booking) obj;
+        if (!Objects.equals(this.startDateTime, other.startDateTime)) {
+            return false;
+        }
+        if (!Objects.equals(this.endDateTime, other.endDateTime)) {
+            return false;
+        }
 
         return Objects.equals(this.id, other.id);
     }
@@ -119,7 +124,8 @@ public class Booking {
     @Override
     public String toString() {
         var builder = new StringBuilder();
-        builder.append("Booking{id= ").append(id).append("}");
+        builder.append("Booking{id= ").append(id).append(", startDateTime= ")
+            .append(startDateTime).append(", endDateTime= ").append(endDateTime).append("}");
 
         return builder.toString();
     }

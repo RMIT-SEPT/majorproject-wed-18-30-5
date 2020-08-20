@@ -29,7 +29,7 @@ public class Booking_Controller {
     private User_Service userService;
 
     /**
-     * Create new (customer)user 
+     * Create New Booking 
      * POST ENDPOINT: http://localhost:8080/api/booking/createBooking
      * INPUT JSON {"startDateTime":"yyyy-mm-dd hh:MM", (Format)
      *             "endDateTime"  :"2012-02-13 12:30",
