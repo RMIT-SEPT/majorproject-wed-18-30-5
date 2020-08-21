@@ -32,11 +32,11 @@ public class Booking {
     // Relations
     @OneToMany
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    protected List<User> customer;
+    protected List<User_model> customer;
 
     @OneToMany
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
-    protected List<User> employee;
+    protected List<User_model> employee;
 
     @ManyToOne
     @JoinColumn(name = "service_id", referencedColumnName = "id")
@@ -63,8 +63,8 @@ public class Booking {
     }
     public Booking(LocalDateTime startDateTime,
                    LocalDateTime endDateTime,
-                   List<User> customer,
-                   List<User> employee,
+                   List<User_model> customer,
+                   List<User_model> employee,
                    Service service) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
@@ -94,11 +94,11 @@ public class Booking {
     public LocalDateTime getEndDateTime()             { return endDateTime;    }
     public void setEndDateTime(LocalDateTime newTime) { endDateTime = newTime; }
 
-    public List<User> getCustomers()              { return customer;          }
-    public void setCustomers(List<User> customer) { this.customer = customer; }
+    public List<User_model> getCustomers()              { return customer;          }
+    public void setCustomers(List<User_model> customer) { this.customer = customer; }
 
-    public List<User> getEmployees()              { return customer;          }
-    public void setEmployees(List<User> employee) { this.employee = employee; }
+    public List<User_model> getEmployees()              { return customer;          }
+    public void setEmployees(List<User_model> employee) { this.employee = employee; }
 
     public Service getService()                 { return service;           }
     public void setSerivce(Service service)     { this.service = service;   }

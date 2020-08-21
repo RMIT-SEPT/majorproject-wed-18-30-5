@@ -12,7 +12,7 @@ import com.wed18305.assignment1.Requests.Booking_Request;
 import com.wed18305.assignment1.model.Booking;
 import com.wed18305.assignment1.services.Booking_Service;
 import com.wed18305.assignment1.services.Service_Service;
-import com.wed18305.assignment1.model.User;
+import com.wed18305.assignment1.model.User_model;
 import com.wed18305.assignment1.model.UserType;
 import com.wed18305.assignment1.model.UserType.UserTypeID;
 import com.wed18305.assignment1.services.User_Service;
@@ -50,7 +50,7 @@ public class Booking_Controller {
     @PostMapping("createBooking")
     public ResponseEntity<Response> createNewBooking(@Valid @RequestBody Booking_Request br, BindingResult result) {
 
-        User duplicateUser;
+        User_model duplicateUser;
 
         // Binding validation checks
         if (result.hasErrors()) {
@@ -60,7 +60,7 @@ public class Booking_Controller {
         }
 
         // Does Customers Column Only Contain Customer IDs?
-        for (User user : userService.findManyById(br.getCustomerIds())) {
+        for (User_model user : userService.findManyById(br.getCustomerIds())) {
 
             if (!user.getType().getId().equals(UserTypeID.CUSTOMER.id)) {
                 
@@ -77,7 +77,7 @@ public class Booking_Controller {
         }
 
         // Does Employees Column Only Contain Employee IDs?
-        for (User user : userService.findManyById(br.getEmployeeIds())) {
+        for (User_model user : userService.findManyById(br.getEmployeeIds())) {
 
             if (!user.getType().getId().equals(UserTypeID.EMPLOYEE.id)) {
                 
@@ -129,11 +129,11 @@ public class Booking_Controller {
     // Helper Methods
 
     // Code Referenced From Here: https://stackoverflow.com/questions/7414667/identify-duplicates-in-a-list
-    private boolean doesDuplicateExist(List<User> users) {
+    private boolean doesDuplicateExist(List<User_model> users) {
         
-        Set<User> duplicateChecker = new HashSet<User>();
+        Set<User_model> duplicateChecker = new HashSet<User_model>();
 
-        for (User user : users) {
+        for (User_model user : users) {
 
             if (!duplicateChecker.add(user)) {
                 return true;
@@ -143,11 +143,11 @@ public class Booking_Controller {
         return false;
     }
 
-    private User returnFirstDuplicate(List<User> users) {
+    private User_model returnFirstDuplicate(List<User_model> users) {
         
-        Set<User> duplicateChecker = new HashSet<User>();
+        Set<User_model> duplicateChecker = new HashSet<User_model>();
 
-        for (User user : users) {
+        for (User_model user : users) {
 
             if (!duplicateChecker.add(user)) {
                 return user;

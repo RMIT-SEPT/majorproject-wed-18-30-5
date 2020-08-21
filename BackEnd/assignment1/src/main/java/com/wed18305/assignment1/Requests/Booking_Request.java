@@ -8,7 +8,7 @@ import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.wed18305.assignment1.model.User;
+import com.wed18305.assignment1.model.User_model;
 import com.wed18305.assignment1.services.User_Service;
 
 public class Booking_Request {

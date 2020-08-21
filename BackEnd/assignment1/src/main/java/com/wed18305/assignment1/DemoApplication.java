@@ -2,7 +2,7 @@ package com.wed18305.assignment1;
 
 import com.wed18305.assignment1.model.Booking;
 import com.wed18305.assignment1.model.Service;
-import com.wed18305.assignment1.model.User;
+import com.wed18305.assignment1.model.User_model;
 import com.wed18305.assignment1.model.UserType;
 import com.wed18305.assignment1.repositories.Booking_Repository;
 import com.wed18305.assignment1.repositories.Service_Repository;
@@ -21,6 +21,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @SpringBootApplication
 public class DemoApplication {
@@ -43,14 +44,14 @@ public class DemoApplication {
 			TypeRepository.save(employee);//2
 			TypeRepository.save(customer);//3
  
-			User jack = new User("Jack", "Jacky", "1234", "0000000000", customer);
-			User chloe = new User("Chloe", "O'Brian", "1234", "0000000000", customer);
-			User kim = new User("Kim", "Bauer", "1234", "0000000000", customer);
-			User david = new User("David", "Palmer", "1234", "0000000000", admin);
-			User michelle = new User("Michelle", "Dessler", "1234", "0000000000", employee);
-			User leslie = new User("Leslie", "Messler", "1234", "0000000000", employee);
-			// User[] customers = new User[]{ jack, chloe, kim};
-			// User[] employees = new User[]{ michelle, leslie};			
+			User_model jack = new User_model("Jack", "Jacky", "1234", "0000000000", customer);
+			User_model chloe = new User_model("Chloe", "O'Brian", "1234", "0000000000", customer);
+			User_model kim = new User_model("Kim", "Bauer", "1234", "0000000000", customer);
+			User_model david = new User_model("David", "Palmer", "1234", "0000000000", admin);
+			User_model michelle = new User_model("Michelle", "Dessler", "1234", "0000000000", employee);
+			User_model leslie = new User_model("Leslie", "Messler", "1234", "0000000000", employee);
+			// User_model[] customers = new User_model[]{ jack, chloe, kim};
+			// User_model[] employees = new User_model[]{ michelle, leslie};			
 
 			// save a few customers
 			UserRepository.save(jack);
@@ -80,7 +81,7 @@ public class DemoApplication {
 			// fetch all users
 			log.info("Users found with findAll():");
 			log.info("-------------------------------");
-			for (User user : UserRepository.findAll()) {
+			for (User_model user : UserRepository.findAll()) {
 				log.info(user.toString());
 			}
 			log.info("");
@@ -103,7 +104,7 @@ public class DemoApplication {
 
 			// fetch an individual customer by ID
 			ArrayList<Long> ids = new ArrayList<Long>(Arrays.asList((long) 1, (long) 2));
-			Iterable<User> user = UserRepository.findAllById(ids);
+			Iterable<User_model> user = UserRepository.findAllById(ids);
 			log.info("Customer found with findById('1','2'):");
 			log.info("--------------------------------");
 			log.info(user.toString());
@@ -112,7 +113,7 @@ public class DemoApplication {
 			// fetch customers by last name
 			log.info("Customer found with findByNameAndPassword('David','1234'):");
 			log.info("--------------------------------------------");
-			Optional<User> user1 = UserRepository.findByUsernameAndPassword("David", "1234");
+			Optional<User_model> user1 = UserRepository.findByUsernameAndPassword("David", "1234");
 			if(user1.isPresent()){
 				log.info(user1.get().toString());
 			}
