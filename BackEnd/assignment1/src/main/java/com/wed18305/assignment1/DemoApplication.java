@@ -93,6 +93,14 @@ public class DemoApplication {
 			// }
 			// log.info("");
 
+			// Fetch All Services
+			log.info("Services found with findAll():");
+			log.info("-------------------------------");
+			for (Service service: ServiceRepository.findAll()) {
+				log.info(service.toString());
+			}
+			log.info("");
+
 			// fetch an individual customer by ID
 			ArrayList<Long> ids = new ArrayList<Long>(Arrays.asList((long) 1, (long) 2));
 			Iterable<User> user = UserRepository.findAllById(ids);
@@ -108,14 +116,6 @@ public class DemoApplication {
 			if(user1.isPresent()){
 				log.info(user1.get().toString());
 			}
-			log.info("");
-
-			// Fetch Services by ID
-			ArrayList<Long> serviceIds = new ArrayList<Long>(Arrays.asList((long) 1, (long) 2));
-			Iterable<Service> service = ServiceRepository.findAllById(serviceIds);
-			log.info("Service found with findById('1','2'):");
-			log.info("--------------------------------");
-			log.info(service.toString());
 			log.info("");
       	};
 	}

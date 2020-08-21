@@ -73,6 +73,8 @@ public class Booking {
         this.service = service;
     }
 
+    
+
     /// Getters/Setters
 
     /*
@@ -92,14 +94,15 @@ public class Booking {
     public LocalDateTime getEndDateTime()             { return endDateTime;    }
     public void setEndDateTime(LocalDateTime newTime) { endDateTime = newTime; }
 
-    public List<User> getCustomer()              { return customer;          }
-    public void setCustomer(List<User> customer) { this.customer = customer; }
+    public List<User> getCustomers()              { return customer;          }
+    public void setCustomers(List<User> customer) { this.customer = customer; }
 
-    public List<User> getEmployee()              { return customer;          }
-    public void setEmployee(List<User> employee) { this.employee = employee; }
+    public List<User> getEmployees()              { return customer;          }
+    public void setEmployees(List<User> employee) { this.employee = employee; }
 
     public Service getService()                 { return service;           }
     public void setSerivce(Service service)     { this.service = service;   }
+    
 
     /// Comparisons
     @Override

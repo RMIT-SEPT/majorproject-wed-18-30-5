@@ -21,7 +21,7 @@ public class Booking_Request {
     // @NotBlank(message = "Please assign a customer to this booking.")
     protected Long[] customer_ids;
     // @NotBlank(message = "Please assign a worker to this booking.")
-    protected Long[] worker_ids;
+    protected Long[] employees_ids;
 
     protected Long service_id;
     @NotNull(message = "request ID is required.")
@@ -33,13 +33,13 @@ public class Booking_Request {
     public Booking_Request(String startDateTime,
                            String endDateTime,
                            Long[] customer_ids,
-                           Long[] worker_ids,
+                           Long[] employee_ids,
                            Long service_id,
                            Long requestID) {
         this.startDateTime  = LocalDateTime.parse(startDateTime, formatter);
         this.endDateTime    = LocalDateTime.parse(endDateTime, formatter);
         this.customer_ids   = customer_ids;
-        this.worker_ids     = worker_ids;
+        this.employees_ids  = employee_ids;
         this.service_id     = service_id;
         this.requestID      = requestID;
     }
@@ -48,7 +48,7 @@ public class Booking_Request {
     public LocalDateTime getStartDate()      { return startDateTime;     }
     public LocalDateTime getEndDate()        { return endDateTime;       }
     public Long[] getCustomerIds()           { return customer_ids;      }
-    public Long[] getWorkerIds()             { return worker_ids;        }
+    public Long[] getEmployeeIds()           { return employees_ids;     }
     public Long getServiceId()               { return service_id;        }
     public Long getRequestID()               { return requestID;         }
 }
