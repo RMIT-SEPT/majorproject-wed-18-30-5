@@ -85,6 +85,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/user/createCustomer").permitAll()
 			.antMatchers("/api/user/createEmployee").hasAuthority("1")
 			.antMatchers("/api/user/createAdmin").hasAuthority("1")
+			.antMatchers("/api/booking/createBooking").hasAuthority("1, 3")
+			.antMatchers("/api/service/createService").hasAuthority("1")
 			.anyRequest().authenticated()
 			.and()
 			.formLogin().successHandler(authSuccessHandler())
