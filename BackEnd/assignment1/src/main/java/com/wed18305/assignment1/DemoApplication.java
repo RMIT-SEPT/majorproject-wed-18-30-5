@@ -1,6 +1,6 @@
 package com.wed18305.assignment1;
 
-import com.wed18305.assignment1.model.User;
+import com.wed18305.assignment1.model.User_model;
 import com.wed18305.assignment1.model.UserType;
 import com.wed18305.assignment1.repositories.UserType_Repository;
 import com.wed18305.assignment1.repositories.User_Repository;
@@ -15,6 +15,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @SpringBootApplication
 public class DemoApplication {
@@ -23,6 +24,11 @@ public class DemoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class);
+	}
+
+	@Bean
+	public HttpSessionEventPublisher httpSessionEventPublisher() {
+    	return new HttpSessionEventPublisher();
 	}
 
 	// Comment out CommandLineRunner when not using it for testing
@@ -38,11 +44,11 @@ public class DemoApplication {
 			TypeRepository.save(customer);//3
 			
 			// save a few customers
-			UserRepository.save(new User("Jack", "Jacky", "1234", "0000000000", customer));
-			UserRepository.save(new User("Chloe", "O'Brian", "1234", "0000000000", customer));
-			UserRepository.save(new User("Kim", "Bauer", "1234", "0000000000", customer));
-			UserRepository.save(new User("David", "Palmer", "1234", "0000000000", admin));
-			UserRepository.save(new User("Michelle", "Dessler", "1234", "0000000000", employee));
+			UserRepository.save(new User_model("Jack", "Jacky", "1234", "0000000000", customer));
+			UserRepository.save(new User_model("Chloe", "O'Brian", "1234", "0000000000", customer));
+			UserRepository.save(new User_model("Kim", "Bauer", "1234", "0000000000", customer));
+			UserRepository.save(new User_model("David", "Palmer", "1234", "0000000000", admin));
+			UserRepository.save(new User_model("Michelle", "Dessler", "1234", "0000000000", employee));
 
 			// fetch all types
 			log.info("User types found with findAll():");
@@ -55,14 +61,14 @@ public class DemoApplication {
 			// fetch all users
 			log.info("Users found with findAll():");
 			log.info("-------------------------------");
-			for (User user : UserRepository.findAll()) {
+			for (User_model user : UserRepository.findAll()) {
 				log.info(user.toString());
 			}
 			log.info("");
 
 			// fetch an individual customer by ID
 			ArrayList<Long> ids = new ArrayList<Long>(Arrays.asList((long) 1, (long) 2));
-			Iterable<User> user = UserRepository.findAllById(ids);
+			Iterable<User_model> user = UserRepository.findAllById(ids);
 			log.info("Customer found with findById('1','2'):");
 			log.info("--------------------------------");
 			log.info(user.toString());
@@ -71,7 +77,7 @@ public class DemoApplication {
 			// fetch customers by last name
 			log.info("Customer found with findByNameAndPassword('David','1234'):");
 			log.info("--------------------------------------------");
-			Optional<User> user1 = UserRepository.findByUsernameAndPassword("David", "1234");
+			Optional<User_model> user1 = UserRepository.findByUsernameAndPassword("David", "1234");
 			if(user1.isPresent()){
 				log.info(user1.get().toString());
 			}

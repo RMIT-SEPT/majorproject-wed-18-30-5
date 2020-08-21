@@ -75,7 +75,7 @@ public class Booking {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final User other = (User) obj;
+        final User_model other = (User_model) obj;
 
         return Objects.equals(this.id, other.id);
     }
