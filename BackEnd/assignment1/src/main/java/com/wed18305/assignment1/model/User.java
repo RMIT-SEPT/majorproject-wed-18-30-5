@@ -18,7 +18,7 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 // @Table(name = "users") //Not sure if the html table creation will be needed
-public class User_model {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,9 +47,9 @@ public class User_model {
     }
 
     //Constructors
-    public User_model() {
+    public User() {
     }
-    public User_model(String name,
+    public User(String name,
                 String username,
                 String password,
                 String contactNumber,
@@ -115,7 +115,7 @@ public class User_model {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final User_model other = (User_model) obj;
+        final User other = (User) obj;
         // if (!Objects.equals(this.type, other.type)) {
         //     return false;
         // }

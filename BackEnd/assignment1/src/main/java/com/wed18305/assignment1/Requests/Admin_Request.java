@@ -3,7 +3,7 @@ package com.wed18305.assignment1.Requests;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class User_Request {
+public class Admin_Request {
 
     @NotBlank(message = "name is required")
     protected String name;
@@ -17,7 +17,7 @@ public class User_Request {
     protected Long requestID;
 
     //Constructors
-    public User_Request(String name,
+    public Admin_Request(String name,
                          String username,
                          String password,
                          Integer contactNumber,
