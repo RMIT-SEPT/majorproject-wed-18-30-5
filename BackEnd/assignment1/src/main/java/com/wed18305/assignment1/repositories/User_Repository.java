@@ -15,4 +15,6 @@ public interface User_Repository extends CrudRepository<User_model, Long> {
     Optional<User_model> findByUsernameAndPassword(String username, String password);
 
     Optional<User_model> findById(Long id);
+
+    Iterable<User_model> findAllByUserTypeId(Long id);
 }
