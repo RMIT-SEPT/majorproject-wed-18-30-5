@@ -28,4 +28,16 @@ public class User_Service {
     public Optional<User_model> findById(Long id){
         return userRepository.findById(id);
     }
+
+    public Iterable<User_model> findAllByTypeId(Long id){
+        return userRepository.findAllByUserTypeId(id);
+    }
+
+    public void deleteById(Long id){
+        userRepository.deleteById(id);
+    }
+
+    public void deleteAll(Iterable<User_model> users){
+        userRepository.deleteAll(users);
+    }
 }
