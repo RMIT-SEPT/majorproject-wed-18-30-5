@@ -39,6 +39,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
  * @author Vedran Pavic
  */
 @Configuration
+
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 

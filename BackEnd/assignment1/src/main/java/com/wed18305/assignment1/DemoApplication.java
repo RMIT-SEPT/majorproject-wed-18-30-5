@@ -34,7 +34,9 @@ public class DemoApplication {
 
 	// Comment out CommandLineRunner when not using it for testing
 	@Bean
+
 	public CommandLineRunner demo(User_Repository UserRepository, UserType_Repository TypeRepository, Service_Repository ServiceRepository) {
+
 		return (args) -> {
 			//save the three types
 			UserType admin = new UserType("admin");
@@ -105,6 +107,7 @@ public class DemoApplication {
 			// fetch an individual customer by ID
 			ArrayList<Long> ids = new ArrayList<Long>(Arrays.asList((long) 1, (long) 2));
 			Iterable<User_model> user = UserRepository.findAllById(ids);
+
 			log.info("Customer found with findById('1','2'):");
 			log.info("--------------------------------");
 			log.info(user.toString());
@@ -114,6 +117,7 @@ public class DemoApplication {
 			log.info("Customer found with findByNameAndPassword('David','1234'):");
 			log.info("--------------------------------------------");
 			Optional<User_model> user1 = UserRepository.findByUsernameAndPassword("David", "1234");
+
 			if(user1.isPresent()){
 				log.info(user1.get().toString());
 			}
