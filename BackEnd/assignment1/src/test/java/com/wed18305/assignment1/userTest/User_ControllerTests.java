@@ -3,11 +3,9 @@ package com.wed18305.assignment1.userTest;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.wed18305.assignment1.model.User;
-import com.wed18305.assignment1.model.UserType;
-import com.wed18305.assignment1.repositories.UserType_Repository;
-import com.wed18305.assignment1.services.UserType_Service;
-import com.wed18305.assignment1.services.User_Service;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -23,17 +21,37 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class User_ControllerTests {
- 
-    @Autowired
+
+	@Autowired
 	private MockMvc mvc;
 
-	/* Make sure you uncomment the public CommandLineRunner demo()
-	 * That will create the UserTypes and default data you can test with.
-	*/
+	/*
+	 * Make sure you uncomment the public CommandLineRunner demo() That will create
+	 * the UserTypes and default data you can test with.
+	 */
+
+	private String buildUrlEncodedFormEntity(String... params) {
+		if ((params.length % 2) > 0) {
+			throw new IllegalArgumentException("Need to give an even number of parameters");
+		}
+		StringBuilder result = new StringBuilder();
+		for (int i = 0; i < params.length; i += 2) {
+			if (i > 0) {
+				result.append('&');
+			}
+			try {
+				result.append(URLEncoder.encode(params[i], StandardCharsets.UTF_8.name())).append('=')
+						.append(URLEncoder.encode(params[i + 1], StandardCharsets.UTF_8.name()));
+			} catch (UnsupportedEncodingException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return result.toString();
+	}
 
 	@Test
 	public void postCustomer() throws Exception {
-		//Creating a JSONObject object
+		// Creating a JSONObject object
 		JSONObject customer = new JSONObject();
 		customer.put("name", "neil kennedy");
 		customer.put("username", "s3561388@student.rmit.edu.au");
@@ -42,17 +60,16 @@ public class User_ControllerTests {
 
 		String contentSTRING = customer.toString();
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
-																	  .contentType(MediaType.APPLICATION_JSON)
-																	  .content(contentSTRING);
+				.contentType(MediaType.APPLICATION_JSON).content(contentSTRING);
 		mvc.perform(builder).andExpect(status().isCreated())
-							.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("true"))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.body.username").value("s3561388@student.rmit.edu.au"));
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("true"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.body.username").value("s3561388@student.rmit.edu.au"));
 	}
 
 	@Test
 	public void postCustomer_NoName() throws Exception {
-		//Creating a JSONObject object
+		// Creating a JSONObject object
 		JSONObject customer = new JSONObject();
 		customer.put("name", "");
 		customer.put("username", "s3561388@student.rmit.edu.au");
@@ -61,135 +78,86 @@ public class User_ControllerTests {
 
 		String contentSTRING = customer.toString();
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
-																	  .contentType(MediaType.APPLICATION_JSON)
-																	  .content(contentSTRING);
+				.contentType(MediaType.APPLICATION_JSON).content(contentSTRING);
 		mvc.perform(builder).andExpect(status().isBadRequest())
-							.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("name is required"));
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("name is required"));
 	}
 
 	@Test
 	public void postCustomer_NoUsername() throws Exception {
-		//Creating a JSONObject object
+		// Creating a JSONObject object
 		JSONObject customer = new JSONObject();
 		customer.put("name", "neil kennedy");
 		customer.put("username", "");
 		customer.put("password", "1234");
 		customer.put("contactNumber", "0425000000");
-		
+
 		String contentSTRING = customer.toString();
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
-																	  .contentType(MediaType.APPLICATION_JSON)
-																	  .content(contentSTRING);
+				.contentType(MediaType.APPLICATION_JSON).content(contentSTRING);
 		mvc.perform(builder).andExpect(status().isBadRequest())
-							.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("username is required"));
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("username is required"));
 	}
 
 	@Test
 	public void postCustomer_NoPassword() throws Exception {
-		//Creating a JSONObject object
+		// Creating a JSONObject object
 		JSONObject customer = new JSONObject();
 		customer.put("name", "neil kennedy");
 		customer.put("username", "s3561388@student.rmit.edu.au");
 		customer.put("password", "");
 		customer.put("contactNumber", "0425000000");
-		
+
 		String contentSTRING = customer.toString();
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
-																	  .contentType(MediaType.APPLICATION_JSON)
-																	  .content(contentSTRING);
+				.contentType(MediaType.APPLICATION_JSON).content(contentSTRING);
 		mvc.perform(builder).andExpect(status().isBadRequest())
-							.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("password is required"));
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("password is required"));
 	}
 
 	@Test
 	public void postCustomer_NoContactNumber() throws Exception {
-		//Creating a JSONObject object
+		// Creating a JSONObject object
 		JSONObject customer = new JSONObject();
 		customer.put("name", "neil kennedy");
 		customer.put("username", "s3561388@student.rmit.edu.au");
 		customer.put("password", "1234");
 		customer.put("contactNumber", "");
-		
+
 		String contentSTRING = customer.toString();
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
-																	  .contentType(MediaType.APPLICATION_JSON)
-																	  .content(contentSTRING);
+				.contentType(MediaType.APPLICATION_JSON).content(contentSTRING);
 		mvc.perform(builder).andExpect(status().isBadRequest())
-							.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false")) 
-							.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("contact number is required"));
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("contact number is required"));
 	}
 
 	@Test
-	public void Login() throws Exception {
-		//Login with user details
-		JSONObject login = new JSONObject();
-		login.put("username", "Jacky");
-		login.put("password","1234");
-		String loginSTRING = login.toString();
-		MockHttpServletRequestBuilder builderLogin = MockMvcRequestBuilders.post("/api/user/Login")
-																	  	   .contentType(MediaType.APPLICATION_JSON)
-																	  	   .content(loginSTRING);
+	public void Login_Success() throws Exception {
+		MockHttpServletRequestBuilder builderLogin = MockMvcRequestBuilders.post("/login")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.content(buildUrlEncodedFormEntity("username", "Palmer", "password", "1234"));
 		mvc.perform(builderLogin).andExpect(status().isOk())
-								 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-								 .andExpect(MockMvcResultMatchers.jsonPath("$.success").value("true"))
-								 .andExpect(MockMvcResultMatchers.jsonPath("$.body.username").value("Jacky"));
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("true"));
 	}
 
 	@Test
-	public void Login_incorrect() throws Exception {
-		//Login with user details
-		JSONObject login = new JSONObject();
-		login.put("username", "Jacky");
-		login.put("password","123");
-		String loginSTRING = login.toString();
-		MockHttpServletRequestBuilder builderLogin = MockMvcRequestBuilders.post("/api/user/Login")
-																	  	   .contentType(MediaType.APPLICATION_JSON)
-																	  	   .content(loginSTRING);
+	public void Login_Failure() throws Exception {
+		MockHttpServletRequestBuilder builderLogin = MockMvcRequestBuilders.post("/login")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.content(buildUrlEncodedFormEntity("username", "Palmer", "password", ""));
 		mvc.perform(builderLogin).andExpect(status().isBadRequest())
-								 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-								 .andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-								 .andExpect(MockMvcResultMatchers.jsonPath("$.errors").value("user not found!"));
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.errors").value("Bad credentials"));
 	}
-
-	@Test
-	public void Login_NoUsername() throws Exception {
-		//Login with user details
-		JSONObject login = new JSONObject();
-		login.put("username", "");
-		login.put("password","1234");
-		String loginSTRING = login.toString();
-		MockHttpServletRequestBuilder builderLogin = MockMvcRequestBuilders.post("/api/user/Login")
-																	  	   .contentType(MediaType.APPLICATION_JSON)
-																	  	   .content(loginSTRING);
-		mvc.perform(builderLogin).andExpect(status().isBadRequest())
-								 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-								 .andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-								 .andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("username is required"));
-	}
-
-	@Test
-	public void Login_NoPassword() throws Exception {
-		//Login with user details
-		JSONObject login = new JSONObject();
-		login.put("username", "Jacky");
-		login.put("password","");
-		String loginSTRING = login.toString();
-		MockHttpServletRequestBuilder builderLogin = MockMvcRequestBuilders.post("/api/user/Login")
-																	  	   .contentType(MediaType.APPLICATION_JSON)
-																	  	   .content(loginSTRING);
-		mvc.perform(builderLogin).andExpect(status().isBadRequest())
-								 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-								 .andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-								 .andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("password is required"));
-	}
-
-
  
 }

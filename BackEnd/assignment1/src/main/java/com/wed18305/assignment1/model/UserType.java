@@ -16,6 +16,19 @@ import javax.persistence.PreUpdate;
 // @Table(name = "userType") //Not sure if the html table creation will be needed
 public class UserType {
 
+    public static enum UserTypeID {
+        ADMIN((long) 1),
+        EMPLOYEE((long) 2),
+        CUSTOMER((long) 3);
+
+        public final Long id;
+
+        UserTypeID(Long id) {
+            this.id = id;
+        }
+    }
+      
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

@@ -1,12 +1,20 @@
 package com.wed18305.assignment1.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
@@ -16,11 +24,25 @@ public class Booking {
     /// Variables
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected long id;
+    protected Long id;
 
-    protected Date startDateTime;
-    protected Date endDateTime;
+    protected LocalDateTime startDateTime;
+    protected LocalDateTime endDateTime;
+
+    // Relations
+    @OneToMany
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    protected List<User_model> customer;
+
+    @OneToMany
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    protected List<User_model> employee;
+
+    @ManyToOne
+    @JoinColumn(name = "service_id", referencedColumnName = "id")
+    protected Service service;
     
+    // Created/Updated Recordings
     private Date created_at;
     private Date updated_at;
 
@@ -39,20 +61,48 @@ public class Booking {
     /// Constructor
     public Booking() {
     }
-    public Booking(Date startDateTime,
-                Date endDateTime) {
+    public Booking(LocalDateTime startDateTime,
+                   LocalDateTime endDateTime,
+                   List<User_model> customer,
+                   List<User_model> employee,
+                   Service service) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
+        this.customer = customer;
+        this.employee = employee;
+        this.service = service;
     }
 
+    
+
     /// Getters/Setters
+
+    /*
+        Fun fact: Getter's are used by Springboot to display JSON object data.
+        I forgot to include a getter for the 'service' variable, and thus, the returned JSON excluded that data.
+        Even if you don't call a get method, Springboot automatically calls it for you to printout the data.
+        Neat!
+    */
+
+    // Whatever the getter's name is, that'll be used to represent a section of data in a JSON object.
+
     public Long getId() { return id; }
 
-    public Date getStartDateTime()             { return startDateTime; }
-    public void setStartDateTime(Date newTime) { startDateTime = newTime; }
+    public LocalDateTime getStartDateTime()             { return startDateTime;    }
+    public void setStartDateTime(LocalDateTime newTime) { startDateTime = newTime; }
 
-    public Date getEndDateTime()             { return endDateTime; }
-    public void setEndDateTime(Date newTime) { endDateTime = newTime; }
+    public LocalDateTime getEndDateTime()             { return endDateTime;    }
+    public void setEndDateTime(LocalDateTime newTime) { endDateTime = newTime; }
+
+    public List<User_model> getCustomers()              { return customer;          }
+    public void setCustomers(List<User_model> customer) { this.customer = customer; }
+
+    public List<User_model> getEmployees()              { return customer;          }
+    public void setEmployees(List<User_model> employee) { this.employee = employee; }
+
+    public Service getService()                 { return service;           }
+    public void setSerivce(Service service)     { this.service = service;   }
+    
 
     /// Comparisons
     @Override
@@ -61,6 +111,8 @@ public class Booking {
         //change as we require
         int hash = 7;
         hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 79 * hash + Objects.hashCode(this.startDateTime);
+        hash = 79 * hash + Objects.hashCode(this.endDateTime);
         return hash;
     } 
 
@@ -75,7 +127,14 @@ public class Booking {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final User other = (User) obj;
+
+        final Booking other = (Booking) obj;
+        if (!Objects.equals(this.startDateTime, other.startDateTime)) {
+            return false;
+        }
+        if (!Objects.equals(this.endDateTime, other.endDateTime)) {
+            return false;
+        }
 
         return Objects.equals(this.id, other.id);
     }
@@ -84,7 +143,8 @@ public class Booking {
     @Override
     public String toString() {
         var builder = new StringBuilder();
-        builder.append("Booking{id= ").append(id).append("}");
+        builder.append("Booking{id= ").append(id).append(", startDateTime= ")
+            .append(startDateTime).append(", endDateTime= ").append(endDateTime).append("}");
 
         return builder.toString();
     }

@@ -16,11 +16,21 @@
 
 package com.wed18305.assignment1.config;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 /**
  * Spring Security configuration.
@@ -29,30 +39,64 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * @author Vedran Pavic
  */
 @Configuration
+
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	// @formatter:off
+	@Autowired
+	DataSource dataSource;
+
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.jdbcAuthentication().dataSource(dataSource)
+				.usersByUsernameQuery("SELECT username, password, 'true' AS enabled FROM USER_MODEL WHERE username=?")
+				.authoritiesByUsernameQuery("SELECT username, type_id AS authority FROM USER_MODEL WHERE username=?");
+	}
+
+	@Bean
+	@Override
+	public UserDetailsService userDetailsServiceBean() throws Exception {
+		return super.userDetailsServiceBean();
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new DefaultEncoder();
+		// return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public AuthenticationSuccessHandler authSuccessHandler() {
+   		return new AuthenticationSuccess();
+	}
+
+	@Bean
+	public AuthenticationFailureHandler authFailureHandler() {
+   		return new AuthenticationFailure();
+	}
+
 	@Override
 	public void configure(WebSecurity web) {
-		web
-			.ignoring().requestMatchers(PathRequest.toH2Console());
+		web.ignoring().requestMatchers(PathRequest.toH2Console());
 	}
-	// @formatter:on
 
-	// @formatter:off
-	// tag::config[]
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
-			.authorizeRequests((authorize) -> authorize
-				.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-				.anyRequest().authenticated()
-			)
-			.formLogin((formLogin) -> formLogin
-				.permitAll()
-			);
+		http.authorizeRequests()
+			.antMatchers("/api/user/createCustomer").permitAll()
+			.antMatchers("/api/user/createEmployee").hasAuthority("1")
+			.antMatchers("/api/user/createAdmin").hasAuthority("1")
+			.antMatchers("/api/booking/createBooking").hasAuthority("1, 3")
+			.antMatchers("/api/service/createService").hasAuthority("1")
+			.anyRequest().authenticated()
+			.and()
+			.formLogin().successHandler(authSuccessHandler())
+						.failureHandler(authFailureHandler())
+						.permitAll()
+            .and()
+			.logout().permitAll()
+			.deleteCookies("JSESSIONID")
+			.and()
+			.csrf().disable();
 	}
-	// end::config[]
-	// @formatter:on
-
 }

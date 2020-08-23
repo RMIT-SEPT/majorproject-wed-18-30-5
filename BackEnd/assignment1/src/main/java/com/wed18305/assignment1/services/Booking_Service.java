@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class Booking_Service {
     @Autowired
-    private Booking_Repository BookingRepository;
+    private Booking_Repository bookingRepository;
 
     public Booking saveOrUpdateBooking(Booking Booking) {
-        return BookingRepository.save(Booking);
+        return bookingRepository.save(Booking);
     }
 
     public Optional<Booking> findById(Long id){
-        return BookingRepository.findById(id);
+        return bookingRepository.findById(id);
     }
 }
