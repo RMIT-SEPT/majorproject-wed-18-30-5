@@ -1,5 +1,6 @@
 package com.wed18305.assignment1;
 
+
 import com.wed18305.assignment1.model.Booking;
 import com.wed18305.assignment1.model.Service;
 import com.wed18305.assignment1.model.User_model;
@@ -30,6 +31,11 @@ public class DemoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class);
+	}
+
+	@Bean
+	public HttpSessionEventPublisher httpSessionEventPublisher() {
+    	return new HttpSessionEventPublisher();
 	}
 
 	// Comment out CommandLineRunner when not using it for testing

@@ -12,10 +12,11 @@ public interface User_Repository extends CrudRepository<User_model, Long> {
     @Override
     Iterable<User_model> findAllById(Iterable<Long> iterable);
 
+    Optional<User_model> findByUsername(String username);
+
     Optional<User_model> findByUsernameAndPassword(String username, String password);
 
     Optional<User_model> findById(Long id);
 
-    List<User_model> findManyById(Long[] ids);
-    
+    Iterable<User_model> findAllByUserTypeId(Long id);
 }

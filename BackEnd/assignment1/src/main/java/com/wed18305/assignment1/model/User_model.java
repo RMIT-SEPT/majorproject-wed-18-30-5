@@ -2,6 +2,7 @@ package com.wed18305.assignment1.model;
 
 import java.util.Date;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,9 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-// import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-// import org.hibernate.validator.constraints.NotBlank;
 
 //Relation example: https://www.baeldung.com/jpa-one-to-one
 
@@ -24,9 +22,8 @@ public class User_model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
     protected String name;
-    @NotBlank(message = "username is required")
+    @Column(unique = true)
     protected String username;
-    @NotBlank(message = "password is required")
     protected String password;
     protected String contactNumber;
     @OneToOne
