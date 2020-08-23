@@ -1,5 +1,7 @@
 package com.wed18305.assignment1.repositories;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.wed18305.assignment1.model.User_model;
@@ -15,4 +17,6 @@ public interface User_Repository extends CrudRepository<User_model, Long> {
     Optional<User_model> findByUsernameAndPassword(String username, String password);
 
     Optional<User_model> findById(Long id);
+
+    Iterable<User_model> findAllByUserTypeId(Long id);
 }

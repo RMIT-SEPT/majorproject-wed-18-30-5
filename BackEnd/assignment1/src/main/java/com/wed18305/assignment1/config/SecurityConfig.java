@@ -34,7 +34,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 /**
  * Spring Security configuration.
- *
+ * Good info for spring security https://www.marcobehler.com/guides/spring-security#_web_application_security_101
  * @author Rob Winch
  * @author Vedran Pavic
  */
@@ -85,6 +85,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/user/createCustomer").permitAll()
 			.antMatchers("/api/user/createEmployee").hasAuthority("1")
 			.antMatchers("/api/user/createAdmin").hasAuthority("1")
+      .antMatchers("/api/user/getEmployees").hasAuthority("1")
+			.antMatchers("/api/user/deleteUser").hasAuthority("1")
+			.antMatchers("/api/user/deleteCustomer").hasAuthority("3")
+			.antMatchers("/api/booking/createBooking").hasAnyAuthority("1","3")
+			.antMatchers("/api/service/createService").hasAuthority("1")
 			.anyRequest().authenticated()
 			.and()
 			.formLogin().successHandler(authSuccessHandler())
