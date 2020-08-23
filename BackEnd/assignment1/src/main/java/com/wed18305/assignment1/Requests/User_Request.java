@@ -3,6 +3,7 @@ package com.wed18305.assignment1.Requests;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+
 public class User_Request{
 
     @NotBlank(message = "name is required")

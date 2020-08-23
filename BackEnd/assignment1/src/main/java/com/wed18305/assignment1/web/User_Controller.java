@@ -243,7 +243,6 @@ public class User_Controller {
     }
 
     //TODO add a updateUserPassword - seperate this from updateUserDetails
-
     /**
      * Delete Customer *only customers can call this endpoint
      * POST ENDPOINT: http://localhost:8080/api/user/deleteCustomer

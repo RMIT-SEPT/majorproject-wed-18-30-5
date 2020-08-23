@@ -2,7 +2,6 @@ package com.wed18305.assignment1.model;
 
 import java.util.Date;
 import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
