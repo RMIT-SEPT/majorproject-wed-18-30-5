@@ -94,14 +94,6 @@ public class DemoApplication {
 			}
 			log.info("");
 
-			// // fetch all users
-			// log.info("Bookings found with findAll():");
-			// log.info("-------------------------------");
-			// for (Booking booking : bookingRepository.findAll()) {
-			// 	log.info(booking.toString());
-			// }
-			// log.info("");
-
 			// Fetch All Services
 			log.info("Services found with findAll():");
 			log.info("-------------------------------");
