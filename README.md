@@ -24,6 +24,7 @@
 * Pull from master(origin) to get the last stable build(if the build is broken)
 * [Pull request movie](/docs/PullRequest_example720.mov) in `docs` folder
 
+<<<<<<< HEAD
 ###### Local git setup
 * Mac steps(adjust accordingly for win users)
 * Open the project root directory in terminal
@@ -41,6 +42,8 @@
 * You cannot merge if you have changes that are uncommited either commit them OR use git stash , merge then git pop
 * Do a git fetch/merge regularly, ALWAYS before pushingto your remote repository. 
 
+=======
+>>>>>>> a93774d03f5b4fcf5728b96df0c21a0d73af4fab
 ## Code documentation
 
 [Quick Start](/docs/README.md) in `docs` folder
