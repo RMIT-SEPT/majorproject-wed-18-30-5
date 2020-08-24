@@ -1,0 +1,9 @@
+creds.sh
+creds2.sh
+.terraform*
+terraform.tfstate
+terraform.tfstate.backup
+tmp/
+
+.idea/workspace.xml
+.idea/libraries –
