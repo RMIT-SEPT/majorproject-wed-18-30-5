@@ -41,6 +41,17 @@ public class User_Service {
 
         return users;
     }
+    //Employees are users that are either employees or admins
+    public List<User_model> findManyEmployeesById(Long[] ids){   
+        List<User_model> users = new ArrayList<User_model>();
+        for (int i = 0; i < ids.length; i++) {
+            User_model u = userRepository.findById(ids[i]).get();
+            if(u.getType().getId() == 1 || u.getType().getId() == 2){
+                users.add(u);
+            }
+        }
+        return users;
+    }
 
     public Iterable<User_model> findAllByTypeId(Long id){
         return userRepository.findAllByUserTypeId(id);
