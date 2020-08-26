@@ -1,20 +1,20 @@
 package com.wed18305.assignment1;
 
-
+import com.wed18305.assignment1.config.DateTimeStatic;
 import com.wed18305.assignment1.model.Booking;
+import com.wed18305.assignment1.model.Schedule;
 import com.wed18305.assignment1.model.Service;
 import com.wed18305.assignment1.model.User_model;
 import com.wed18305.assignment1.model.UserType;
 import com.wed18305.assignment1.repositories.Booking_Repository;
+import com.wed18305.assignment1.repositories.Schedule_Repository;
 import com.wed18305.assignment1.repositories.Service_Repository;
 import com.wed18305.assignment1.repositories.UserType_Repository;
 import com.wed18305.assignment1.repositories.User_Repository;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +41,11 @@ public class DemoApplication {
 	// Comment out CommandLineRunner when not using it for testing
 	@Bean
 
-	public CommandLineRunner demo(User_Repository UserRepository, UserType_Repository TypeRepository, Service_Repository ServiceRepository) {
+	public CommandLineRunner demo(User_Repository UserRepository, 
+								  UserType_Repository TypeRepository, 
+								  Service_Repository ServiceRepository, 
+								  Booking_Repository BookingRepository,
+								  Schedule_Repository ScheduleRepository) {
 
 		return (args) -> {
 			//save the three types
@@ -57,9 +61,7 @@ public class DemoApplication {
 			User_model kim = new User_model("Kim", "Bauer", "1234", "0000000000", customer);
 			User_model david = new User_model("David", "Palmer", "1234", "0000000000", admin);
 			User_model michelle = new User_model("Michelle", "Dessler", "1234", "0000000000", employee);
-			User_model leslie = new User_model("Leslie", "Messler", "1234", "0000000000", employee);
-			// User_model[] customers = new User_model[]{ jack, chloe, kim};
-			// User_model[] employees = new User_model[]{ michelle, leslie};			
+			User_model leslie = new User_model("Leslie", "Messler", "1234", "0000000000", employee);			
 
 			// save a few customers
 			UserRepository.save(jack);
@@ -68,58 +70,39 @@ public class DemoApplication {
 			UserRepository.save(david);
 			UserRepository.save(michelle);
 
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); // "Day, Month, Year, Hour, Minute."
-
 			// Save And Print Booking Data
-			// bookingRepository.save(new Booking(LocalDateTime.parse("1999-01-01 12:30", formatter), LocalDateTime.parse("1999-01-01 12:30", formatter), customers, employees));
+			// BookingRepository.save(new Booking(LocalDateTime.parse("1999-01-01 12:30", formatter), LocalDateTime.parse("1999-01-01 12:30", formatter), customers, employees));
 
 			// Save Services
 			Service falafel = new Service("Freddie's Falafels");
-			
+			Service hotDogs = new Service("Joe's HotDogs");
 			ServiceRepository.save(falafel);
+			ServiceRepository.save(hotDogs);
 
-			// fetch all types
-			log.info("User types found with findAll():");
-			log.info("-------------------------------");
-			for (UserType userType : TypeRepository.findAll()) {
-				log.info(userType.toString());
-			}
-			log.info("");
+			//Create employees list
+			List<User_model> employees = new ArrayList<User_model>();
+			employees.add(chloe);
+			employees.add(jack);
 
-			// fetch all users
-			log.info("Users found with findAll():");
-			log.info("-------------------------------");
-			for (User_model user : UserRepository.findAll()) {
-				log.info(user.toString());
-			}
-			log.info("");
+			//Give the employees services
+			chloe.getServices().add(falafel);
+			chloe.getServices().add(hotDogs);
+			jack.getServices().add(hotDogs);
+			david.getServices().add(hotDogs);
+			//update the users now that there attributes have been changed
+			UserRepository.save(chloe);
+			UserRepository.save(jack);
+			UserRepository.save(david);
 
-			// Fetch All Services
-			log.info("Services found with findAll():");
-			log.info("-------------------------------");
-			for (Service service: ServiceRepository.findAll()) {
-				log.info(service.toString());
-			}
-			log.info("");
-
-			// fetch an individual customer by ID
-			ArrayList<Long> ids = new ArrayList<Long>(Arrays.asList((long) 1, (long) 2));
-			Iterable<User_model> user = UserRepository.findAllById(ids);
-
-			log.info("Customer found with findById('1','2'):");
-			log.info("--------------------------------");
-			log.info(user.toString());
-			log.info("");
-
-			// fetch customers by last name
-			log.info("Customer found with findByNameAndPassword('David','1234'):");
-			log.info("--------------------------------------------");
-			Optional<User_model> user1 = UserRepository.findByUsernameAndPassword("David", "1234");
-
-			if(user1.isPresent()){
-				log.info(user1.get().toString());
-			}
-			log.info("");
+			//Create schedules for employees
+			Schedule s1 = new Schedule(LocalDateTime.parse("1999-01-01 12:30", DateTimeStatic.getFormatter()),
+										LocalDateTime.parse("1999-01-01 13:30", DateTimeStatic.getFormatter()),
+										employees);
+			ScheduleRepository.save(s1);
+			Schedule s2 = new Schedule(LocalDateTime.parse("1999-01-01 13:30", DateTimeStatic.getFormatter()),
+										LocalDateTime.parse("1999-01-01 14:30", DateTimeStatic.getFormatter()),
+										employees);
+			ScheduleRepository.save(s2);	
       	};
 	}
 }
