@@ -2,6 +2,7 @@ package com.wed18305.assignment1.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -26,15 +28,15 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    protected LocalDateTime startDateTime;
-    protected LocalDateTime endDateTime;
+    protected ZonedDateTime startDateTime;
+    protected ZonedDateTime endDateTime;
 
     // Relations
-    @OneToMany
+    @ManyToMany
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     protected List<User_model> customer;
 
-    @OneToMany
+    @ManyToMany
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     protected List<User_model> employee;
 
@@ -61,8 +63,8 @@ public class Booking {
     /// Constructor
     public Booking() {
     }
-    public Booking(LocalDateTime startDateTime,
-                   LocalDateTime endDateTime,
+    public Booking(ZonedDateTime startDateTime,
+                   ZonedDateTime endDateTime,
                    List<User_model> customer,
                    List<User_model> employee,
                    Service service) {
@@ -88,11 +90,11 @@ public class Booking {
 
     public Long getId() { return id; }
 
-    public LocalDateTime getStartDateTime()             { return startDateTime;    }
-    public void setStartDateTime(LocalDateTime newTime) { startDateTime = newTime; }
+    public ZonedDateTime getStartDateTime()             { return startDateTime;    }
+    public void setStartDateTime(ZonedDateTime newTime) { startDateTime = newTime; }
 
-    public LocalDateTime getEndDateTime()             { return endDateTime;    }
-    public void setEndDateTime(LocalDateTime newTime) { endDateTime = newTime; }
+    public ZonedDateTime getEndDateTime()             { return endDateTime;    }
+    public void setEndDateTime(ZonedDateTime newTime) { endDateTime = newTime; }
 
     public List<User_model> getCustomers()              { return customer;          }
     public void setCustomers(List<User_model> customer) { this.customer = customer; }
