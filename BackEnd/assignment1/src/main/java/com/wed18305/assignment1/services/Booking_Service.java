@@ -17,7 +17,16 @@ public class Booking_Service {
         return bookingRepository.save(Booking);
     }
 
+    public Iterable<Booking> findAll() {
+		return bookingRepository.findAll();
+	}
+
     public Optional<Booking> findById(Long id){
         return bookingRepository.findById(id);
     }
+
+    public void deleteById(Long id){
+        bookingRepository.deleteById(id);
+    }
+
 }

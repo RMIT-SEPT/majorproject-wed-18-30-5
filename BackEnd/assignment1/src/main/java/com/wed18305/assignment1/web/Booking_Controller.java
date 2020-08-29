@@ -1,5 +1,6 @@
 package com.wed18305.assignment1.web;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +10,7 @@ import javax.validation.Valid;
 
 import com.wed18305.assignment1.Responses.Response;
 import com.wed18305.assignment1.Requests.Booking_Request;
+import com.wed18305.assignment1.Requests.Del_Request;
 import com.wed18305.assignment1.model.Booking;
 import com.wed18305.assignment1.services.Booking_Service;
 import com.wed18305.assignment1.services.Service_Service;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,8 +43,8 @@ public class Booking_Controller {
     /**
      * Create New Booking 
      * POST ENDPOINT: http://localhost:8080/api/booking/createBooking
-     * INPUT JSON {"startDateTime":"yyyy-mm-dd hh:MM", (Format)
-     *             "endDateTime"  :"2012-02-13 12:30",
+     * INPUT JSON {"startDateTime":"dd/mm/yyyyThh:MM:00 UTC+nn:nn", (Format)
+     *             "endDateTime"  :"03/08/2019T16:20:00 UTC+05:30",
      *             "customer_ids" : ["1", "2"], // Input an Array of Values (Considered valid)
      *             "employees_ids": ["5"], // Array with one (Both equally possible!)
      *             "service_id"   : 1,
@@ -124,6 +127,53 @@ public class Booking_Controller {
             Response response = new Response(true, "booking created!", null, booking1);
             return new ResponseEntity<Response>(response, HttpStatus.CREATED);
         }
+    }
+
+    @GetMapping("getBookings")
+    public ResponseEntity<Response> getBookings() {
+        
+        // Get All Bookings
+        Iterable<Booking> bookings =  null;
+        try {
+            bookings = bookingService.findAll();
+        } catch (Exception e) {
+            Response response = new Response(false, "ERROR!", e.getMessage(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Where Any Bookings Found?
+        if (bookings == null) {
+            Response response = new Response(false, "ERROR!", "No bookings!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        } else {
+            Response response = new Response(true, "Bookings found!", null, bookings);
+            return new ResponseEntity<Response>(response, HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("deleteBooking")
+    public ResponseEntity<Response> deleteBooking(@Valid @RequestBody Del_Request dr, BindingResult result) {
+
+        // Binding validation checks
+        if (result.hasErrors()) {
+            Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            bookingService.deleteById(dr.getId());
+        }
+        catch (IllegalArgumentException e) {
+            Response response = new Response(false, "ERROR!", "Id of booking is null!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            Response response = new Response(false, "ERROR!", "Unable to delete booking!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        Response response = new Response(true, "Booking deleted!", null, null);
+        return new ResponseEntity<Response>(response, HttpStatus.OK);
     }
 
     // Helper Methods

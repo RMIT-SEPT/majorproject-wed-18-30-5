@@ -13,6 +13,8 @@ import com.wed18305.assignment1.repositories.UserType_Repository;
 import com.wed18305.assignment1.repositories.User_Repository;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +72,6 @@ public class DemoApplication {
 			UserRepository.save(david);
 			UserRepository.save(michelle);
 
-			// Save And Print Booking Data
 			// BookingRepository.save(new Booking(LocalDateTime.parse("1999-01-01 12:30", formatter), LocalDateTime.parse("1999-01-01 12:30", formatter), customers, employees));
 
 			// Save Services
@@ -78,6 +79,21 @@ public class DemoApplication {
 			Service hotDogs = new Service("Joe's HotDogs");
 			ServiceRepository.save(falafel);
 			ServiceRepository.save(hotDogs);
+
+			// Save And Print Booking Data
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy'T'HH:mm:ss z"); // "Day, Month, Year, Hour, Minute."
+			List<User_model> bookingCustomers = new ArrayList<User_model>(), bookingEmployees = new ArrayList<User_model>();
+			bookingCustomers.add(jack);
+			bookingCustomers.add(chloe);
+			bookingEmployees.add(michelle);
+
+			BookingRepository.save(new Booking(ZonedDateTime.parse("03/08/2019T16:20:00 UTC+05:30", formatter),
+										  	   ZonedDateTime.parse("03/08/2019T16:20:00 UTC+05:30", formatter),
+											   bookingCustomers, bookingEmployees, falafel));
+												 
+			BookingRepository.save(new Booking(ZonedDateTime.parse("03/08/2019T16:20:00 UTC+05:30", formatter),
+										  	   ZonedDateTime.parse("03/08/2019T16:20:00 UTC+05:30", formatter),
+										  	   bookingCustomers, bookingEmployees, hotDogs));
 
 			//Create employees list
 			List<User_model> employees = new ArrayList<User_model>();
