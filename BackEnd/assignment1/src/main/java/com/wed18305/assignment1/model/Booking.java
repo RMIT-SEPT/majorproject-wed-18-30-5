@@ -43,6 +43,8 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "service_id", referencedColumnName = "id")
     protected Service service;
+
+    protected Boolean approved = false; // Don't approve bookings by default.
     
     // Created/Updated Recordings
     private Date created_at;
@@ -104,7 +106,9 @@ public class Booking {
 
     public Service getService()                 { return service;           }
     public void setSerivce(Service service)     { this.service = service;   }
-    
+
+    public Boolean getApproved() { return approved; }
+    public void approveBooking() { approved = true; }
 
     /// Comparisons
     @Override

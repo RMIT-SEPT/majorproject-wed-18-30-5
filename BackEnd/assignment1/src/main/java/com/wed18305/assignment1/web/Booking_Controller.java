@@ -11,12 +11,14 @@ import javax.validation.Valid;
 import com.wed18305.assignment1.Responses.Response;
 import com.wed18305.assignment1.Requests.Booking_Request;
 import com.wed18305.assignment1.Requests.Del_Request;
+import com.wed18305.assignment1.Requests.Get_Request;
 import com.wed18305.assignment1.model.Booking;
 import com.wed18305.assignment1.services.Booking_Service;
 import com.wed18305.assignment1.services.Service_Service;
 import com.wed18305.assignment1.model.User_model;
 import com.wed18305.assignment1.model.UserType;
 import com.wed18305.assignment1.model.UserType.UserTypeID;
+import com.wed18305.assignment1.repositories.Booking_Repository;
 import com.wed18305.assignment1.services.User_Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -129,6 +132,47 @@ public class Booking_Controller {
         }
     }
 
+    /**
+     * Approve Existing Booking 
+     * PATCH ENDPOINT: http://localhost:8080/api/booking/approveBooking
+     * INPUT JSON {"id":1 }
+     */
+    @PatchMapping("approveBooking")
+    public ResponseEntity<Response> approveBooking(@Valid @RequestBody Get_Request gr, BindingResult result) {
+
+        // Binding validation checks
+        if (result.hasErrors()) {
+            
+            Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Attempt to Find Booking by ID
+        Optional<Booking> book = bookingService.findById(gr.getId());
+        if (book == null) {
+            Response response = new Response(false, "ERROR!", "Booking doesn't exist!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Attempt to Approve Booking
+        try {
+            Booking currentBooking = book.get();
+            currentBooking.approveBooking();
+            bookingService.saveOrUpdateBooking(currentBooking);
+        }
+        catch (Exception e) {
+            Response response = new Response(false, "ERROR!", "Booking couldn't be updated!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+         }
+
+        Response response = new Response(true, "Booking approved!", null, book);
+        return new ResponseEntity<Response>(response, HttpStatus.ACCEPTED);
+    }
+
+    /**
+     * Get All Existing Bookings
+     * POST ENDPOINT: http://localhost:8080/api/booking/getBookings
+     */
     @GetMapping("getBookings")
     public ResponseEntity<Response> getBookings() {
         
@@ -151,6 +195,11 @@ public class Booking_Controller {
         }
     }
 
+    /**
+     * Delete Existing Booking 
+     * POST ENDPOINT: http://localhost:8080/api/booking/deleteBooking
+     * INPUT JSON {"object_id":1 }
+     */
     @PostMapping("deleteBooking")
     public ResponseEntity<Response> deleteBooking(@Valid @RequestBody Del_Request dr, BindingResult result) {
 

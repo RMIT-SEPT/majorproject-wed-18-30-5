@@ -90,6 +90,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/user/deleteCustomer").hasAuthority("3")
 			// .antMatchers("/api/booking/createBooking").hasAnyAuthority("1","3")
 			.antMatchers("/api/booking/createBooking").permitAll()
+			.antMatchers("/api/booking/approveBooking").hasAuthority("1")
+			.antMatchers("/api/booking/deleteBooking").hasAuthority("1")
 			.antMatchers("/api/service/createService").hasAuthority("1")
 			.antMatchers("/api/schedule/createSchedule").hasAuthority("1")
 			.anyRequest().authenticated()
