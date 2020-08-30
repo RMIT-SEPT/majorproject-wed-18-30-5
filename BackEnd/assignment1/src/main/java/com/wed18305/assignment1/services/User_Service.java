@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.wed18305.assignment1.model.Booking;
 import com.wed18305.assignment1.model.User_model;
+import com.wed18305.assignment1.repositories.Booking_Repository;
 import com.wed18305.assignment1.repositories.User_Repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class User_Service {
     @Autowired
     private User_Repository userRepository;
+    private Booking_Repository bookingRepository;
 
     public User_model saveOrUpdateUser(User_model user) {
         return userRepository.save(user);
@@ -55,6 +58,36 @@ public class User_Service {
 
     public Iterable<User_model> findAllByTypeId(Long id){
         return userRepository.findAllByUserTypeId(id);
+    }
+
+    public List<Booking> findUserBookings(Long id) {
+        User_model user = userRepository.findById(id).get();
+
+        List<Booking> userBookings = new ArrayList<Booking>();
+
+        for (Booking booking : bookingRepository.findAll()) {
+
+            if (booking.getCustomers().contains(user)) {
+                userBookings.add(booking);
+            }
+        }
+
+        return userBookings;
+    }
+
+    public List<Booking> findApprovedUserBookings(Long id) {
+        User_model user = userRepository.findById(id).get();
+
+        List<Booking> userBookings = new ArrayList<Booking>();
+
+        for (Booking booking : bookingRepository.findAll()) {
+
+            if (booking.getCustomers().contains(user) && booking.getApproved()) {
+                userBookings.add(booking);
+            }
+        }
+
+        return userBookings;
     }
 
     public void deleteById(Long id){
