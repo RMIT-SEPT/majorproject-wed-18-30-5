@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from 'axios';
 
 /*
  * https://medium.com/better-programming/learn-to-create-your-own-usefetch-react-hook-9cc31b038e53
@@ -20,9 +21,9 @@ export const makeUseFetch = (url, options) => (callback = undefined) => {
     const doFetch = async () => {
       setLoading(true);
       try {
-        const res = await fetch(url, options);
-        const json = await res.json();
-        if (!res.ok) {
+        const res = await axios({ ...options, url });
+        const json = res.data;
+        if (res.status != 200) {
           throw json;
         }
         if (!signal.aborted) {
@@ -48,27 +49,14 @@ export const makeUseFetch = (url, options) => (callback = undefined) => {
   }, [callback]);
   return { response, error, loading };
 };
-const GET_SAME_ORIGIN_JSON = {
-  method: "GET",
-  credentials: "same-origin",
-  headers: { "Content-Type": "application/json" },
-  redirect: "manual",
-};
 export const Api = {
   login: {
-    post: (jsonData) =>
+    post: (formData) =>
       makeUseFetch("http://localhost:8080/login", {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: jsonData,
+        data: formData,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       }),
-  },
-  search_data: {
-    get: (selectOptionsURI) =>
-      makeUseFetch(selectOptionsURI, GET_SAME_ORIGIN_JSON),
   },
   Signup: {
     post: (jsonData) =>
@@ -78,7 +66,7 @@ export const Api = {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: jsonData,
+        data: jsonData,
       }),
   },
 };

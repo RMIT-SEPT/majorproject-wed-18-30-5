@@ -13,7 +13,7 @@ import EditUser from "./components/Users/EditUser";
 function App() {
   return (
     <Router>
-      <Route exact path="/" component={Login} />
+      <Route exact path="/login" component={Login} />
       <Route exact path="/home" component={Home} />
       <Route exact path="/booking" component={Booking} />
       <Route exact path="/history" component={History} />

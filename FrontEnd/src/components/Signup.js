@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ApiService from "../api/ApiService";
 
 class Signup extends Component {
   constructor() {
@@ -10,6 +11,7 @@ class Signup extends Component {
       password: "",
       contactNumber: "",
       address: "",
+      message: "",
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -31,6 +33,16 @@ class Signup extends Component {
     console.log(newPerson);
   }
 
+  addUser = (e) => {
+    e.preventDefault();
+    let user = { name: this.state.name, username: this.state.username, password: this.state.password, contactNumber: this.state.contactNumber };
+    ApiService.addUser(user)
+      .then(res => {
+        this.setState({ message: 'User added successfully.' });
+        this.props.history.push('/login');
+      }).catch(console.log)
+  }
+
   render() {
     return (
       <div className="Person">
@@ -39,6 +51,7 @@ class Signup extends Component {
             <div className="col-md-8 m-auto">
               <h5 className="display-4 text-center">SignUp</h5>
               <hr />
+              <div>{this.state.message}</div>
               <form onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input
@@ -95,6 +108,7 @@ class Signup extends Component {
                 <input
                   type="submit"
                   className="btn btn-primary btn-block mt-4"
+                  onClick={this.addUser}
                 />
                 <a href="/">Back</a>
               </form>
