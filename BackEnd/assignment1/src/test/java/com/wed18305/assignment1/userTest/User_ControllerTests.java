@@ -93,14 +93,15 @@ public class User_ControllerTests {
 		customer.put("username", "");
 		customer.put("password", "1234");
 		customer.put("contactNumber", "0425000000");
-
+		
 		String contentSTRING = customer.toString();
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
-				.contentType(MediaType.APPLICATION_JSON).content(contentSTRING);
+																	  .contentType(MediaType.APPLICATION_JSON)
+																	  .content(contentSTRING);
 		mvc.perform(builder).andExpect(status().isBadRequest())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("username is required"));
+							.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+							.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
+							.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("username is required"));
 	}
 
 	@Test
@@ -111,14 +112,15 @@ public class User_ControllerTests {
 		customer.put("username", "s3561388@student.rmit.edu.au");
 		customer.put("password", "");
 		customer.put("contactNumber", "0425000000");
-
+		
 		String contentSTRING = customer.toString();
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
-				.contentType(MediaType.APPLICATION_JSON).content(contentSTRING);
+																	  .contentType(MediaType.APPLICATION_JSON)
+																	  .content(contentSTRING);
 		mvc.perform(builder).andExpect(status().isBadRequest())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("password is required"));
+							.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+							.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
+							.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("password is required"));
 	}
 
 	@Test
