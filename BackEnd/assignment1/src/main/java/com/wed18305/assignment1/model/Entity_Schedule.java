@@ -1,6 +1,6 @@
 package com.wed18305.assignment1.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,15 +11,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
-public class Schedule {
+public class Entity_Schedule {
 
     /// Variables
     @Id
@@ -27,16 +27,17 @@ public class Schedule {
     @Column(name = "id")
     protected Long id;
     @NotNull(message = "Start date is required")
-    protected LocalDateTime startDateTime;
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
+    protected OffsetDateTime startDateTime;
     @NotNull(message = "End date is required")
-    protected LocalDateTime endDateTime;
-    @ManyToMany()
-    @JoinTable(name = "user_schedules", 
-            joinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id"), 
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
-    protected List<User_model> employees = new ArrayList<User_model>();
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
+    protected OffsetDateTime endDateTime;
+    @ManyToMany(mappedBy = "schedules")
+    protected List<Entity_User> employees = new ArrayList<Entity_User>();
     
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date created_at;
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date updated_at;
     @PrePersist
     protected void onCreate(){
@@ -48,27 +49,25 @@ public class Schedule {
     }
 
     // Constructor
-    public Schedule() {
+    public Entity_Schedule() {
     }
-    public Schedule(LocalDateTime startDateTime,
-                   LocalDateTime endDateTime,
-                   List<User_model> employees) {
+    public Entity_Schedule(OffsetDateTime startDateTime,
+                    OffsetDateTime endDateTime) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        this.employees = employees;
     }
 
     /// Getters/Setters
     public Long getId() {
         return this.id; 
     }
-    public LocalDateTime getStartDateTime() {
+    public OffsetDateTime getStartDateTime() {
         return this.startDateTime;
     }
-    public LocalDateTime getEndDateTime() {
+    public OffsetDateTime getEndDateTime() {
         return this.endDateTime;
     }
-    public List<User_model> getEmployees() {
+    public List<Entity_User> getEmployees() {
         return this.employees;
     }
     
@@ -85,31 +84,32 @@ public class Schedule {
         return hash;
     } 
 
-    @Override
+    /**
+     * We are going to use this to find if two schedules loosely match
+     * <p>
+     * Checking involves seeing if the schedule times overlap
+     * <p>
+     * Use hashCode if you want a direct comparison!
+     */
+    @Override 
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Booking other = (Booking) obj;
-        if (!Objects.equals(this.startDateTime, other.startDateTime)) {
+        final Entity_Schedule other = (Entity_Schedule) obj;
+        if(this.startDateTime.isAfter(other.endDateTime)){
+            return false;
+        }else if(this.endDateTime.isBefore(other.startDateTime)){
             return false;
         }
-        if (!Objects.equals(this.endDateTime, other.endDateTime)) {
-            return false;
-        }
-        return Objects.equals(this.id, other.id);
+        //they overlap in some form
+        return true;
     }
 
     //String output
     @Override
     public String toString() {
-        var builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         builder.append("Schedule{id= ").append(id).append(", startDateTime= ")
             .append(startDateTime).append(", endDateTime= ").append(endDateTime).append("}");
 

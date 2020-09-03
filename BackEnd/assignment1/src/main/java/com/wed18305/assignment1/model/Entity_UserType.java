@@ -14,7 +14,7 @@ import javax.persistence.PreUpdate;
 
 @Entity
 // @Table(name = "userType") //Not sure if the html table creation will be needed
-public class UserType {
+public class Entity_UserType {
 
     public static enum UserTypeID {
         ADMIN((long) 1),
@@ -26,6 +26,10 @@ public class UserType {
         UserTypeID(Long id) {
             this.id = id;
         }
+
+        public static String getAdmin()    { return ADMIN.id.toString();    }
+        public static String getCustomer() { return CUSTOMER.id.toString(); }
+        public static String getEmployee() { return EMPLOYEE.id.toString(); }
     }
       
 
@@ -49,9 +53,9 @@ public class UserType {
     }
 
     //Constructors
-    public UserType() {
+    public Entity_UserType() {
     }
-    public UserType(String name) {
+    public Entity_UserType(String name) {
         this.name = name;
     }
 
@@ -90,7 +94,7 @@ public class UserType {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final UserType other = (UserType) obj;
+        final Entity_UserType other = (Entity_UserType) obj;
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
@@ -100,7 +104,7 @@ public class UserType {
     //String output
     @Override
     public String toString() {
-        var builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         builder.append("UserType{id=").append(id).append(", name=")
                 .append(name).append("}");
 

@@ -4,6 +4,6 @@ import java.time.format.DateTimeFormatter;
 
 public class DateTimeStatic {
     public static DateTimeFormatter getFormatter(){
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); // "Day, Month, Year, Hour, Minute."
+        return DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mmXXXXX"); // "Day, Month, Year, Hour, Minute."
     }
 }
