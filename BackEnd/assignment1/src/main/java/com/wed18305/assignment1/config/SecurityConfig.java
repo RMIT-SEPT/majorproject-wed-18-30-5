@@ -97,9 +97,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/user/deleteCustomer")        .hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/booking/createBooking")      .hasAnyAuthority(UserTypeID.getAdmin(), UserTypeID.getCustomer())
 			.antMatchers("/api/booking/approveBooking")     .hasAuthority(UserTypeID.getAdmin())
+
 			.antMatchers("/api/booking/getAdminBookings")   .hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getUpcomingAdminBookings")   .hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getCompletedAdminBookings")   .hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/booking/getEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
+			.antMatchers("/api/booking/getUpcomingEmployeeBookings")   .hasAuthority(UserTypeID.getEmployee())
+			.antMatchers("/api/booking/getCompletedEmployeeBookings")   .hasAuthority(UserTypeID.getEmployee())
 			.antMatchers("/api/booking/getCustomerBookings").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/booking/getUpcomingCustomerBookings")   .hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/booking/getCompletedCustomerBookings")   .hasAuthority(UserTypeID.getCustomer())
+			
 			.antMatchers("/api/booking/deleteBooking")      .hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/service/createService")      .hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/schedule/createSchedule")    .hasAuthority(UserTypeID.getAdmin())

@@ -1,5 +1,6 @@
 package com.wed18305.assignment1.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import com.wed18305.assignment1.model.Entity_Service;
 import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.model.Entity_Schedule;
 import com.wed18305.assignment1.model.Entity_User;
+import com.wed18305.assignment1.model.Entity_UserType.UserTypeID;
 import com.wed18305.assignment1.repositories.Booking_Repository;
 import com.wed18305.assignment1.repositories.Schedule_Repository;
 import com.wed18305.assignment1.repositories.Service_Repository;
@@ -85,6 +87,14 @@ public class User_Service {
         return userBookings;
     }
 
+    public List<Entity_Booking> findUpcomingUserBookings(Long id) {
+        return returnUpcoming(id, false);
+    }
+
+    public List<Entity_Booking> findCompletedUserBookings(Long id) {
+        return returnCompleted(id, false);
+    }
+
     // What Approved Bookings does an Employee Have?
     public List<Entity_Booking> findApprovedUserBookings(Long id) {
         Entity_User user = userRepository.findById(id).get();
@@ -100,6 +110,52 @@ public class User_Service {
 
         return userBookings;
     }
+
+    public List<Entity_Booking> findApprovedUpcomingBookings(Long id) {
+        return returnUpcoming(id, true);
+    }
+
+    public List<Entity_Booking> findApprovedCompletedBookings(Long id) {
+        return returnCompleted(id, true);
+    }
+
+    private ArrayList<Entity_Booking> returnUpcoming(Long id, Boolean isApproved) {
+        Entity_User user = userRepository.findById(id).get();
+
+        ArrayList<Entity_Booking> bookings = new ArrayList<>();
+
+        for (Entity_Booking booking : bookingRepository.findAll()) {
+
+            // Booking hasn't Occurred, or Finished Yet
+            if (isApproved && booking.getApproved() || !isApproved) {
+                if ((booking.getEmployees().contains(user) || booking.getCustomers().contains(user)) 
+                     && LocalDateTime.now().compareTo(booking.getEndDateTime()) < 0) {
+                    bookings.add(booking);
+                }
+            }
+        }
+
+        return bookings;
+    } 
+
+    private ArrayList<Entity_Booking> returnCompleted(Long id, Boolean checkingApproval) {
+        Entity_User user = userRepository.findById(id).get();
+
+        ArrayList<Entity_Booking> bookings = new ArrayList<>();
+
+        for (Entity_Booking booking : bookingRepository.findAll()) {
+
+            // Booking has Occurred
+            if (checkingApproval && booking.getApproved() || !checkingApproval) {
+                if ((booking.getEmployees().contains(user) || booking.getCustomers().contains(user)) 
+                     && LocalDateTime.now().compareTo(booking.getEndDateTime()) > 0) {
+                    bookings.add(booking);
+                }
+            }
+        }
+
+        return bookings;
+    } 
 
     /**
      * Note that if you alter a service after creating it for multiple users

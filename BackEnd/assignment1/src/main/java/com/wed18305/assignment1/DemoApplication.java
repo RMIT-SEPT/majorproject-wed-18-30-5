@@ -137,12 +137,18 @@ public class DemoApplication {
 			ArrayList<Entity_User> employees = new ArrayList<>();
 			employees.add(michelle);
 
-			Entity_Booking booking = new Entity_Booking(LocalDateTime.parse("03/08/2019T16:20:00 UTC+05:30", formatter), 
+			Entity_Booking upcomingBooking = new Entity_Booking(LocalDateTime.parse("03/08/2019T16:20:00 UTC+05:30", formatter), 
 														LocalDateTime.parse("03/08/2019T16:20:00 UTC+05:30", formatter), 
 														customers,
 														employees,
 														falafel);
-			BookingRepository.save(booking);
+			Entity_Booking completedBooking = new Entity_Booking(LocalDateTime.parse("03/08/3019T16:20:00 UTC+05:30", formatter), 
+														LocalDateTime.parse("03/08/3019T16:20:00 UTC+05:30", formatter), 
+														customers,
+														employees,
+														falafel);
+			BookingRepository.save(upcomingBooking);
+			BookingRepository.save(completedBooking);
       	};
 	}
 }

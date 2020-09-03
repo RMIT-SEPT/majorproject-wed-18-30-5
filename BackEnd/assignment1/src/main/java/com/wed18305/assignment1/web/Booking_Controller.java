@@ -205,6 +205,42 @@ public class Booking_Controller {
     }
 
     /**
+     * Get An Employee's Bookings (That have been approved.)
+     * GET ENDPOINT: http://localhost:8080/api/booking/getEmployeeBookings
+     */
+    @GetMapping("getEmployeeBookings")
+    public ResponseEntity<Response> getEmployeeBookings(Principal p) {
+
+        // Make sure the logged in user exists
+        Optional<Entity_User> user = userService.findByUsername(p.getName());
+        if(user.isPresent() == false){
+            //shouldn't be able to get here but just incase
+            Response response = new Response(false, "ERROR!", "Nobody's logged in!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Get the Employee's Bookings
+        Entity_User curUser = user.get();
+        Iterable<Entity_Booking> bookings =  null;
+        try {
+            bookings = userService.findApprovedUserBookings(curUser.getId());
+        }
+        catch (Exception e) {
+            Response response = new Response(false, "ERROR!", e.getMessage(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Any Bookings Found?
+        if (!bookings.iterator().hasNext()) { // If size < 1
+            Response response = new Response(false, "ERROR!", "Employee has no approved bookings associated with them!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        } else {
+            Response response = new Response(true, "Bookings found!", null, bookings);
+            return new ResponseEntity<Response>(response, HttpStatus.OK);
+        }
+    }
+
+    /**
      * Get A Customer's Bookings
      * GET ENDPOINT: http://localhost:8080/api/booking/getCustomerBookings
      */
@@ -241,11 +277,11 @@ public class Booking_Controller {
     }
 
     /**
-     * Get An Employee's Bookings (That have been approved.)
-     * GET ENDPOINT: http://localhost:8080/api/booking/getEmployeeBookings
+     * Get All Upcoming Bookings
+     * GET ENDPOINT: http://localhost:8080/api/booking/getUpcomingAdminBookings
      */
-    @GetMapping("getEmployeeBookings")
-    public ResponseEntity<Response> getEmployeeBookings(Principal p) {
+    @GetMapping("getUpcomingAdminBookings")
+    public ResponseEntity<Response> getUpcomingAdminBookings(Principal p) {
 
         // Make sure the logged in user exists
         Optional<Entity_User> user = userService.findByUsername(p.getName());
@@ -255,11 +291,10 @@ public class Booking_Controller {
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
-        // Get the Employee's Bookings
-        Entity_User curUser = user.get();
+        // Get All Bookings
         Iterable<Entity_Booking> bookings =  null;
         try {
-            bookings = userService.findApprovedUserBookings(curUser.getId());
+            bookings = bookingService.findAllUpcoming();
         }
         catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
@@ -268,7 +303,186 @@ public class Booking_Controller {
 
         // Any Bookings Found?
         if (!bookings.iterator().hasNext()) { // If size < 1
-            Response response = new Response(false, "ERROR!", "Employee has no approved bookings associated with them!", null);
+            Response response = new Response(false, "ERROR!", "No bookings within the repository!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        } else {
+            Response response = new Response(true, "Bookings found!", null, bookings);
+            return new ResponseEntity<Response>(response, HttpStatus.OK);
+        }
+    }
+
+    /**
+     * Get All Completed Bookings
+     * GET ENDPOINT: http://localhost:8080/api/booking/getCompletedAdminBookings
+     */
+    @GetMapping("getCompletedAdminBookings")
+    public ResponseEntity<Response> getCompletedAdminBookings(Principal p) {
+
+        // Make sure the logged in user exists
+        Optional<Entity_User> user = userService.findByUsername(p.getName());
+        if(user.isPresent() == false){
+            //shouldn't be able to get here but just incase
+            Response response = new Response(false, "ERROR!", "Nobody's logged in!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Get All Bookings
+        Iterable<Entity_Booking> bookings =  null;
+        try {
+            bookings = bookingService.findAllCompleted();
+        }
+        catch (Exception e) {
+            Response response = new Response(false, "ERROR!", e.getMessage(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Any Bookings Found?
+        if (!bookings.iterator().hasNext()) { // If size < 1
+            Response response = new Response(false, "ERROR!", "No bookings within the repository!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        } else {
+            Response response = new Response(true, "Bookings found!", null, bookings);
+            return new ResponseEntity<Response>(response, HttpStatus.OK);
+        }
+    }
+
+    /**
+     * Get an Employee's Upcoming Bookings
+     * GET ENDPOINT: http://localhost:8080/api/booking/getUpcomingEmployeeBookings
+     */
+    @GetMapping("getUpcomingEmployeeBookings")
+    public ResponseEntity<Response> getUpcomingEmployeeBookings(Principal p) {
+
+        // Make sure the logged in user exists
+        Optional<Entity_User> user = userService.findByUsername(p.getName());
+        if(user.isPresent() == false){
+            //shouldn't be able to get here but just incase
+            Response response = new Response(false, "ERROR!", "Nobody's logged in!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Get Employee's Bookings
+        Entity_User curUser = user.get();
+        Iterable<Entity_Booking> bookings =  null;
+        try {
+            bookings = userService.findApprovedUpcomingBookings(curUser.getId());
+        }
+        catch (Exception e) {
+            Response response = new Response(false, "ERROR!", e.getMessage(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Any Bookings Found?
+        if (!bookings.iterator().hasNext()) { // If size < 1
+            Response response = new Response(false, "ERROR!", "Employee has no approved bookings associated with them coming up!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        } else {
+            Response response = new Response(true, "Bookings found!", null, bookings);
+            return new ResponseEntity<Response>(response, HttpStatus.OK);
+        }
+    }
+
+    /**
+     * Get an Employee's Completed Bookings
+     * GET ENDPOINT: http://localhost:8080/api/booking/getCompletedEmployeeBookings
+     */
+    @GetMapping("getCompletedEmployeeBookings")
+    public ResponseEntity<Response> getCompletedEmployeeBookings(Principal p) {
+
+        // Make sure the logged in user exists
+        Optional<Entity_User> user = userService.findByUsername(p.getName());
+        if(user.isPresent() == false){
+            //shouldn't be able to get here but just incase
+            Response response = new Response(false, "ERROR!", "Nobody's logged in!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Get Employee's Bookings
+        Entity_User curUser = user.get();
+        Iterable<Entity_Booking> bookings =  null;
+        try {
+            bookings = userService.findApprovedCompletedBookings(curUser.getId());
+        }
+        catch (Exception e) {
+            Response response = new Response(false, "ERROR!", e.getMessage(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Any Bookings Found?
+        if (!bookings.iterator().hasNext()) { // If size < 1
+            Response response = new Response(false, "ERROR!", "Employee has not completed any approved bookings associated with them!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        } else {
+            Response response = new Response(true, "Bookings found!", null, bookings);
+            return new ResponseEntity<Response>(response, HttpStatus.OK);
+        }
+    }
+
+    /**
+     * Get a Customer's Upcoming Bookings
+     * GET ENDPOINT: http://localhost:8080/api/booking/getUpcomingCustomerBookings
+     */
+    @GetMapping("getUpcomingCustomerBookings")
+    public ResponseEntity<Response> getUpcomingCustomerBookings(Principal p) {
+
+        // Make sure the logged in user exists
+        Optional<Entity_User> user = userService.findByUsername(p.getName());
+        if(user.isPresent() == false){
+            //shouldn't be able to get here but just incase
+            Response response = new Response(false, "ERROR!", "Nobody's logged in!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Get Customer's Bookings
+        Entity_User curUser = user.get();
+        Iterable<Entity_Booking> bookings =  null;
+        try {
+            bookings = userService.findUpcomingUserBookings(curUser.getId());
+        }
+        catch (Exception e) {
+            Response response = new Response(false, "ERROR!", e.getMessage(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Any Bookings Found?
+        if (!bookings.iterator().hasNext()) { // If size < 1
+            Response response = new Response(false, "ERROR!", "Customer has no bookings associated with them coming up!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        } else {
+            Response response = new Response(true, "Bookings found!", null, bookings);
+            return new ResponseEntity<Response>(response, HttpStatus.OK);
+        }
+    }
+
+    /**
+     * Get a Customer's Completed Bookings
+     * GET ENDPOINT: http://localhost:8080/api/booking/getCompletedCustomerBookings
+     */
+    @GetMapping("getCompletedCustomerBookings")
+    public ResponseEntity<Response> getCompletedCustomerBookings(Principal p) {
+
+        // Make sure the logged in user exists
+        Optional<Entity_User> user = userService.findByUsername(p.getName());
+        if(user.isPresent() == false){
+            //shouldn't be able to get here but just incase
+            Response response = new Response(false, "ERROR!", "Nobody's logged in!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Get Customer's Bookings
+        Entity_User curUser = user.get();
+        Iterable<Entity_Booking> bookings =  null;
+        try {
+            bookings = userService.findCompletedUserBookings(curUser.getId());
+        }
+        catch (Exception e) {
+            Response response = new Response(false, "ERROR!", e.getMessage(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Any Bookings Found?
+        if (!bookings.iterator().hasNext()) { // If size < 1
+            Response response = new Response(false, "ERROR!", "Customer has not completed any bookings associated with them!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         } else {
             Response response = new Response(true, "Bookings found!", null, bookings);
