@@ -1,38 +1,51 @@
 package com.wed18305.assignment1.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-// import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-// import org.hibernate.validator.constraints.NotBlank;
 
 //Relation example: https://www.baeldung.com/jpa-one-to-one
 
 @Entity
-// @Table(name = "users") //Not sure if the html table creation will be needed
-public class User {
+public class Entity_User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     protected Long id;
     protected String name;
-    @NotBlank(message = "username is required")
+    @Column(unique = true)
     protected String username;
-    @NotBlank(message = "password is required")
     protected String password;
     protected String contactNumber;
     @OneToOne
     @JoinColumn(name = "type_id", referencedColumnName = "id")
-    protected UserType userType;
-    protected String services; //Optional, not sure if we need a list of services here.
+    protected Entity_UserType userType;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_schedules", 
+                joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
+                inverseJoinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id"))
+    protected Set<Entity_Schedule> schedules = new HashSet<Entity_Schedule>();
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_services", 
+                joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
+                inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
+    protected Set<Entity_Service> services = new HashSet<Entity_Service>();
 
     private Date created_at;
     private Date updated_at;
@@ -47,13 +60,13 @@ public class User {
     }
 
     //Constructors
-    public User() {
+    public Entity_User() {
     }
-    public User(String name,
-                String username,
-                String password,
-                String contactNumber,
-                UserType type) {
+    public Entity_User(String name,
+                    String username,
+                    String password,
+                    String contactNumber,
+                    Entity_UserType type) {
         this.name = name;
         this.username = username;
         this.password = password;
@@ -89,9 +102,41 @@ public class User {
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
     }
-    public UserType getType() {
+    public Entity_UserType getType() {
         return this.userType;
     }
+
+    /**
+     * Only call this from User_service, standard procedure below
+     * <p>
+     * .getServices().add()
+     * <p>
+     * .getServices().remove()
+     * <p>
+     * After adding removing you must save the updated user
+     * <p>
+     * User_service.saveOrUpdateUser(user)
+     * @return List<Entity_Service>
+     */
+    public Set<Entity_Service> getServices() {
+        return this.services;
+    }
+    /**
+     * Only call this from User_service, standard procedure below
+     * <p>
+     * .getSchedules().add()
+     * <p>
+     * .getSchedules().remove()
+     * <p>
+     * After adding removing you must save the updated user
+     * <p>
+     * User_service.saveOrUpdateUser(user)
+     * @return List<Schedule>
+     */
+    public Set<Entity_Schedule> getSchedules() {
+        return this.schedules;
+    }
+
 
 
     //Comparisons
@@ -115,10 +160,10 @@ public class User {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final User other = (User) obj;
-        // if (!Objects.equals(this.type, other.type)) {
-        //     return false;
-        // }
+        final Entity_User other = (Entity_User) obj;
+        if (!Objects.equals(this.userType, other.userType)) {
+            return false;
+        }
         if (!Objects.equals(this.contactNumber, other.contactNumber)) {
             return false;
         }
@@ -130,11 +175,10 @@ public class User {
         }
         return Objects.equals(this.id, other.id);
     }
-
     //String output
     @Override
     public String toString() {
-        var builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         builder.append("User{id=").append(id).append(", name=")
                 .append(name).append("}");
 

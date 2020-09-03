@@ -48,8 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
-				.usersByUsernameQuery("SELECT username, password, 'true' AS enabled FROM USER_MODEL WHERE username=?")
-				.authoritiesByUsernameQuery("SELECT username, type_id AS authority FROM USER_MODEL WHERE username=?");
+				.usersByUsernameQuery("SELECT username, password, 'true' AS enabled FROM ENTITY_USER WHERE username=?")
+				.authoritiesByUsernameQuery("SELECT username, type_id AS authority FROM ENTITY_USER WHERE username=?");
 	}
 
 	@Bean
@@ -92,6 +92,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/booking/createBooking").hasAnyAuthority("1","3")
 			.antMatchers("/api/service/createService").hasAuthority("1")
 			.antMatchers("/api/schedule/createSchedule").hasAuthority("1")
+			.antMatchers("/api/schedule/deleteSchedule").hasAuthority("1")
 			.anyRequest().authenticated()
 			.and()
 			.formLogin().successHandler(authSuccessHandler())

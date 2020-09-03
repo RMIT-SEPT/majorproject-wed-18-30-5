@@ -11,7 +11,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 @Entity // Add this to make the class a managed type.
-public class Service {
+public class Entity_Service {
 
     //// Variables
     @Id
@@ -32,8 +32,8 @@ public class Service {
     protected void onUpdate() { this.updated_at = new Date(); }
 
     //// Constructor
-    public Service() {}
-    public Service(String name) {
+    public Entity_Service() {}
+    public Entity_Service(String name) {
         this.name = name;
     }
 
@@ -65,7 +65,7 @@ public class Service {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Service other = (Service) obj;
+        final Entity_Service other = (Entity_Service) obj;
 
         if (!Objects.equals(this.name, other.name)) {
             return false;
@@ -77,7 +77,7 @@ public class Service {
     //String output
     @Override
     public String toString() {
-        var builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         builder.append("Booking{id= ").append(id).append(", name= ").append(name).append("}");
 
         return builder.toString();
