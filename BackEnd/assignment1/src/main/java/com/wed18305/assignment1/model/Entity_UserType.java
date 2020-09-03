@@ -26,6 +26,10 @@ public class Entity_UserType {
         UserTypeID(Long id) {
             this.id = id;
         }
+
+        public static String getAdmin()    { return ADMIN.id.toString();    }
+        public static String getCustomer() { return CUSTOMER.id.toString(); }
+        public static String getEmployee() { return EMPLOYEE.id.toString(); }
     }
       
 

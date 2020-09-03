@@ -17,12 +17,21 @@ public class Booking_Service {
         return bookingRepository.save(Booking);
     }
 
+    public Iterable<Entity_Booking> findAll() {
+		return bookingRepository.findAll();
+	}
     public Optional<Entity_Booking> findById(Long id){
         return bookingRepository.findById(id);
     }
 
-    public void deleteById(Long id){
-        bookingRepository.deleteById(id);
+    public void deleteManyById(Long[] ids){
+        for (Long id : ids) {
+            bookingRepository.deleteById(id);
+        }
+    }
+
+    public void deleteById(){
+        bookingRepository.deleteById(Long.parseLong("1"));
     }
 
 }

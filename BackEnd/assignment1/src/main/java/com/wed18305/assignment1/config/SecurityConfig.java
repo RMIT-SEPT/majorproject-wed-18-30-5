@@ -18,6 +18,9 @@ package com.wed18305.assignment1.config;
 
 import javax.sql.DataSource;
 
+import com.wed18305.assignment1.model.Entity_UserType;
+import com.wed18305.assignment1.model.Entity_UserType.UserTypeID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -79,23 +82,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring().requestMatchers(PathRequest.toH2Console());
 	}
 
+	/*
+        Tip: When testing, login through Postman, so it holds all session data.
+	*/
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-
-		http.cors().and().authorizeRequests()
-			.antMatchers("/api/user/createCustomer").permitAll()
-			.antMatchers("/api/user/createEmployee").hasAuthority("1")
-			.antMatchers("/api/user/createAdmin").hasAuthority("1")
-      		.antMatchers("/api/user/getEmployees").permitAll()
-			.antMatchers("/api/user/deleteUser").hasAuthority("1")
-			.antMatchers("/api/user/deleteCustomer").hasAuthority("3")
-			// .antMatchers("/api/booking/createBooking").hasAnyAuthority("1","3")
-			.antMatchers("/api/booking/createBooking").permitAll()
-			.antMatchers("/api/booking/approveBooking").hasAuthority("1")
-			.antMatchers("/api/booking/deleteBooking").hasAuthority("1")
-			.antMatchers("/api/service/createService").hasAuthority("1")
-			.antMatchers("/api/schedule/createSchedule").hasAuthority("1")
-			.antMatchers("/api/schedule/deleteSchedule").hasAuthority("1")
+		http.authorizeRequests()
+			.antMatchers("/api/user/createCustomer")        .permitAll()
+			.antMatchers("/api/user/createEmployee")        .hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/createAdmin")           .hasAuthority(UserTypeID.getAdmin())
+      		.antMatchers("/api/user/getEmployees")          .hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/deleteUser")            .hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/deleteCustomer")        .hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/createBooking")      .hasAnyAuthority(UserTypeID.getAdmin(), UserTypeID.getCustomer())
+			.antMatchers("/api/booking/approveBooking")     .hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getAdminBookings")   .hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
+			.antMatchers("/api/booking/getCustomerBookings").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/booking/deleteBooking")      .hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/service/createService")      .hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/schedule/createSchedule")    .hasAuthority(UserTypeID.getAdmin())
 			.anyRequest().authenticated()
 			.and()
 			.formLogin().successHandler(authSuccessHandler())

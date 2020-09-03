@@ -1,5 +1,6 @@
 package com.wed18305.assignment1;
 
+import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.model.Entity_Service;
 import com.wed18305.assignment1.model.Entity_User;
 import com.wed18305.assignment1.model.Entity_UserType;
@@ -128,19 +129,20 @@ public class DemoApplication {
 			ServiceRepository.save(service4);
 			ServiceRepository.save(service5);
 
-			// //Give the employees services
-			// ArrayList<User_model> hotdogUsers = new ArrayList<User_model>();
-			// ArrayList<Entity_Service> servicesOne = new ArrayList<Entity_Service>();
-			// ArrayList<User_model> falafelUsers = new ArrayList<User_model>();
-			// ArrayList<Entity_Service> servicesTwo = new ArrayList<Entity_Service>();
-			// hotdogUsers.add(chloe);
-			// hotdogUsers.add(jack);
-			// hotdogUsers.add(david);
-			// servicesOne.add(hotDogs);
-			// UsrService.addServicesToEmployees(hotdogUsers, servicesOne);
-			// servicesTwo.add(falafel);
-			// falafelUsers.add(chloe);
-			// UsrService.addServicesToEmployees(falafelUsers, servicesTwo);
+			// Save Bookings
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy'T'HH:mm:ss z"); // "Day, Month, Year, Hour, Minute."
+			ArrayList<Entity_User> customers = new ArrayList<>();
+			customers.add(jack);
+			customers.add(chloe);
+			ArrayList<Entity_User> employees = new ArrayList<>();
+			employees.add(michelle);
+
+			Entity_Booking booking = new Entity_Booking(LocalDateTime.parse("03/08/2019T16:20:00 UTC+05:30", formatter), 
+														LocalDateTime.parse("03/08/2019T16:20:00 UTC+05:30", formatter), 
+														customers,
+														employees,
+														falafel);
+			BookingRepository.save(booking);
       	};
 	}
 }

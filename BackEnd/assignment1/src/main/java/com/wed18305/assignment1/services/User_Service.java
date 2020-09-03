@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Optional;
 
 import com.wed18305.assignment1.model.Entity_Service;
+import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.model.Entity_Schedule;
 import com.wed18305.assignment1.model.Entity_User;
+import com.wed18305.assignment1.repositories.Booking_Repository;
 import com.wed18305.assignment1.repositories.Schedule_Repository;
 import com.wed18305.assignment1.repositories.Service_Repository;
 import com.wed18305.assignment1.repositories.User_Repository;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service;
 public class User_Service {
     @Autowired
     private User_Repository userRepository;
+    @Autowired
+    private Booking_Repository bookingRepository;
     @Autowired
     private Service_Repository serviceRepository;
     @Autowired
@@ -63,6 +67,38 @@ public class User_Service {
 
     public Iterable<Entity_User> findAllByTypeId(Long id){
         return userRepository.findAllByUserTypeId(id);
+    }
+
+    // What Bookings has a Customer Made?
+    public List<Entity_Booking> findUserBookings(Long id) {
+        Entity_User user = userRepository.findById(id).get();
+
+        List<Entity_Booking> userBookings = new ArrayList<Entity_Booking>();
+
+        for (Entity_Booking booking : bookingRepository.findAll()) {
+
+            if (booking.getCustomers().contains(user)) {
+                userBookings.add(booking);
+            }
+        }
+
+        return userBookings;
+    }
+
+    // What Approved Bookings does an Employee Have?
+    public List<Entity_Booking> findApprovedUserBookings(Long id) {
+        Entity_User user = userRepository.findById(id).get();
+
+        List<Entity_Booking> userBookings = new ArrayList<Entity_Booking>();
+
+        for (Entity_Booking booking : bookingRepository.findAll()) {
+
+            if (booking.getEmployees().contains(user) && booking.getApproved()) {
+                userBookings.add(booking);
+            }
+        }
+
+        return userBookings;
     }
 
     /**

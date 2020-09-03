@@ -26,6 +26,7 @@ public class Entity_Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
+    protected Boolean approved = false; // Don't approve bookings by default.
 
     protected LocalDateTime startDateTime;
     protected LocalDateTime endDateTime;
@@ -33,11 +34,11 @@ public class Entity_Booking {
     // Relations
     @ManyToMany
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    protected List<Entity_User> customer;
+    protected List<Entity_User> customers;
 
     @ManyToMany
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
-    protected List<Entity_User> employee;
+    protected List<Entity_User> employees;
 
     @ManyToOne
     @JoinColumn(name = "service_id", referencedColumnName = "id")
@@ -64,17 +65,15 @@ public class Entity_Booking {
     }
     public Entity_Booking(LocalDateTime startDateTime,
                    LocalDateTime endDateTime,
-                   List<Entity_User> customer,
-                   List<Entity_User> employee,
+                   List<Entity_User> customers,
+                   List<Entity_User> employees,
                    Entity_Service service) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        this.customer = customer;
-        this.employee = employee;
+        this.customers = customers;
+        this.employees = employees;
         this.service = service;
     }
-
-    
 
     /// Getters/Setters
 
@@ -95,15 +94,17 @@ public class Entity_Booking {
     public LocalDateTime getEndDateTime()             { return endDateTime;    }
     public void setEndDateTime(LocalDateTime newTime) { endDateTime = newTime; }
 
-    public List<Entity_User> getCustomers()              { return customer;          }
-    public void setCustomers(List<Entity_User> customer) { this.customer = customer; }
+    public List<Entity_User> getCustomers()              { return customers;          }
+    public void setCustomers(List<Entity_User> customer) { this.customers = customers; }
 
-    public List<Entity_User> getEmployees()              { return customer;          }
-    public void setEmployees(List<Entity_User> employee) { this.employee = employee; }
+    public List<Entity_User> getEmployees()              { return employees;           }
+    public void setEmployees(List<Entity_User> employee) { this.employees = employees; }
 
     public Entity_Service getService()                 { return service;           }
     public void setSerivce(Entity_Service service)     { this.service = service;   }
-    
+
+    public Boolean getApproved() { return approved; }
+    public void approveBooking() { approved = true; }
 
     /// Comparisons
     @Override
