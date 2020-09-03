@@ -81,11 +81,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+
+		http.cors().and().authorizeRequests()
 			.antMatchers("/api/user/createCustomer").permitAll()
 			.antMatchers("/api/user/createEmployee").hasAuthority("1")
 			.antMatchers("/api/user/createAdmin").hasAuthority("1")
-      		.antMatchers("/api/user/getEmployees").hasAuthority("1")
+      		.antMatchers("/api/user/getEmployees").permitAll()
 			.antMatchers("/api/user/deleteUser").hasAuthority("1")
 			.antMatchers("/api/user/deleteCustomer").hasAuthority("3")
 			.antMatchers("/api/booking/createBooking").hasAnyAuthority("1","3")

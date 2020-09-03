@@ -17,11 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -47,6 +43,7 @@ public class User_Controller {
      * otherwise the error object will contain either a single string or array of field errors 
      */
     @PostMapping("createCustomer")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Response> createNewUser(@Valid @RequestBody User_Request ur, BindingResult result) {
         // Binding validation checks
         if (result.hasErrors()) {
@@ -187,6 +184,7 @@ public class User_Controller {
      * otherwise the error object will contain either a single string or array of field errors 
      */
     @GetMapping("getEmployees")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Response> getEmployees(Principal p) {
         // Get any employees
         Iterable<Entity_User> employees = null;
