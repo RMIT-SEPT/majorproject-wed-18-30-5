@@ -10,7 +10,7 @@ import com.wed18305.assignment1.Responses.Response;
 import com.wed18305.assignment1.Requests.Delete_Request;
 import com.wed18305.assignment1.Requests.UpdateDetails_Request;
 import com.wed18305.assignment1.Requests.User_Request;
-import com.wed18305.assignment1.model.User_model;
+import com.wed18305.assignment1.model.Entity_User;
 import com.wed18305.assignment1.services.UserType_Service;
 import com.wed18305.assignment1.services.User_Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +34,17 @@ public class User_Controller {
 
     /**
      * Create new (customer)user 
+     * <p>
      * POST ENDPOINT: http://localhost:8080/api/user/create
+     * <p>
      * INPUT JSON {"name":"neil", 
      *             "username":"neil", 
      *             "password":"1234",
      *             "contactNumber":"0425000000"}
+     * @param ur
+     * @param result
+     * @return Response object, if successfull the user is returned in the body
+     * otherwise the error object will contain either a single string or array of field errors 
      */
     @PostMapping("createCustomer")
     public ResponseEntity<Response> createNewUser(@Valid @RequestBody User_Request ur, BindingResult result) {
@@ -49,10 +55,10 @@ public class User_Controller {
         }
 
         // Save new User
-        User_model user1 = null;
+        Entity_User user1 = null;
         try {
             //Create a User entity using the Customer_Request
-            User_model user = new User_model(ur.getName(),
+            Entity_User user = new Entity_User(ur.getName(),
                                             ur.getUsername(),
                                             ur.getPassword(),
                                             ur.getContactNumber().toString(),
@@ -76,7 +82,9 @@ public class User_Controller {
 
     /**
      * Create new (employee)user, an admin must be logged in to enable this request.
+     * <p>
      * POST ENDPOINT: http://localhost:8080/api/user/createEmployee
+     * <p>
      * INPUT JSON {"name":"neil", 
      *             "username":"neilk", 
      *             "password":"1234",
@@ -95,10 +103,10 @@ public class User_Controller {
         }
 
         // Save new User
-        User_model user1 = null;
+        Entity_User user1 = null;
         try {
              //Create a User entity using the Employee_Request
-             User_model user = new User_model(ur.getName(),
+             Entity_User user = new Entity_User(ur.getName(),
                                             ur.getUsername(),
                                             ur.getPassword(),
                                             ur.getContactNumber().toString(),
@@ -122,7 +130,9 @@ public class User_Controller {
 
     /**
      * Create new (admin)user, an admin must be logged in to enable this request.
+     * <p>
      * POST ENDPOINT: http://localhost:8080/api/user/createEmployee
+     * <p>
      * INPUT JSON {"name":"neil", 
      *             "username":"neilk", 
      *             "password":"1234",
@@ -140,11 +150,11 @@ public class User_Controller {
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
-        User_model user1 = null;
+        Entity_User user1 = null;
         // Save new User
         try {
              //Create a User entity using the Admin_Request
-             User_model user = new User_model(ur.getName(),
+             Entity_User user = new Entity_User(ur.getName(),
                                                 ur.getUsername(),
                                                 ur.getPassword(),
                                                 ur.getContactNumber().toString(),
@@ -168,7 +178,9 @@ public class User_Controller {
 
     /**
      * Get all employees
+     * <p>
      * GET ENDPOINT: http://localhost:8080/api/user/getEmployees
+     * <p>
      * @param ur
      * @param result
      * @return Response object, if successfull the employees are returned in the body
@@ -177,7 +189,7 @@ public class User_Controller {
     @GetMapping("getEmployees")
     public ResponseEntity<Response> getEmployees(Principal p) {
         // Get any employees
-        Iterable<User_model> employees = null;
+        Iterable<Entity_User> employees = null;
         try {
             employees = userService.findAllByTypeId((long) 2);
         } catch (Exception e) {
@@ -197,7 +209,9 @@ public class User_Controller {
 
     /**
      * Update user details
+     * <p>
      * POST ENDPOINT: http://localhost:8080/api/user/updateUser
+     * <p>
      * @param ur
      * @param result
      * @return Response object, if successfull the updated user is returned in the body
@@ -212,7 +226,7 @@ public class User_Controller {
         }
 
         // Make sure the logged in user exists
-        Optional<User_model> user = userService.findByUsername(p.getName());
+        Optional<Entity_User> user = userService.findByUsername(p.getName());
         if(user.isPresent() == false){
             //shouldn't be able to get here but just incase
             Response response = new Response(false, "ERROR!", "No user to update!", null);
@@ -220,8 +234,8 @@ public class User_Controller {
         }
 
         //Update the user
-        User_model user1 = null;
-        User_model currentUser = user.get();
+        Entity_User user1 = null;
+        Entity_User currentUser = user.get();
         currentUser.setName(udr.getName());
         currentUser.setUsername(udr.getUsername());
         currentUser.setContactNumber(udr.getContactNumber().toString());
@@ -245,7 +259,9 @@ public class User_Controller {
     //TODO add a updateUserPassword - seperate this from updateUserDetails
     /**
      * Delete Customer *only customers can call this endpoint
+     * <p>
      * POST ENDPOINT: http://localhost:8080/api/user/deleteCustomer
+     * <p>
      * @param ur
      * @param result
      * @return Response object, if successfull the body will be null
@@ -254,7 +270,7 @@ public class User_Controller {
     @PostMapping("deleteCustomer")
     public ResponseEntity<Response> deleteCustomer(Principal p) {
         // Make sure the logged in user exists
-        Optional<User_model> user = userService.findByUsername(p.getName());
+        Optional<Entity_User> user = userService.findByUsername(p.getName());
         if(user.isPresent() == false){
             //shouldn't be able to get here but just incase
             Response response = new Response(false, "ERROR!", "User doesn't exist!", null);
@@ -279,7 +295,9 @@ public class User_Controller {
 
     /**
      * Delete User *only admins can call this endpoint
+     * <p>
      * POST ENDPOINT: http://localhost:8080/api/user/deleteUser
+     * <p>
      * @param ur
      * @param result
      * @return Response object, if successfull the body will be null
@@ -293,14 +311,14 @@ public class User_Controller {
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
-        List<User_model> users = new ArrayList<User_model>();
-        String[] subStrings = dr.getUsername();
+        List<Entity_User> users = new ArrayList<Entity_User>();
+        String[] subStrings = dr.getString();
         // Make sure the user(s) we want to delete exists
         if(subStrings != null){
             if(subStrings.length > 0){
                 for (String i : subStrings) {
                     try{
-                        Optional<User_model> um = userService.findByUsername(i);
+                        Optional<Entity_User> um = userService.findByUsername(i);
                         if(um.isPresent()){
                             users.add(um.get());
                         } 
@@ -323,6 +341,32 @@ public class User_Controller {
            Response response = new Response(false, "ERROR!", "Unable to delete user", null);
            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
+        
+        Response response = new Response(true, "User(s) deleted!", null, null);
+        return new ResponseEntity<Response>(response, HttpStatus.OK);
+    }
+
+    /**
+     * Add Service *only admins can call this endpoint
+     * <p>
+     * POST ENDPOINT: http://localhost:8080/api/user/addService
+     * <p>
+     * @param ur
+     * @param result
+     * @return Response object, if successfull the body will be null
+     * otherwise the error object will contain either a single string or array of field errors 
+     */
+    @PostMapping("addService")
+    public ResponseEntity<Response> addService(@Valid @RequestBody Delete_Request dr, BindingResult result) {
+        // Binding validation checks
+        if (result.hasErrors()) {
+            Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        //TODO Add the service to the user.
+        
+       
         
         Response response = new Response(true, "User(s) deleted!", null, null);
         return new ResponseEntity<Response>(response, HttpStatus.OK);

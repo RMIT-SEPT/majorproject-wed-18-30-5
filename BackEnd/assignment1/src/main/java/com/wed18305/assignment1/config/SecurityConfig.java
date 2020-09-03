@@ -91,6 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/booking/createBooking").hasAnyAuthority("1","3")
 			.antMatchers("/api/service/createService").hasAuthority("1")
 			.antMatchers("/api/schedule/createSchedule").hasAuthority("1")
+			.antMatchers("/api/schedule/deleteSchedule").hasAuthority("1")
 			.anyRequest().authenticated()
 			.and()
 			.formLogin().successHandler(authSuccessHandler())

@@ -1,12 +1,14 @@
 package com.wed18305.assignment1.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,7 +22,7 @@ import javax.persistence.PreUpdate;
 //Relation example: https://www.baeldung.com/jpa-one-to-one
 
 @Entity
-public class User_model {
+public class Entity_User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,14 +35,17 @@ public class User_model {
     protected String contactNumber;
     @OneToOne
     @JoinColumn(name = "type_id", referencedColumnName = "id")
-    protected UserType userType;
-    @ManyToMany(mappedBy = "employees")
-    protected List<Schedule> schedules = new ArrayList<Schedule>();
-    @ManyToMany()
+    protected Entity_UserType userType;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_schedules", 
+                joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
+                inverseJoinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id"))
+    protected Set<Entity_Schedule> schedules = new HashSet<Entity_Schedule>();
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_services", 
-    joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
-    inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
-    protected List<Service> services = new ArrayList<Service>();
+                joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
+                inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
+    protected Set<Entity_Service> services = new HashSet<Entity_Service>();
 
     private Date created_at;
     private Date updated_at;
@@ -55,13 +60,13 @@ public class User_model {
     }
 
     //Constructors
-    public User_model() {
+    public Entity_User() {
     }
-    public User_model(String name,
+    public Entity_User(String name,
                     String username,
                     String password,
                     String contactNumber,
-                    UserType type) {
+                    Entity_UserType type) {
         this.name = name;
         this.username = username;
         this.password = password;
@@ -97,17 +102,41 @@ public class User_model {
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
     }
-    public UserType getType() {
+    public Entity_UserType getType() {
         return this.userType;
     }
-    // Standard procedure to add/remove services to a user
-    // .getServices().add()
-    // .getServices().remove()
-    // After adding removing you must save the updated user
-    // User_service.saveOrUpdateUser(user)
-    public List<Service> getServices() {
+
+    /**
+     * Only call this from User_service, standard procedure below
+     * <p>
+     * .getServices().add()
+     * <p>
+     * .getServices().remove()
+     * <p>
+     * After adding removing you must save the updated user
+     * <p>
+     * User_service.saveOrUpdateUser(user)
+     * @return List<Entity_Service>
+     */
+    public Set<Entity_Service> getServices() {
         return this.services;
     }
+    /**
+     * Only call this from User_service, standard procedure below
+     * <p>
+     * .getSchedules().add()
+     * <p>
+     * .getSchedules().remove()
+     * <p>
+     * After adding removing you must save the updated user
+     * <p>
+     * User_service.saveOrUpdateUser(user)
+     * @return List<Schedule>
+     */
+    public Set<Entity_Schedule> getSchedules() {
+        return this.schedules;
+    }
+
 
 
     //Comparisons
@@ -131,10 +160,10 @@ public class User_model {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final User_model other = (User_model) obj;
-        // if (!Objects.equals(this.type, other.type)) {
-        //     return false;
-        // }
+        final Entity_User other = (Entity_User) obj;
+        if (!Objects.equals(this.userType, other.userType)) {
+            return false;
+        }
         if (!Objects.equals(this.contactNumber, other.contactNumber)) {
             return false;
         }

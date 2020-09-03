@@ -4,7 +4,7 @@ import javax.validation.Valid;
 
 import com.wed18305.assignment1.Requests.Service_Request;
 import com.wed18305.assignment1.Responses.Response;
-import com.wed18305.assignment1.model.Service;
+import com.wed18305.assignment1.model.Entity_Service;
 import com.wed18305.assignment1.services.Service_Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,9 @@ public class Service_Controller {
 
     /**
      * Create New Service 
+     * <p>
      * POST ENDPOINT: http://localhost:8080/api/service/createService
+     * <p>
      * INPUT JSON {"name" : "Freddie's Falaf"
      *             "requestID":"1"
      */
@@ -34,17 +36,16 @@ public class Service_Controller {
 
         // Binding validation checks
         if (result.hasErrors()) {
-            
             Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
         // Save new Service
-        Service service1 = null;
+        Entity_Service service1 = null;
         try {
 
             // Create a Service entity using the Service_Request
-            Service service = new Service(sr.getName());
+            Entity_Service service = new Entity_Service(sr.getName());
 
             // Save Service
             service1 = serviceService.saveOrUpdateService(service);

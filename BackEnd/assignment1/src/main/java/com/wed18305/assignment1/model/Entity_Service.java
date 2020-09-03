@@ -3,73 +3,47 @@ package com.wed18305.assignment1.model;
 import java.util.Date;
 import java.util.Objects;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-// import javax.persistence.Table;
 
-@Entity
-// @Table(name = "userType") //Not sure if the html table creation will be needed
-public class UserType {
+@Entity // Add this to make the class a managed type.
+public class Entity_Service {
 
-    public static enum UserTypeID {
-        ADMIN((long) 1),
-        EMPLOYEE((long) 2),
-        CUSTOMER((long) 3);
-
-        public final Long id;
-
-        UserTypeID(Long id) {
-            this.id = id;
-        }
-    }
-      
-
+    //// Variables
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    private String name;
+    protected long id;
+    protected String name;
 
+    // Datetime
     private Date created_at;
     private Date updated_at;
 
-
+    // Set created_at Value when Object's Created
     @PrePersist
-    protected void onCreate(){
-        this.created_at = new Date();
-    }
+    protected void onCreate() { this.created_at = new Date(); }
+
+    // Set updated_at Value when Object's Updated
     @PreUpdate
-    protected void onUpdate(){
-        this.updated_at = new Date();
-    }
+    protected void onUpdate() { this.updated_at = new Date(); }
 
-    //Constructors
-    public UserType() {
-    }
-    public UserType(String name) {
+    //// Constructor
+    public Entity_Service() {}
+    public Entity_Service(String name) {
         this.name = name;
     }
 
-    //Getters/Setters
-    public Long getId() {
-        return this.id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getName() {
-        return this.name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
+    //// Getters/Setters
+    public long getId() { return id; }
 
-    //Comparisons
+    public String getName()          { return name;      }
+    public void setName(String name) { this.name = name; }
+
+    /// Comparisons
     @Override
     public int hashCode() {
         //Copied from http://zetcode.com/springboot/annotations/
@@ -79,6 +53,7 @@ public class UserType {
         hash = 79 * hash + Objects.hashCode(this.name);
         return hash;
     } 
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -90,10 +65,12 @@ public class UserType {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final UserType other = (UserType) obj;
+        final Entity_Service other = (Entity_Service) obj;
+
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
+
         return Objects.equals(this.id, other.id);
     }
 
@@ -101,8 +78,7 @@ public class UserType {
     @Override
     public String toString() {
         var builder = new StringBuilder();
-        builder.append("UserType{id=").append(id).append(", name=")
-                .append(name).append("}");
+        builder.append("Booking{id= ").append(id).append(", name= ").append(name).append("}");
 
         return builder.toString();
     }
