@@ -3,22 +3,17 @@ package com.wed18305.assignment1.web;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.Valid;
 
 import com.wed18305.assignment1.Responses.Response;
 import com.wed18305.assignment1.Requests.Booking_Request;
-import com.wed18305.assignment1.Requests.Del_Request;
-import com.wed18305.assignment1.Requests.Get_Request;
-import com.wed18305.assignment1.model.Booking;
+import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.services.Booking_Service;
 import com.wed18305.assignment1.services.Service_Service;
-import com.wed18305.assignment1.model.User_model;
-import com.wed18305.assignment1.model.UserType;
-import com.wed18305.assignment1.model.UserType.UserTypeID;
-import com.wed18305.assignment1.repositories.Booking_Repository;
+import com.wed18305.assignment1.model.Entity_User;
+import com.wed18305.assignment1.model.Entity_UserType.UserTypeID;
 import com.wed18305.assignment1.services.User_Service;
 
 import org.apache.catalina.User;
@@ -57,7 +52,7 @@ public class Booking_Controller {
     @PostMapping("createBooking")
     public ResponseEntity<Response> createNewBooking(@Valid @RequestBody Booking_Request br, BindingResult result) {
 
-        User_model duplicateUser;
+        Entity_User duplicateUser;
 
         // Binding validation checks
         if (result.hasErrors()) {
@@ -67,7 +62,7 @@ public class Booking_Controller {
         }
 
         // Does Customers Column Only Contain Customer IDs?
-        for (User_model user : userService.findManyById(br.getCustomerIds())) {
+        for (Entity_User user : userService.findManyById(br.getCustomerIds())) {
 
             if (!user.getType().getId().equals(UserTypeID.CUSTOMER.id)) {
                 
@@ -84,7 +79,7 @@ public class Booking_Controller {
         }
 
         // Does Employees Column Only Contain Employee IDs?
-        for (User_model user : userService.findManyById(br.getEmployeeIds())) {
+        for (Entity_User user : userService.findManyById(br.getEmployeeIds())) {
 
             if (!user.getType().getId().equals(UserTypeID.EMPLOYEE.id)) {
                 
@@ -101,11 +96,11 @@ public class Booking_Controller {
         }
 
         // Save new Booking
-        Booking booking1 = null;
+        Entity_Booking booking1 = null;
         try {
 
             // Create a Booking entity using the Booking_Request
-            Booking booking = new Booking(br.getStartDate(),
+            Entity_Booking booking = new Entity_Booking(br.getStartDate(),
                                           br.getEndDate(),
                                           userService.findManyById(br.getCustomerIds()),
                                           userService.findManyById(br.getEmployeeIds()),
@@ -326,11 +321,11 @@ public class Booking_Controller {
     // Helper Methods
 
     // Code Referenced From Here: https://stackoverflow.com/questions/7414667/identify-duplicates-in-a-list
-    private boolean doesDuplicateExist(List<User_model> users) {
+    private boolean doesDuplicateExist(List<Entity_User> users) {
         
-        Set<User_model> duplicateChecker = new HashSet<User_model>();
+        Set<Entity_User> duplicateChecker = new HashSet<Entity_User>();
 
-        for (User_model user : users) {
+        for (Entity_User user : users) {
 
             if (!duplicateChecker.add(user)) {
                 return true;
@@ -340,11 +335,11 @@ public class Booking_Controller {
         return false;
     }
 
-    private User_model returnFirstDuplicate(List<User_model> users) {
+    private Entity_User returnFirstDuplicate(List<Entity_User> users) {
         
-        Set<User_model> duplicateChecker = new HashSet<User_model>();
+        Set<Entity_User> duplicateChecker = new HashSet<Entity_User>();
 
-        for (User_model user : users) {
+        for (Entity_User user : users) {
 
             if (!duplicateChecker.add(user)) {
                 return user;

@@ -48,8 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
-				.usersByUsernameQuery("SELECT username, password, 'true' AS enabled FROM USER_MODEL WHERE username=?")
-				.authoritiesByUsernameQuery("SELECT username, type_id AS authority FROM USER_MODEL WHERE username=?");
+				.usersByUsernameQuery("SELECT username, password, 'true' AS enabled FROM ENTITY_USER WHERE username=?")
+				.authoritiesByUsernameQuery("SELECT username, type_id AS authority FROM ENTITY_USER WHERE username=?");
 	}
 
 	@Bean
@@ -81,11 +81,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+
+		http.cors().and().authorizeRequests()
 			.antMatchers("/api/user/createCustomer").permitAll()
 			.antMatchers("/api/user/createEmployee").hasAuthority("1")
 			.antMatchers("/api/user/createAdmin").hasAuthority("1")
-      		.antMatchers("/api/user/getEmployees").hasAuthority("1")
+      		.antMatchers("/api/user/getEmployees").permitAll()
 			.antMatchers("/api/user/deleteUser").hasAuthority("1")
 			.antMatchers("/api/user/deleteCustomer").hasAuthority("3")
 			// .antMatchers("/api/booking/createBooking").hasAnyAuthority("1","3")
@@ -94,6 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/booking/deleteBooking").hasAuthority("1")
 			.antMatchers("/api/service/createService").hasAuthority("1")
 			.antMatchers("/api/schedule/createSchedule").hasAuthority("1")
+			.antMatchers("/api/schedule/deleteSchedule").hasAuthority("1")
 			.anyRequest().authenticated()
 			.and()
 			.formLogin().successHandler(authSuccessHandler())

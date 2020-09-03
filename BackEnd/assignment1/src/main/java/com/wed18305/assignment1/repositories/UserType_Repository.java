@@ -1,10 +1,10 @@
 package com.wed18305.assignment1.repositories;
 
-import com.wed18305.assignment1.model.UserType;
+import com.wed18305.assignment1.model.Entity_UserType;
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserType_Repository extends CrudRepository<UserType, Long> {
+public interface UserType_Repository extends CrudRepository<Entity_UserType, Long> {
 
     @Override
-    Iterable<UserType> findAllById(Iterable<Long> iterable);
+    Iterable<Entity_UserType> findAllById(Iterable<Long> iterable);
 }

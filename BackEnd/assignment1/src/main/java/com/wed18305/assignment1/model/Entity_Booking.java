@@ -16,35 +16,32 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 @Entity
-public class Booking {
+public class Entity_Booking {
 
     /// Variables
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    protected ZonedDateTime startDateTime;
-    protected ZonedDateTime endDateTime;
+    protected LocalDateTime startDateTime;
+    protected LocalDateTime endDateTime;
 
     // Relations
     @ManyToMany
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    protected List<User_model> customer;
+    protected List<Entity_User> customer;
 
     @ManyToMany
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
-    protected List<User_model> employee;
+    protected List<Entity_User> employee;
 
     @ManyToOne
     @JoinColumn(name = "service_id", referencedColumnName = "id")
-    protected Service service;
-
-    protected Boolean approved = false; // Don't approve bookings by default.
+    protected Entity_Service service;
     
     // Created/Updated Recordings
     private Date created_at;
@@ -63,13 +60,13 @@ public class Booking {
     }
 
     /// Constructor
-    public Booking() {
+    public Entity_Booking() {
     }
-    public Booking(ZonedDateTime startDateTime,
-                   ZonedDateTime endDateTime,
-                   List<User_model> customer,
-                   List<User_model> employee,
-                   Service service) {
+    public Entity_Booking(LocalDateTime startDateTime,
+                   LocalDateTime endDateTime,
+                   List<Entity_User> customer,
+                   List<Entity_User> employee,
+                   Entity_Service service) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.customer = customer;
@@ -92,23 +89,21 @@ public class Booking {
 
     public Long getId() { return id; }
 
-    public ZonedDateTime getStartDateTime()             { return startDateTime;    }
-    public void setStartDateTime(ZonedDateTime newTime) { startDateTime = newTime; }
+    public LocalDateTime getStartDateTime()             { return startDateTime;    }
+    public void setStartDateTime(LocalDateTime newTime) { startDateTime = newTime; }
 
-    public ZonedDateTime getEndDateTime()             { return endDateTime;    }
-    public void setEndDateTime(ZonedDateTime newTime) { endDateTime = newTime; }
+    public LocalDateTime getEndDateTime()             { return endDateTime;    }
+    public void setEndDateTime(LocalDateTime newTime) { endDateTime = newTime; }
 
-    public List<User_model> getCustomers()              { return customer;          }
-    public void setCustomers(List<User_model> customer) { this.customer = customer; }
+    public List<Entity_User> getCustomers()              { return customer;          }
+    public void setCustomers(List<Entity_User> customer) { this.customer = customer; }
 
-    public List<User_model> getEmployees()              { return customer;          }
-    public void setEmployees(List<User_model> employee) { this.employee = employee; }
+    public List<Entity_User> getEmployees()              { return customer;          }
+    public void setEmployees(List<Entity_User> employee) { this.employee = employee; }
 
-    public Service getService()                 { return service;           }
-    public void setSerivce(Service service)     { this.service = service;   }
-
-    public Boolean getApproved() { return approved; }
-    public void approveBooking() { approved = true; }
+    public Entity_Service getService()                 { return service;           }
+    public void setSerivce(Entity_Service service)     { this.service = service;   }
+    
 
     /// Comparisons
     @Override
@@ -134,7 +129,7 @@ public class Booking {
             return false;
         }
 
-        final Booking other = (Booking) obj;
+        final Entity_Booking other = (Entity_Booking) obj;
         if (!Objects.equals(this.startDateTime, other.startDateTime)) {
             return false;
         }
@@ -148,7 +143,7 @@ public class Booking {
     //String output
     @Override
     public String toString() {
-        var builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         builder.append("Booking{id= ").append(id).append(", startDateTime= ")
             .append(startDateTime).append(", endDateTime= ").append(endDateTime).append("}");
 

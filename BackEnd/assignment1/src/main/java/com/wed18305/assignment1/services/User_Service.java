@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.wed18305.assignment1.model.Booking;
-import com.wed18305.assignment1.model.User_model;
-import com.wed18305.assignment1.repositories.Booking_Repository;
+import com.wed18305.assignment1.model.Entity_Service;
+import com.wed18305.assignment1.model.Entity_Schedule;
+import com.wed18305.assignment1.model.Entity_User;
+import com.wed18305.assignment1.repositories.Schedule_Repository;
+import com.wed18305.assignment1.repositories.Service_Repository;
 import com.wed18305.assignment1.repositories.User_Repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,27 +18,30 @@ import org.springframework.stereotype.Service;
 public class User_Service {
     @Autowired
     private User_Repository userRepository;
-    private Booking_Repository bookingRepository;
+    @Autowired
+    private Service_Repository serviceRepository;
+    @Autowired
+    private Schedule_Repository scheduleRepository;
 
-    public User_model saveOrUpdateUser(User_model user) {
+    public Entity_User saveOrUpdateUser(Entity_User user) {
         return userRepository.save(user);
     }
 
-    public Optional<User_model> findByUsername(String username) {
+    public Optional<Entity_User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    public Optional<User_model> findByUsernameAndPassword(String username, String password) {
+    public Optional<Entity_User> findByUsernameAndPassword(String username, String password) {
         return userRepository.findByUsernameAndPassword(username, password);
     }
 
-    public Optional<User_model> findById(Long id){
+    public Optional<Entity_User> findById(Long id){
         return userRepository.findById(id);
     }
 
-    public List<User_model> findManyById(Long[] ids){
+    public List<Entity_User> findManyById(Long[] ids){
         
-        List<User_model> users = new ArrayList<User_model>();
+        List<Entity_User> users = new ArrayList<Entity_User>();
 
         for (int i = 0; i < ids.length; i++) {
             users.add(userRepository.findById(ids[i]).get());
@@ -45,10 +50,10 @@ public class User_Service {
         return users;
     }
     //Employees are users that are either employees or admins
-    public List<User_model> findManyEmployeesById(Long[] ids){   
-        List<User_model> users = new ArrayList<User_model>();
+    public ArrayList<Entity_User> findManyEmployeesById(Long[] ids){   
+        ArrayList<Entity_User> users = new ArrayList<Entity_User>();
         for (int i = 0; i < ids.length; i++) {
-            User_model u = userRepository.findById(ids[i]).get();
+            Entity_User u = userRepository.findById(ids[i]).get();
             if(u.getType().getId() == 1 || u.getType().getId() == 2){
                 users.add(u);
             }
@@ -56,45 +61,59 @@ public class User_Service {
         return users;
     }
 
-    public Iterable<User_model> findAllByTypeId(Long id){
+    public Iterable<Entity_User> findAllByTypeId(Long id){
         return userRepository.findAllByUserTypeId(id);
     }
 
-    public List<Booking> findUserBookings(Long id) {
-        User_model user = userRepository.findById(id).get();
-
-        List<Booking> userBookings = new ArrayList<Booking>();
-
-        for (Booking booking : bookingRepository.findAll()) {
-
-            if (booking.getCustomers().contains(user)) {
-                userBookings.add(booking);
+    /**
+     * Note that if you alter a service after creating it for multiple users
+     * it will update for ALL users
+     * @param users
+     * @param services
+     * @return
+     */
+    public Iterable<Entity_User> addServicesToEmployees(ArrayList<Entity_User> users, ArrayList<Entity_Service> services){
+        //Add the services to the users
+        for (Entity_User u : users) {
+            for (Entity_Service service: services) {
+                //Check that the user doesn't already have the service.
+                if (u.getServices().contains(service) == false){
+                    u.getServices().add(service);
+                }
             }
         }
-
-        return userBookings;
+        //save the users
+        return userRepository.saveAll(users);
     }
 
-    public List<Booking> findApprovedUserBookings(Long id) {
-        User_model user = userRepository.findById(id).get();
-
-        List<Booking> userBookings = new ArrayList<Booking>();
-
-        for (Booking booking : bookingRepository.findAll()) {
-
-            if (booking.getCustomers().contains(user) && booking.getApproved()) {
-                userBookings.add(booking);
+    /**
+     * Note that if you alter a schedule after creating it for multiple users
+     * it will update for ALL users
+     * @param users
+     * @param schedules
+     * @return
+     */
+    public Iterable<Entity_User> addSchedulesToEmployees(ArrayList<Entity_User> users, ArrayList<Entity_Schedule> schedules){
+        //Add the services to the users
+        for (Entity_User u : users) {
+            for (Entity_Schedule schedule : schedules) {
+                //Check that the user doesn't already have the schedule.
+                if (u.getSchedules().contains(schedule) == false){
+                    u.getSchedules().add(schedule);
+                }
             }
         }
-
-        return userBookings;
+        //save the users
+        return userRepository.saveAll(users);
     }
+    
 
+
+    //DELETION
     public void deleteById(Long id){
         userRepository.deleteById(id);
     }
-
-    public void deleteAll(Iterable<User_model> users){
+    public void deleteAll(Iterable<Entity_User> users){
         userRepository.deleteAll(users);
     }
 }
