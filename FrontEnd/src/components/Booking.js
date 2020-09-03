@@ -25,6 +25,8 @@ class Booking extends Component {
     console.log(booking);
   }
 
+
+
   render() {
     return (
       <>

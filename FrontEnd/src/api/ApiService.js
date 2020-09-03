@@ -30,6 +30,10 @@ class ApiService {
         return axios.put(USER_API_BASE_URL + '/' + user.id, user);
     }
 
+    fetchBookings() {
+        return axios.get('http://localhost:8080/api/booking/getCustomerBookings')
+    }
+
 }
 
 export default new ApiService();

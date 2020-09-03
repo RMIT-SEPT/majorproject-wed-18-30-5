@@ -9,6 +9,7 @@ import Home from "./components/Home";
 import Booking from "./components/Booking";
 import History from "./components/History";
 import EditUser from "./components/Users/EditUser";
+import ActiveBooking from "./components/ActiveBookings";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route exact path="/history" component={History} />
       <Route exact path="/edituser" component={EditUser} />
       <Route exact path="/signup" component={Signup} />
+      <Route exact path="/activebookings" component={ActiveBooking} />
     </Router>
   );
 }
