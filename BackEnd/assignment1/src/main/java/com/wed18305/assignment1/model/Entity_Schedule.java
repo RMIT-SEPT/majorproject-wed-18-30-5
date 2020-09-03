@@ -109,7 +109,7 @@ public class Entity_Schedule {
     //String output
     @Override
     public String toString() {
-        var builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         builder.append("Schedule{id= ").append(id).append(", startDateTime= ")
             .append(startDateTime).append(", endDateTime= ").append(endDateTime).append("}");
 

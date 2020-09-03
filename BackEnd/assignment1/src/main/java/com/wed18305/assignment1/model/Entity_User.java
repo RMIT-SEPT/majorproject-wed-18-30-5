@@ -178,7 +178,7 @@ public class Entity_User {
     //String output
     @Override
     public String toString() {
-        var builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         builder.append("User{id=").append(id).append(", name=")
                 .append(name).append("}");
 

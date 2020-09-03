@@ -139,7 +139,7 @@ public class Entity_Booking {
     //String output
     @Override
     public String toString() {
-        var builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         builder.append("Booking{id= ").append(id).append(", startDateTime= ")
             .append(startDateTime).append(", endDateTime= ").append(endDateTime).append("}");
 

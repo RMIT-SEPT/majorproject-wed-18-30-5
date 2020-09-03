@@ -100,7 +100,7 @@ public class Entity_UserType {
     //String output
     @Override
     public String toString() {
-        var builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         builder.append("UserType{id=").append(id).append(", name=")
                 .append(name).append("}");
 

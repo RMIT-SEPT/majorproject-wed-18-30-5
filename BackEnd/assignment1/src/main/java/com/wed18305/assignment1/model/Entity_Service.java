@@ -77,7 +77,7 @@ public class Entity_Service {
     //String output
     @Override
     public String toString() {
-        var builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         builder.append("Booking{id= ").append(id).append(", name= ").append(name).append("}");
 
         return builder.toString();
