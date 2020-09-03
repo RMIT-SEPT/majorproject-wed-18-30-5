@@ -31,7 +31,7 @@ class ApiService {
     }
 
     fetchBookings() {
-        return axios.get('http://localhost:8080/api/booking/getCustomerBookings')
+        return axios.get('http://localhost:8080/api/booking/getUpcomingCustomerBookings')
     }
 
 }

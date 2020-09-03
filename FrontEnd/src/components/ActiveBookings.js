@@ -10,16 +10,16 @@ export default class ActiveBookings extends Component {
             bookings: [],
             message: null
         }
-        this.reloadBookingList = this.reloadBookingList.bind(this);
     }
 
     componentDidMount() {
         this.reloadBookingList();
     }
 
-    reloadBookingList() {
+    reloadBookingList = () => {
         ApiService.fetchBookings()
             .then((res) => {
+                debugger;
                 this.setState({ bookings: res.data.result })
             });
     }
@@ -32,57 +32,28 @@ export default class ActiveBookings extends Component {
                 </header>
                 <div className="active-booking-wrapper">
                     <CardDeck>
-                        <Card>
-                            <Card.Img variant="top" src="holder.js/100px160" />
-                            <Card.Body>
-                                <Card.Title>Service Name</Card.Title>
-                                <Card.Text>
-                                    <ul>
-                                        <li>Customer Name : </li>
-                                        <li>Employee Name : </li>
-                                        <li>Start-Date : </li>
-                                        <li>End-Date : </li>
-                                    </ul>
-                                </Card.Text>
-                            </Card.Body>
-                            <Card.Footer>
-                                <small className="text-muted">Last updated 3 mins ago</small>
-                            </Card.Footer>
-                        </Card>
-                        <Card>
-                            <Card.Img variant="top" src="holder.js/100px160" />
-                            <Card.Body>
-                                <Card.Title>Service Name</Card.Title>
-                                <Card.Text>
-                                    <ul>
-                                        <li>Customer Name : </li>
-                                        <li>Employee Name : </li>
-                                        <li>Start-Date : </li>
-                                        <li>End-Date : </li>
-                                    </ul>
-                                </Card.Text>
-                            </Card.Body>
-                            <Card.Footer>
-                                <small className="text-muted">Last updated 3 mins ago</small>
-                            </Card.Footer>
-                        </Card>
-                        <Card>
-                            <Card.Img variant="top" src="holder.js/100px160" />
-                            <Card.Body>
-                                <Card.Title>Service Name</Card.Title>
-                                <Card.Text>
-                                    <ul>
-                                        <li>Customer Name : </li>
-                                        <li>Employee Name : </li>
-                                        <li>Start-Date : </li>
-                                        <li>End-Date : </li>
-                                    </ul>
-                                </Card.Text>
-                            </Card.Body>
-                            <Card.Footer>
-                                <small className="text-muted">Last updated 3 mins ago</small>
-                            </Card.Footer>
-                        </Card>
+                        {
+                            this.state.bookings.map(
+                                booking => (
+                                    <Card>
+                                        <Card.Img variant="top" src="holder.js/100px160" />
+                                        <Card.Body>
+                                            <Card.Title>Service Name</Card.Title>
+                                            <Card.Text>
+                                                <ul>
+                                                    <li>Customer Name : {booking.startDateTime}</li>
+                                                    <li>Employee Name : </li>
+                                                    <li>Start-Date : </li>
+                                                    <li>End-Date : </li>
+                                                </ul>
+                                            </Card.Text>
+                                        </Card.Body>
+                                        <Card.Footer>
+                                            <small className="text-muted">Last updated 3 mins ago</small>
+                                        </Card.Footer>
+                                    </Card>
+                                )
+                            )}
                     </CardDeck>
                 </div>
             </>

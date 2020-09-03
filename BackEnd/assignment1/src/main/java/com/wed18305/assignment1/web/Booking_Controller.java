@@ -418,6 +418,7 @@ public class Booking_Controller {
      * GET ENDPOINT: http://localhost:8080/api/booking/getUpcomingCustomerBookings
      */
     @GetMapping("getUpcomingCustomerBookings")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Response> getUpcomingCustomerBookings(Principal p) {
 
         // Make sure the logged in user exists
