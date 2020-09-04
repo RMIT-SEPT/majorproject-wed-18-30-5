@@ -252,13 +252,13 @@ public class User_Controller {
         }
 
         // Check employees result
-        if (emplWithService.size() == 0) {
-            Response response = new Response(false, "ERROR!", "No employees with service "+s.get().getName(), null);
-            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
-        } else {
-            Response response = new Response(true, "Employees found!", null, emplWithService);
+        // if (emplWithService.size() == 0) {
+        //     Response response = new Response(true, "ERROR!", "No employees with service "+s.get().getName(), null, emplWithService);
+        //     return new ResponseEntity<Response>(response, HttpStatus.OK);
+        // } else {
+            Response response = new Response(true, "Maybe some employees found?", null, emplWithService);
             return new ResponseEntity<Response>(response, HttpStatus.OK);
-        }
+        // }
     }
 
 

@@ -35,13 +35,19 @@ class Signup extends Component {
 
   addUser = (e) => {
     e.preventDefault();
-    let user = { name: this.state.name, username: this.state.username, password: this.state.password, contactNumber: this.state.contactNumber };
-    ApiService.addUser(user)
-      .then(res => {
-        this.setState({ message: 'User added successfully.' });
-        this.props.history.push('/login');
-      }).catch(console.log)
-  }
+    let user = {
+      name: this.state.name,
+      username: this.state.username,
+      password: this.state.password,
+      contactNumber: this.state.contactNumber,
+    };
+    ApiService.addUser(this, user)
+      .then((res) => {
+        this.setState({ message: "User added successfully." });
+        this.props.history.push("/login");
+      })
+      .catch(console.log);
+  };
 
   render() {
     return (
