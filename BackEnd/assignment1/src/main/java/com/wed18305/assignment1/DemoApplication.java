@@ -1,10 +1,7 @@
 package com.wed18305.assignment1;
 
 import com.wed18305.assignment1.config.DateTimeStatic;
-import com.wed18305.assignment1.model.Entity_Booking;
-import com.wed18305.assignment1.model.Entity_Service;
-import com.wed18305.assignment1.model.Entity_User;
-import com.wed18305.assignment1.model.Entity_UserType;
+import com.wed18305.assignment1.model.*;
 import com.wed18305.assignment1.repositories.Booking_Repository;
 import com.wed18305.assignment1.repositories.Schedule_Repository;
 import com.wed18305.assignment1.repositories.Service_Repository;
@@ -48,7 +45,8 @@ public class DemoApplication {
 			TypeRepository.save(admin);//1
 			TypeRepository.save(employee);//2
 			TypeRepository.save(customer);//3
- 
+			
+			// Create admn/employee/customer(s)
 			Entity_User jack = new Entity_User("Jack", "Jacky", "1234", "0000000000", customer);
 			Entity_User chloe = new Entity_User("Chloe", "O'Brian", "1234", "0000000000", customer);
 			Entity_User kim = new Entity_User("Kim", "Bauer", "1234", "0000000000", customer);
@@ -56,7 +54,7 @@ public class DemoApplication {
 			Entity_User michelle = new Entity_User("Michelle", "Dessler", "1234", "0000000000", employee);
 			Entity_User leslie = new Entity_User("Leslie", "Messler", "1234", "0000000000", employee);			
 
-			// save a few customers
+			//Save the users
 			UserRepository.save(jack);
 			UserRepository.save(chloe);
 			UserRepository.save(kim);
@@ -76,22 +74,61 @@ public class DemoApplication {
 			ServiceRepository.save(service4);
 			ServiceRepository.save(service5);
 
+			//Add services to employees, david, michelle, leslie
+			david.getServices().add(falafel);
+			david.getServices().add(hotDogs);
+			michelle.getServices().add(falafel);
+			michelle.getServices().add(hotDogs);
+			michelle.getServices().add(service5);
+			leslie.getServices().add(falafel);
+			leslie.getServices().add(hotDogs);
+			leslie.getServices().add(service3);
+			leslie.getServices().add(service4);
+			leslie.getServices().add(service5);
+
+			//Save Schedules 
+			//Date 2020-09-07
+			//UTC melbourne +10
+			//david 0900-1700, michelle 1700-2400, leslie 0500-1200
+			OffsetDateTime d_ts = OffsetDateTime.parse("2020-09-07T09:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime d_te = OffsetDateTime.parse("2020-09-07T17:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime m_ts = OffsetDateTime.parse("2020-09-07T17:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime m_te = OffsetDateTime.parse("2020-09-07T24:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime l_ts = OffsetDateTime.parse("2020-09-07T05:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime l_te = OffsetDateTime.parse("2020-09-07T12:00+10:00", DateTimeStatic.getFormatter());
+			Entity_Schedule scheduleDavid = new Entity_Schedule(d_ts, d_te);
+			Entity_Schedule scheduleMichelle = new Entity_Schedule(m_ts, m_te);
+			Entity_Schedule scheduleLeslie = new Entity_Schedule(l_ts, l_te);
+
+			//Add Schedules to employees
+			david.getSchedules().add(scheduleDavid);
+			michelle.getSchedules().add(scheduleMichelle);
+			leslie.getSchedules().add(scheduleLeslie);
+
+			//Update the users
+			UserRepository.save(jack);
+			UserRepository.save(chloe);
+			UserRepository.save(kim);
+			UserRepository.save(david);
+			UserRepository.save(michelle);
+			UserRepository.save(leslie);
+			
 			// Save Bookings
 			ArrayList<Entity_User> customers = new ArrayList<>();
 			customers.add(jack);
 			customers.add(chloe);
 			ArrayList<Entity_User> employees = new ArrayList<>();
 			employees.add(michelle);
-			Entity_Booking upcomingBooking = new Entity_Booking(OffsetDateTime.parse("2019-08-03T16:20+05:30", DateTimeStatic.getFormatter()), 
-																OffsetDateTime.parse("2019-08-03T16:20+05:30", DateTimeStatic.getFormatter()), 
+			Entity_Booking Booking = new Entity_Booking(OffsetDateTime.parse("2020-09-07T17:00+10:00", DateTimeStatic.getFormatter()), 
+														OffsetDateTime.parse("2020-09-07T19:00+10:00", DateTimeStatic.getFormatter()), 
 														customers,
 														employees);
-			Entity_Booking completedBooking = new Entity_Booking(OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()), 
-																 OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()), 
-														customers,
-														employees);
-			BookingRepository.save(upcomingBooking);
-			BookingRepository.save(completedBooking);
+			// Entity_Booking completedBooking = new Entity_Booking(OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()), 
+			// 													 OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()), 
+			// 											customers,
+			// 											employees);
+			BookingRepository.save(Booking);
+			// BookingRepository.save(completedBooking);
       	};
 	}
 }
