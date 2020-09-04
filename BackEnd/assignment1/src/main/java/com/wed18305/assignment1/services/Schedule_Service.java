@@ -14,7 +14,7 @@ public class Schedule_Service {
     @Autowired
     private Schedule_Repository schRepository;
 
-    public Entity_Schedule saveOrUpdateUser(Entity_Schedule sch) {
+    public Entity_Schedule saveOrUpdateSchedule(Entity_Schedule sch) {
         return schRepository.save(sch);
     }
 

@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "http://localhost:3000")
 public class User_Controller {
 
     @Autowired
@@ -50,7 +49,6 @@ public class User_Controller {
      * otherwise the error object will contain either a single string or array of field errors 
      */
     @PostMapping("createCustomer")
-    // @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Response> createNewUser(@Valid @RequestBody User_Request ur, BindingResult result) {
         // Binding validation checks
         if (result.hasErrors()) {
@@ -191,7 +189,6 @@ public class User_Controller {
      * otherwise the error object will contain either a single string or array of field errors 
      */
     @GetMapping("getEmployees")
-    // @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Response> getEmployees() {
         // Get any employees
         Iterable<Entity_User> employees = null;

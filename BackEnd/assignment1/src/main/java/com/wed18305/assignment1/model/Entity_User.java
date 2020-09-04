@@ -20,6 +20,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 //Relation example: https://www.baeldung.com/jpa-one-to-one
 
@@ -33,24 +34,30 @@ public class Entity_User {
     protected String name;
     @Column(unique = true)
     protected String username;
+    @JsonIgnore
     protected String password;
     protected String contactNumber;
     @OneToOne
     @JoinColumn(name = "type_id", referencedColumnName = "id")
     protected Entity_UserType userType;
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_schedules", 
                 joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
                 inverseJoinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id"))
     protected Set<Entity_Schedule> schedules = new HashSet<Entity_Schedule>();
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_services", 
                 joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
                 inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
     protected Set<Entity_Service> services = new HashSet<Entity_Service>();
+    
 
+    @JsonIgnore
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date created_at;
+    @JsonIgnore
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date updated_at;
 

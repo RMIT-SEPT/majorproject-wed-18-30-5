@@ -11,6 +11,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity // Add this to make the class a managed type.
 public class Entity_Service {
@@ -22,8 +23,10 @@ public class Entity_Service {
     protected String name;
 
     // Datetime
+    @JsonIgnore
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date created_at;
+    @JsonIgnore
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date updated_at;
 

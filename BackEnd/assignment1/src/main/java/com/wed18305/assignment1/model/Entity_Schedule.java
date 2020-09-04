@@ -17,6 +17,7 @@ import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Entity_Schedule {
@@ -32,13 +33,16 @@ public class Entity_Schedule {
     @NotNull(message = "End date is required")
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     protected OffsetDateTime endDateTime;
+    @JsonIgnore
     @ManyToMany(mappedBy = "schedules")
     protected List<Entity_User> employees = new ArrayList<Entity_User>();
-    
+    @JsonIgnore
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date created_at;
+    @JsonIgnore
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date updated_at;
+    
     @PrePersist
     protected void onCreate(){
         this.created_at = new Date();
