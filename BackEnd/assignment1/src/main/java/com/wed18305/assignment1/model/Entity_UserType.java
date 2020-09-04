@@ -13,6 +13,7 @@ import javax.persistence.PreUpdate;
 // import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -39,8 +40,10 @@ public class Entity_UserType {
     private Long id;
     private String name;
     
+    @JsonIgnore
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date created_at;
+    @JsonIgnore
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date updated_at;
 

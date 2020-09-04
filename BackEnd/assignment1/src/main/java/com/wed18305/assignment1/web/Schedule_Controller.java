@@ -31,7 +31,7 @@ public class Schedule_Controller {
     @Autowired
     private Schedule_Service schService;
     @Autowired
-    private User_Service usrService;
+    private User_Service userService;
 
     /**
      * Create new schedule
@@ -59,7 +59,7 @@ public class Schedule_Controller {
         }
         //Check that the employee ids provided are employees
         ArrayList<Entity_User> employees = new ArrayList<Entity_User>();
-        employees = usrService.findEmployeesById(sr.getUserIds());
+        employees = userService.findEmployeesById(sr.getUserIds());
         if (employees.size() == 0) {
             Response response = new Response(false, "ERROR!", "No employees passed in", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
@@ -88,8 +88,8 @@ public class Schedule_Controller {
         }
         //Save the changes in the database
         try {
-            schService.saveOrUpdateUser(s1);
-            usrService.addSchedulesToEmployees(employees, schedules);
+            schService.saveOrUpdateSchedule(s1);
+            userService.addSchedulesToEmployees(employees, schedules);
         } catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
@@ -136,7 +136,7 @@ public class Schedule_Controller {
                 List<Entity_User> users = schedules_db.get(i).getEmployees();
                 for (int j = 0; j < users.size(); j++) {
                     users.get(j).getSchedules().remove(schedules_db.get(i));
-                    usrService.saveOrUpdateUser(users.get(j));
+                    userService.saveOrUpdateUser(users.get(j));
                 }
             }
             //Now delete the actual schedules

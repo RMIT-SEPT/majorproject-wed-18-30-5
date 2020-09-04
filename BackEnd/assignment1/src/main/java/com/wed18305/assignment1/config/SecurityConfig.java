@@ -31,8 +31,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Spring Security configuration. Good info for spring security
@@ -68,14 +68,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public AuthenticationSuccessHandler authSuccessHandler() {
-		return new AuthenticationSuccess();
-	}
-
-	@Bean
-	public AuthenticationFailureHandler authFailureHandler() {
-		return new AuthenticationFailure();
-	}
+    public UsernamePasswordAuthenticationFilter authenticationFilter() throws Exception {
+        UsernamePasswordAuthenticationFilter authenticationFilter
+			= new UsernamePasswordAuthenticationFilter();
+		authenticationFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", "POST"));
+		authenticationFilter.setAuthenticationSuccessHandler(new AuthenticationSuccess());
+		authenticationFilter.setAuthenticationFailureHandler(new AuthenticationFailure());
+        authenticationFilter.setAuthenticationManager(authenticationManagerBean());
+        return authenticationFilter;
+    }
 
 	@Override
 	public void configure(WebSecurity web) {
@@ -88,36 +89,48 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().authorizeRequests().antMatchers("/api/user/createCustomer").permitAll()
-				.antMatchers("/api/user/createEmployee").hasAuthority(UserTypeID.getAdmin())
-				.antMatchers("/api/user/createAdmin").hasAuthority(UserTypeID.getAdmin())
-				.antMatchers("/api/user/getEmployees").hasAuthority(UserTypeID.getAdmin())
-				.antMatchers("/api/user/deleteUser").hasAuthority(UserTypeID.getAdmin())
-				.antMatchers("/api/user/deleteCustomer").hasAuthority(UserTypeID.getAdmin())
-				.antMatchers("/api/user/createCustomer").permitAll().antMatchers("/api/user/createEmployee")
-				.hasAuthority(UserTypeID.getAdmin()).antMatchers("/api/user/createAdmin")
-				.hasAuthority(UserTypeID.getAdmin()).antMatchers("/api/user/getEmployees")
-				.hasAuthority(UserTypeID.getAdmin()).antMatchers("/api/user/getEmployeesByService")
-				.hasAuthority(UserTypeID.getAdmin()).antMatchers("/api/user/deleteUser")
-				.hasAuthority(UserTypeID.getAdmin()).antMatchers("/api/user/deleteCustomer")
-				.hasAuthority(UserTypeID.getCustomer()).antMatchers("/api/booking/createBooking")
-				.hasAnyAuthority(UserTypeID.getAdmin(), UserTypeID.getCustomer())
-				.antMatchers("/api/booking/approveBooking").hasAuthority(UserTypeID.getAdmin())
-				.antMatchers("/api/booking/getAdminBookings").hasAuthority(UserTypeID.getAdmin())
-				.antMatchers("/api/booking/getUpcomingAdminBookings").hasAuthority(UserTypeID.getAdmin())
-				.antMatchers("/api/booking/getCompletedAdminBookings").hasAuthority(UserTypeID.getAdmin())
-				.antMatchers("/api/booking/getEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
-				.antMatchers("/api/booking/getUpcomingEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
-				.antMatchers("/api/booking/getCompletedEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
-				.antMatchers("/api/booking/getCustomerBookings").hasAuthority(UserTypeID.getCustomer())
-				.antMatchers("/api/booking/getUpcomingCustomerBookings").hasAuthority(UserTypeID.getCustomer())
-				.antMatchers("/api/booking/getCompletedCustomerBookings").hasAuthority(UserTypeID.getCustomer())
-				.antMatchers("/api/booking/deleteBooking").hasAuthority(UserTypeID.getAdmin())
-				.antMatchers("/api/service/createService").hasAuthority(UserTypeID.getAdmin())
-				.antMatchers("/api/schedule/createSchedule").hasAuthority(UserTypeID.getAdmin())
-				.antMatchers("/api/schedule/deleteSchedule").hasAuthority(UserTypeID.getAdmin()).anyRequest()
-				.authenticated().and().formLogin().successHandler(authSuccessHandler())
-				.failureHandler(authFailureHandler()).permitAll().and().logout().permitAll().deleteCookies("JSESSIONID")
-				.and().csrf().disable();
+		http.cors().and().authorizeRequests()
+			.antMatchers("/login").permitAll()
+			.antMatchers("/api/user/createCustomer").permitAll()
+			.antMatchers("/api/user/createEmployee").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/createAdmin").hasAuthority(UserTypeID.getAdmin())
+      		.antMatchers("/api/user/getEmployees").permitAll()//.hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/deleteUser").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/deleteCustomer").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/createCustomer").permitAll()
+			.antMatchers("/api/user/createEmployee").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/createAdmin").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/getEmployees").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/getEmployeesByService").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/deleteUser").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/deleteCustomer").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/booking/createBooking").hasAnyAuthority(UserTypeID.getAdmin(), UserTypeID.getCustomer())
+			.antMatchers("/api/booking/approveBooking").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getAdminBookings").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getUpcomingAdminBookings").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getCompletedAdminBookings").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
+			.antMatchers("/api/booking/getUpcomingEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
+			.antMatchers("/api/booking/getCompletedEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
+			.antMatchers("/api/booking/getCustomerBookings").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/booking/getUpcomingCustomerBookings").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/booking/getCompletedCustomerBookings").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/booking/deleteBooking").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/service/createService").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/schedule/createSchedule").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/schedule/deleteSchedule").hasAuthority(UserTypeID.getAdmin())
+			.anyRequest().authenticated()
+			// .and()
+			// .formLogin().loginPage("http://localhost:3000/login")
+			// 			.loginProcessingUrl("http://localhost:8080/login")
+			// 			.failureForwardUrl("http://localhost:3000/login")
+			// 			.successHandler(authSuccessHandler())
+			// 			.failureHandler(authFailureHandler())
+			// 			.permitAll()
+            .and()
+			.logout().permitAll()
+			.deleteCookies("JSESSIONID")
+			.and()
+			.csrf().disable();
 	}
 }

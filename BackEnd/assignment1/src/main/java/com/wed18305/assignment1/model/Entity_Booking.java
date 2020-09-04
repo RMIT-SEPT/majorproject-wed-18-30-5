@@ -15,6 +15,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Entity_Booking {
@@ -30,18 +31,22 @@ public class Entity_Booking {
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     protected OffsetDateTime endDateTime;
 
-    // Relations
+    //Relations
+    @JsonIgnore
     @ManyToMany
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     protected List<Entity_User> customers;
 
+    @JsonIgnore
     @ManyToMany
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     protected List<Entity_User> employees;
     
     // Created/Updated Recordings
+    @JsonIgnore
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date created_at;
+    @JsonIgnore
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date updated_at;
 
