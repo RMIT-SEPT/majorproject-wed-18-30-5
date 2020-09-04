@@ -11,12 +11,15 @@ public class UserType_Service {
     @Autowired
     private UserType_Repository userTypeRepository;
 
-    public Entity_UserType saveNewUserType(Entity_UserType userType) {
-        //TODO check if this updates if so dont allow it.
+    public Entity_UserType save(Entity_UserType userType) {
         return userTypeRepository.save(userType);
     }
 
     public Optional<Entity_UserType> findById(Long id){
         return userTypeRepository.findById(id);
+    }
+
+    public Optional<Entity_UserType> findByName(String name){
+        return userTypeRepository.findByName(name);
     }
 }

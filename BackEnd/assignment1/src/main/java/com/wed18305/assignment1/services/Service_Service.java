@@ -25,4 +25,16 @@ public class Service_Service {
     public Optional<Entity_Service> findById(Long id){
         return serviceRepository.findById(id);
     }
+
+    public Iterable<Entity_Service> findAllByIds(Iterable<Long> ids){
+        return serviceRepository.findAllById(ids);
+    }
+
+    public Optional<Entity_Service> findByName(String name){
+        return serviceRepository.findByName(name);
+    }
+
+    public Iterable<Entity_Service> findAll(){
+        return serviceRepository.findAll();
+    }
 }

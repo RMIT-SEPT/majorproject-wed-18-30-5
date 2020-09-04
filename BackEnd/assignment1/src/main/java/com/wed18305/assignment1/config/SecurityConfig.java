@@ -18,7 +18,6 @@ package com.wed18305.assignment1.config;
 
 import javax.sql.DataSource;
 
-import com.wed18305.assignment1.model.Entity_UserType;
 import com.wed18305.assignment1.model.Entity_UserType.UserTypeID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,29 +87,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-			.antMatchers("/api/user/createCustomer")        .permitAll()
-			.antMatchers("/api/user/createEmployee")        .hasAuthority(UserTypeID.getAdmin())
-			.antMatchers("/api/user/createAdmin")           .hasAuthority(UserTypeID.getAdmin())
-      		.antMatchers("/api/user/getEmployees")          .hasAuthority(UserTypeID.getAdmin())
-			.antMatchers("/api/user/deleteUser")            .hasAuthority(UserTypeID.getAdmin())
-			.antMatchers("/api/user/deleteCustomer")        .hasAuthority(UserTypeID.getAdmin())
-			.antMatchers("/api/booking/createBooking")      .hasAnyAuthority(UserTypeID.getAdmin(), UserTypeID.getCustomer())
-			.antMatchers("/api/booking/approveBooking")     .hasAuthority(UserTypeID.getAdmin())
-
-			.antMatchers("/api/booking/getAdminBookings")   .hasAuthority(UserTypeID.getAdmin())
-			.antMatchers("/api/booking/getUpcomingAdminBookings")   .hasAuthority(UserTypeID.getAdmin())
-			.antMatchers("/api/booking/getCompletedAdminBookings")   .hasAuthority(UserTypeID.getAdmin())
+		http.cors().and().authorizeRequests()
+			.antMatchers("/api/user/createCustomer").permitAll()
+			.antMatchers("/api/user/createEmployee").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/createAdmin").hasAuthority(UserTypeID.getAdmin())
+      		.antMatchers("/api/user/getEmployees").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/deleteUser").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/deleteCustomer").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/createCustomer").permitAll()
+			.antMatchers("/api/user/createEmployee").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/createAdmin").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/getEmployees").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/getEmployeesByService").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/deleteUser").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/deleteCustomer").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/booking/createBooking").hasAnyAuthority(UserTypeID.getAdmin(), UserTypeID.getCustomer())
+			.antMatchers("/api/booking/approveBooking").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getAdminBookings").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getUpcomingAdminBookings").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getCompletedAdminBookings").hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/booking/getEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
-			.antMatchers("/api/booking/getUpcomingEmployeeBookings")   .hasAuthority(UserTypeID.getEmployee())
-			.antMatchers("/api/booking/getCompletedEmployeeBookings")   .hasAuthority(UserTypeID.getEmployee())
+			.antMatchers("/api/booking/getUpcomingEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
+			.antMatchers("/api/booking/getCompletedEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
 			.antMatchers("/api/booking/getCustomerBookings").hasAuthority(UserTypeID.getCustomer())
-			.antMatchers("/api/booking/getUpcomingCustomerBookings")   .hasAuthority(UserTypeID.getCustomer())
-			.antMatchers("/api/booking/getCompletedCustomerBookings")   .hasAuthority(UserTypeID.getCustomer())
-			
-			.antMatchers("/api/booking/deleteBooking")      .hasAuthority(UserTypeID.getAdmin())
-			.antMatchers("/api/service/createService")      .hasAuthority(UserTypeID.getAdmin())
-			.antMatchers("/api/schedule/createSchedule")    .hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getUpcomingCustomerBookings").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/booking/getCompletedCustomerBookings").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/booking/deleteBooking").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/service/createService").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/schedule/createSchedule").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/schedule/deleteSchedule").hasAuthority(UserTypeID.getAdmin())
 			.anyRequest().authenticated()
 			.and()
 			.formLogin().successHandler(authSuccessHandler())

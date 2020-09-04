@@ -11,4 +11,7 @@ public interface Service_Repository extends CrudRepository<Entity_Service, Long>
     Iterable<Entity_Service> findAllById(Iterable<Long> iterable);
 
     Optional<Entity_Service> findById(Long id);
+
+    Optional<Entity_Service> findByName(String name);
+
 }
