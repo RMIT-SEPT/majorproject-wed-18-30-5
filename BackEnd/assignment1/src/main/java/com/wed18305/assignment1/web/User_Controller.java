@@ -7,10 +7,14 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 import com.wed18305.assignment1.Responses.Response;
+import com.wed18305.assignment1.Requests.AddService_Request;
 import com.wed18305.assignment1.Requests.Delete_Request;
 import com.wed18305.assignment1.Requests.UpdateDetails_Request;
+import com.wed18305.assignment1.Requests.UserService_Request;
 import com.wed18305.assignment1.Requests.User_Request;
+import com.wed18305.assignment1.model.Entity_Service;
 import com.wed18305.assignment1.model.Entity_User;
+import com.wed18305.assignment1.services.Service_Service;
 import com.wed18305.assignment1.services.UserType_Service;
 import com.wed18305.assignment1.services.User_Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +25,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin(origins = "http://localhost:3000")
 public class User_Controller {
 
     @Autowired
     private User_Service userService;
     @Autowired
     private UserType_Service userTypeService;
+    @Autowired
+    private Service_Service userServiceService;
 
     /**
      * Create new (customer)user 
@@ -43,7 +50,7 @@ public class User_Controller {
      * otherwise the error object will contain either a single string or array of field errors 
      */
     @PostMapping("createCustomer")
-    @CrossOrigin(origins = "http://localhost:3000")
+    // @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Response> createNewUser(@Valid @RequestBody User_Request ur, BindingResult result) {
         // Binding validation checks
         if (result.hasErrors()) {
@@ -78,7 +85,7 @@ public class User_Controller {
     }
 
     /**
-     * Create new (employee)user, an admin must be logged in to enable this request.
+     * Create new (employee)user, *only admins can call this endpoint
      * <p>
      * POST ENDPOINT: http://localhost:8080/api/user/createEmployee
      * <p>
@@ -126,7 +133,7 @@ public class User_Controller {
     }
 
     /**
-     * Create new (admin)user, an admin must be logged in to enable this request.
+     * Create new (admin)user, *only admins can call this endpoint
      * <p>
      * POST ENDPOINT: http://localhost:8080/api/user/createEmployee
      * <p>
@@ -174,7 +181,7 @@ public class User_Controller {
     }
 
     /**
-     * Get all employees
+     * Get all employees, *only admins can call this endpoint
      * <p>
      * GET ENDPOINT: http://localhost:8080/api/user/getEmployees
      * <p>
@@ -184,8 +191,8 @@ public class User_Controller {
      * otherwise the error object will contain either a single string or array of field errors 
      */
     @GetMapping("getEmployees")
-    @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<Response> getEmployees(Principal p) {
+    // @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<Response> getEmployees() {
         // Get any employees
         Iterable<Entity_User> employees = null;
         try {
@@ -204,6 +211,56 @@ public class User_Controller {
             return new ResponseEntity<Response>(response, HttpStatus.OK);
         }
     }
+
+    /**
+     * Get all employees by service *only admins can call this endpoint
+     * <p>
+     * GET ENDPOINT: http://localhost:8080/api/user/getEmployeesByService
+     * <p>
+     * @param ur
+     * @param result
+     * @return Response object, if successfull the employees are returned in the body
+     * otherwise the error object will contain either a single string or array of field errors 
+     */
+    @PostMapping("getEmployeesByService")
+    public ResponseEntity<Response> getEmployeesByService(@Valid @RequestBody UserService_Request usr, BindingResult result) {
+        // Binding validation checks
+        if (result.hasErrors()) {
+            Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+        // Make sure the service exists in the DB
+        Optional<Entity_Service> s = userServiceService.findById(usr.getServiceID());
+        if(!s.isPresent()){
+            //shouldn't be able to get here but just incase
+            Response response = new Response(false, "ERROR!", "No service found!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+        // Get any employees with the service id
+        Iterable<Entity_User> employees = null;
+        ArrayList<Entity_User> emplWithService = new ArrayList<Entity_User>();
+        try {
+            employees = userService.findAllByTypeId((long) 2);
+            for (Entity_User employee : employees) {
+                if(employee.getServices().contains(s.get())){
+                    emplWithService.add(employee);
+                }
+            }
+        } catch (Exception e) {
+            Response response = new Response(false, "ERROR!", e.getMessage(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Check employees result
+        if (emplWithService.size() == 0) {
+            Response response = new Response(false, "ERROR!", "No employees with service "+s.get().getName(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        } else {
+            Response response = new Response(true, "Employees found!", null, emplWithService);
+            return new ResponseEntity<Response>(response, HttpStatus.OK);
+        }
+    }
+
 
     /**
      * Update user details
@@ -355,18 +412,37 @@ public class User_Controller {
      * otherwise the error object will contain either a single string or array of field errors 
      */
     @PostMapping("addService")
-    public ResponseEntity<Response> addService(@Valid @RequestBody Delete_Request dr, BindingResult result) {
+    public ResponseEntity<Response> addService(@Valid @RequestBody AddService_Request sr, BindingResult result) {
         // Binding validation checks
         if (result.hasErrors()) {
             Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
-
-        //TODO Add the service to the user.
-        
-       
-        
-        Response response = new Response(true, "User(s) deleted!", null, null);
+        // Make sure the service(s) already exist
+        ArrayList<Long> services = new ArrayList<Long>();
+        for (Long id : sr.getServiceIds()) {
+            services.add(id);
+        }
+        ArrayList<Entity_Service> es = (ArrayList<Entity_Service>) userServiceService.findAllByIds(services);
+        if(es.isEmpty()){
+            Response response = new Response(false, "ERROR!", "No service(s) found!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+        // Make sure the users exist and are employees or admins 
+        ArrayList<Entity_User> eu = (ArrayList<Entity_User>) userService.findEmployeesById(sr.getUserIds());
+        if(eu.isEmpty()){
+            Response response = new Response(false, "ERROR!", "No user(s) found!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+        //Add the service to the user
+        try {
+            userService.addServicesToEmployees(eu, es);
+        } catch (Exception e) {
+            Response response = new Response(false, "ERROR!", e.getMessage(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+        //Success
+        Response response = new Response(true, "Services added!", null, null);
         return new ResponseEntity<Response>(response, HttpStatus.OK);
     }
 }

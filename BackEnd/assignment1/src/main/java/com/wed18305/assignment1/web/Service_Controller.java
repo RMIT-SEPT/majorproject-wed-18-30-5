@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +34,6 @@ public class Service_Controller {
      */
     @PostMapping("createService")
     public ResponseEntity<Response> createNewService(@Valid @RequestBody Service_Request sr, BindingResult result) {
-
         // Binding validation checks
         if (result.hasErrors()) {
             Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
@@ -67,5 +67,23 @@ public class Service_Controller {
             Response response = new Response(true, "Service created!", null, service1);
             return new ResponseEntity<Response>(response, HttpStatus.CREATED);
         }
+    }
+
+
+    /**
+     * anyone registered can call this endpoint.
+     * @return an JsonArray of all services
+     */
+    @GetMapping("getServices")
+    public ResponseEntity<Response> getServices() {
+        Iterable<Entity_Service> services = serviceService.findAll();
+        if(services.iterator().hasNext() == false){
+            //failure
+            Response response = new Response(false, "ERROR!", "No services found!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+        //Success
+        Response response = new Response(true, "Services returned!", null, services);
+        return new ResponseEntity<Response>(response, HttpStatus.OK);
     }
 }

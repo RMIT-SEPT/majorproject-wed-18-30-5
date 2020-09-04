@@ -12,8 +12,10 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 // import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+
 @Entity
-// @Table(name = "userType") //Not sure if the html table creation will be needed
 public class Entity_UserType {
 
     public static enum UserTypeID {
@@ -22,11 +24,9 @@ public class Entity_UserType {
         CUSTOMER((long) 3);
 
         public final Long id;
-
         UserTypeID(Long id) {
             this.id = id;
         }
-
         public static String getAdmin()    { return ADMIN.id.toString();    }
         public static String getCustomer() { return CUSTOMER.id.toString(); }
         public static String getEmployee() { return EMPLOYEE.id.toString(); }
@@ -38,8 +38,10 @@ public class Entity_UserType {
     @Column(name = "id")
     private Long id;
     private String name;
-
+    
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date created_at;
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date updated_at;
 
 
