@@ -26,9 +26,10 @@ public class AuthenticationSuccess implements AuthenticationSuccessHandler {
         response.setContentType("application/json");
         // response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpStatus.OK.value());
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         response.setHeader("Access-Control-Allow-Methods", "POST");
         response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With");
         response.getWriter().print(newresponse.toString());
         response.getWriter().flush();

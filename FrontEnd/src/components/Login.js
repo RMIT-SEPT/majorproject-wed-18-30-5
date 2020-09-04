@@ -19,7 +19,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      BookMe
+      AGME
       {new Date().getFullYear()}
       {"."}
     </Typography>

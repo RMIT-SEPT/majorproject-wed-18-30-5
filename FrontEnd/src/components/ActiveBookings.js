@@ -19,7 +19,7 @@ export default class ActiveBookings extends Component {
     reloadBookingList = () => {
         ApiService.fetchBookings()
             .then((res) => {
-                this.setState({ bookings: res.data.result })
+                this.setState({ bookings: res.body })
             });
     }
 
@@ -34,15 +34,16 @@ export default class ActiveBookings extends Component {
                         {
                             this.state.bookings.map(
                                 booking => (
+
                                     <Card>
                                         <Card.Img variant="top" src="holder.js/100px160" />
                                         <Card.Body>
                                             <Card.Title>Service Name</Card.Title>
                                             <Card.Text>
                                                 <ul>
-                                                    <li>Customer Name : {booking.startDateTime}</li>
+                                                    <li>Customer Name : </li>
                                                     <li>Employee Name : </li>
-                                                    <li>Start-Date : </li>
+                                                    <li>Start-Date : {booking.startDateTime}</li>
                                                     <li>End-Date : </li>
                                                 </ul>
                                             </Card.Text>
