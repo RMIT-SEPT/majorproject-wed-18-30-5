@@ -39,7 +39,6 @@ class Booking extends Component {
                   <div className="form-group col-md-3">
                     <label>Service :</label>
                     <select className="form-control" name="city" onChange={this.handleInputChange}>
-                      <option selected>Select Service</option>
                       <option value="1">Hairdresser</option>
                       <option value="2">Gardner</option>
                       <option value="3">Plumber</option>
@@ -48,7 +47,6 @@ class Booking extends Component {
                   <div className="form-group col-md-3">
                     <label>Freelancers :</label>
                     <select className="form-control" name="city" onChange={this.handleInputChange}>
-                      <option selected>Select Freelancer</option>
                       <option value="1">city 1</option>
                       <option value="2">city 2</option>
                       <option value="3">city 3</option>

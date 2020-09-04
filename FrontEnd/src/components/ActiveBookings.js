@@ -19,7 +19,6 @@ export default class ActiveBookings extends Component {
     reloadBookingList = () => {
         ApiService.fetchBookings()
             .then((res) => {
-                debugger;
                 this.setState({ bookings: res.data.result })
             });
     }
