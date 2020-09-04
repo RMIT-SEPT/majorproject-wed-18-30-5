@@ -1,5 +1,6 @@
 package com.wed18305.assignment1;
 
+import com.wed18305.assignment1.config.DateTimeStatic;
 import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.model.Entity_Service;
 import com.wed18305.assignment1.model.Entity_User;
@@ -10,65 +11,28 @@ import com.wed18305.assignment1.repositories.Service_Repository;
 import com.wed18305.assignment1.repositories.UserType_Repository;
 import com.wed18305.assignment1.repositories.User_Repository;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import com.wed18305.assignment1.services.User_Service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+// import org.slf4j.Logger;
+// import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.web.session.HttpSessionEventPublisher;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 public class DemoApplication {
 
-	private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
+	//private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class);
 	}
 
-//	@Configuration
-//	public class CorsConfiguration
-//	{
-//		@Bean
-//		public WebMvcConfigurer corsConfigurer()
-//		{
-//			return new WebMvcConfigurer() {
-//				@Override
-//				public void addCorsMappings(CorsRegistry registry) {
-//					registry.addMapping("/**").allowedOrigins("http://localhost:3000");
-//				}
-//			};
-//		}
-//	}
-
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("http://localhost:3000");
-			}
-		};
-	}
-
-	@Bean
-	public HttpSessionEventPublisher httpSessionEventPublisher() {
-    	return new HttpSessionEventPublisher();
-	}
-
 	// Comment out CommandLineRunner when not using it for testing
 	@Bean
-
 	public CommandLineRunner demo(User_Repository UserRepository, 
 								  UserType_Repository TypeRepository, 
 								  Service_Repository ServiceRepository, 
@@ -98,24 +62,7 @@ public class DemoApplication {
 			UserRepository.save(kim);
 			UserRepository.save(david);
 			UserRepository.save(michelle);
-
-			// //Create schedules for employees
-			// ArrayList<User_model> employees = new ArrayList<User_model>();
-			// employees.add(chloe);
-			// employees.add(jack);
-			// ArrayList<Schedule> schedules = new ArrayList<Schedule>();
-			// Schedule s1 = new Schedule(LocalDateTime.parse("1999-01-01 12:30", DateTimeStatic.getFormatter()),
-			// 							LocalDateTime.parse("1999-01-01 13:30", DateTimeStatic.getFormatter()));
-			// ScheduleRepository.save(s1);
-			// Schedule s2 = new Schedule(LocalDateTime.parse("1999-01-01 13:30", DateTimeStatic.getFormatter()),
-			// 							LocalDateTime.parse("1999-01-01 14:30", DateTimeStatic.getFormatter()));
-			// ScheduleRepository.save(s2);
-			// schedules.add(s1);
-			// schedules.add(s2);
-			// UsrService.addSchedulesToEmployees(employees, schedules);
-
-			// Save And Print Booking Data
-			// BookingRepository.save(new Booking(LocalDateTime.parse("1999-01-01 12:30", formatter), LocalDateTime.parse("1999-01-01 12:30", formatter), customers, employees));
+			UserRepository.save(leslie);
 
 			// Save Services
 			Entity_Service falafel = new Entity_Service("Freddie's Falafels");
@@ -130,23 +77,19 @@ public class DemoApplication {
 			ServiceRepository.save(service5);
 
 			// Save Bookings
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy'T'HH:mm:ss z"); // "Day, Month, Year, Hour, Minute."
 			ArrayList<Entity_User> customers = new ArrayList<>();
 			customers.add(jack);
 			customers.add(chloe);
 			ArrayList<Entity_User> employees = new ArrayList<>();
 			employees.add(michelle);
-
-			Entity_Booking upcomingBooking = new Entity_Booking(LocalDateTime.parse("03/08/2019T16:20:00 UTC+05:30", formatter), 
-														LocalDateTime.parse("03/08/2019T16:20:00 UTC+05:30", formatter), 
+			Entity_Booking upcomingBooking = new Entity_Booking(OffsetDateTime.parse("2019-08-03T16:20+05:30", DateTimeStatic.getFormatter()), 
+																OffsetDateTime.parse("2019-08-03T16:20+05:30", DateTimeStatic.getFormatter()), 
 														customers,
-														employees,
-														falafel);
-			Entity_Booking completedBooking = new Entity_Booking(LocalDateTime.parse("03/08/3019T16:20:00 UTC+05:30", formatter), 
-														LocalDateTime.parse("03/08/3019T16:20:00 UTC+05:30", formatter), 
+														employees);
+			Entity_Booking completedBooking = new Entity_Booking(OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()), 
+																 OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()), 
 														customers,
-														employees,
-														falafel);
+														employees);
 			BookingRepository.save(upcomingBooking);
 			BookingRepository.save(completedBooking);
       	};

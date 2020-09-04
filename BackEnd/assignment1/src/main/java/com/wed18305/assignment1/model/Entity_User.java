@@ -19,6 +19,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 //Relation example: https://www.baeldung.com/jpa-one-to-one
 
 @Entity
@@ -47,7 +49,9 @@ public class Entity_User {
                 inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
     protected Set<Entity_Service> services = new HashSet<Entity_Service>();
 
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date created_at;
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date updated_at;
 
     @PrePersist

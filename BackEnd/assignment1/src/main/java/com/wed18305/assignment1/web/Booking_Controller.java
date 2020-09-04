@@ -14,12 +14,11 @@ import com.wed18305.assignment1.Requests.Delete_Request;
 import com.wed18305.assignment1.Requests.Get_Request;
 import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.services.Booking_Service;
-import com.wed18305.assignment1.services.Service_Service;
+// import com.wed18305.assignment1.services.Service_Service;
 import com.wed18305.assignment1.model.Entity_User;
 import com.wed18305.assignment1.model.Entity_UserType.UserTypeID;
 import com.wed18305.assignment1.services.User_Service;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +39,8 @@ public class Booking_Controller {
     private Booking_Service bookingService;
     @Autowired
     private User_Service userService;
-    @Autowired
-    private Service_Service serviceService;
+    // @Autowired
+    // private Service_Service serviceService;
 
     /**
      * Create New Booking 
@@ -50,8 +49,7 @@ public class Booking_Controller {
      *             "endDateTime"  :"03/08/2019T16:20:00 UTC+05:30",
      *             "customer_ids" : ["1", "2"], // Input an Array of Values (Considered valid)
      *             "employees_ids": ["5"], // Array with one (Both equally possible!)
-     *             "service_id"   : 1,
-     *             "requestID"    : 1
+     *             "service_id"   : 1
      */
     @PostMapping("createBooking")
     public ResponseEntity<Response> createNewBooking(@Valid @RequestBody Booking_Request br, BindingResult result) {
@@ -107,8 +105,7 @@ public class Booking_Controller {
             Entity_Booking booking = new Entity_Booking(br.getStartDate(),
                                           br.getEndDate(),
                                           userService.findManyById(br.getCustomerIds()),
-                                          userService.findManyById(br.getEmployeeIds()),
-                                          serviceService.findById(br.getServiceId()).get());
+                                          userService.findManyById(br.getEmployeeIds()));
 
             // Save Booking
             booking1 = bookingService.saveOrUpdateBooking(booking);
@@ -521,22 +518,6 @@ public class Booking_Controller {
     }
 
     // Helper Methods
-
-    // Code Referenced From Here: https://stackoverflow.com/questions/7414667/identify-duplicates-in-a-list
-    private boolean doesDuplicateExist(List<Entity_User> users) {
-        
-        Set<Entity_User> duplicateChecker = new HashSet<Entity_User>();
-
-        for (Entity_User user : users) {
-
-            if (!duplicateChecker.add(user)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     private Entity_User returnFirstDuplicate(List<Entity_User> users) {
         
         Set<Entity_User> duplicateChecker = new HashSet<Entity_User>();

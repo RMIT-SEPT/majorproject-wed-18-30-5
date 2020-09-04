@@ -1,9 +1,6 @@
 package com.wed18305.assignment1.model;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -14,10 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class Entity_Booking {
@@ -28,8 +25,10 @@ public class Entity_Booking {
     protected Long id;
     protected Boolean approved = false; // Don't approve bookings by default.
 
-    protected LocalDateTime startDateTime;
-    protected LocalDateTime endDateTime;
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
+    protected OffsetDateTime startDateTime;
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
+    protected OffsetDateTime endDateTime;
 
     // Relations
     @ManyToMany
@@ -39,13 +38,11 @@ public class Entity_Booking {
     @ManyToMany
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     protected List<Entity_User> employees;
-
-    @ManyToOne
-    @JoinColumn(name = "service_id", referencedColumnName = "id")
-    protected Entity_Service service;
     
     // Created/Updated Recordings
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date created_at;
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date updated_at;
 
     // PrePersist: Do before initializing a record.
@@ -63,16 +60,14 @@ public class Entity_Booking {
     /// Constructor
     public Entity_Booking() {
     }
-    public Entity_Booking(LocalDateTime startDateTime,
-                   LocalDateTime endDateTime,
-                   List<Entity_User> customers,
-                   List<Entity_User> employees,
-                   Entity_Service service) {
+    public Entity_Booking(OffsetDateTime startDateTime,
+                        OffsetDateTime endDateTime,
+                        List<Entity_User> customers,
+                        List<Entity_User> employees) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.customers = customers;
         this.employees = employees;
-        this.service = service;
     }
 
     /// Getters/Setters
@@ -87,21 +82,10 @@ public class Entity_Booking {
     // Whatever the getter's name is, that'll be used to represent a section of data in a JSON object.
 
     public Long getId() { return id; }
-
-    public LocalDateTime getStartDateTime()             { return startDateTime;    }
-    public void setStartDateTime(LocalDateTime newTime) { startDateTime = newTime; }
-
-    public LocalDateTime getEndDateTime()             { return endDateTime;    }
-    public void setEndDateTime(LocalDateTime newTime) { endDateTime = newTime; }
-
-    public List<Entity_User> getCustomers()              { return customers;          }
-    public void setCustomers(List<Entity_User> customer) { this.customers = customers; }
-
-    public List<Entity_User> getEmployees()              { return employees;           }
-    public void setEmployees(List<Entity_User> employee) { this.employees = employees; }
-
-    public Entity_Service getService()                 { return service;           }
-    public void setSerivce(Entity_Service service)     { this.service = service;   }
+    public OffsetDateTime getStartDateTime()             { return startDateTime;}
+    public OffsetDateTime getEndDateTime()             { return endDateTime;}
+    public List<Entity_User> getCustomers()              { return customers;}
+    public List<Entity_User> getEmployees()              { return employees;}
 
     public Boolean getApproved() { return approved; }
     public void approveBooking() { approved = true; }

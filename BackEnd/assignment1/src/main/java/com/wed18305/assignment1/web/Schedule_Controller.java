@@ -38,7 +38,7 @@ public class Schedule_Controller {
      * <p>
      * POST ENDPOINT: http://localhost:8080/api/schedule/createSchedule
      * <p>
-     * INPUT JSON {"startDateTime":"uuuu-MM-dd'T'HH:mmXXXXX", "endDateTime":"uuuu-MM-dd'T'HH:mmXXXXX", "user_ids":["1"]}
+     * INPUT JSON {"startDateTime":"2020-05-05T08:45+10:00", "endDateTime":"2020-05-05T08:50+10:00", "user_ids":["1"]}
      * 
      * @param sr
      * @param result
@@ -59,7 +59,7 @@ public class Schedule_Controller {
         }
         //Check that the employee ids provided are employees
         ArrayList<Entity_User> employees = new ArrayList<Entity_User>();
-        employees = usrService.findManyEmployeesById(sr.getUserIds());
+        employees = usrService.findEmployeesById(sr.getUserIds());
         if (employees.size() == 0) {
             Response response = new Response(false, "ERROR!", "No employees passed in", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);

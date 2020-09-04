@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity // Add this to make the class a managed type.
 public class Entity_Service {
 
@@ -20,7 +22,9 @@ public class Entity_Service {
     protected String name;
 
     // Datetime
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date created_at;
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date updated_at;
 
     // Set created_at Value when Object's Created

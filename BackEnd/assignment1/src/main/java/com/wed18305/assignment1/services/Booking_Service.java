@@ -1,11 +1,8 @@
 package com.wed18305.assignment1.services;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
-
-import javax.persistence.Entity;
 
 import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.repositories.Booking_Repository;
@@ -33,7 +30,7 @@ public class Booking_Service {
         for (Entity_Booking booking : bookingRepository.findAll()) {
 
             // Booking hasn't Occurred, or Finished Yet
-            if (LocalDateTime.now().compareTo(booking.getEndDateTime()) < 0) {
+            if (OffsetDateTime.now().compareTo(booking.getEndDateTime()) < 0) {
                 bookings.add(booking);
             }
         }
@@ -48,7 +45,7 @@ public class Booking_Service {
         for (Entity_Booking booking : bookingRepository.findAll()) {
 
             // Booking has Occured
-            if (LocalDateTime.now().compareTo(booking.getEndDateTime()) > 0) {
+            if (OffsetDateTime.now().compareTo(booking.getEndDateTime()) > 0) {
                 bookings.add(booking);
             }
         }
