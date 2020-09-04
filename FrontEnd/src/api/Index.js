@@ -55,7 +55,8 @@ export const Api = {
       makeUseFetch("http://localhost:8080/login", {
         method: "POST",
         data: formData,
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        withCredentials: true
       }),
   },
   Signup: {
