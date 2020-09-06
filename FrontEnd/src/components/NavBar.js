@@ -9,7 +9,7 @@ class NavBar extends Component {
   render() {
     return (
       <>
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar className="color-nav" collapseOnSelect expand="lg" variant="dark" >
           <Navbar.Brand>AGME</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">

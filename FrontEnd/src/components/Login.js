@@ -12,8 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Api } from "../api/Index";
-import { useHistory } from 'react-router-dom';
-import DashboardUser from "../components/DashboardUser";
+import { useHistory } from "react-router-dom";
 
 function Copyright() {
   return (
@@ -49,8 +48,8 @@ const useStyles = makeStyles((theme) => ({
 function SendLoginData({ setResult, username, password }) {
   const [data] = useState(() => {
     const formData = new URLSearchParams();
-    formData.append('username', username);
-    formData.append('password', password)
+    formData.append("username", username);
+    formData.append("password", password);
     return formData;
   });
 
@@ -77,13 +76,12 @@ export default function SignIn() {
   const [submit, setSubmit] = useState(false);
   const [loginResult, setLoginResult] = useState("");
 
-
   const history = useHistory();
   useEffect(() => {
     if (!loginResult) {
       setSubmit(false);
     } else if (loginResult) {
-      history.push("/home")
+      history.push("/home");
     }
   }, [loginResult, setSubmit, history]);
 
@@ -103,9 +101,9 @@ export default function SignIn() {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Username"
             name="email"
-            autoComplete="email"
+            autoComplete="username"
             autoFocus
             onChange={(e) => setUsername(e.target.value)}
             value={username}
@@ -134,17 +132,17 @@ export default function SignIn() {
               password={password}
             />
           ) : (
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={() => setSubmit(true)}
-              >
-                Sign In
-              </Button>
-            )}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={() => setSubmit(true)}
+            >
+              Sign In
+            </Button>
+          )}
           <Grid container>
             <Grid item xs>
               <Link href="forgetpassword" variant="body2">

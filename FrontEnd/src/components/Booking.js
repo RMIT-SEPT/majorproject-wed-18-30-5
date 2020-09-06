@@ -9,15 +9,16 @@ class Booking extends Component {
       employee: "",
       schemas: [],
       employees: [],
+      startdate: "",
+      starttime: "",
+      endtime: "",
       date: "",
-      time: "",
+      message: "",
     };
-    // this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentDidMount() {
     this.reloadServiceList();
-    // this.reloadEmployeeList();
   }
 
   reloadServiceList = () => {
@@ -29,7 +30,9 @@ class Booking extends Component {
 
   reloadEmployeeList = () => {
     if (this.state.service) {
-      ApiService.fetchEmployeeByService(this, { service_id: Number(this.state.service) }).then((res) => {
+      ApiService.fetchEmployeeByService(this, {
+        service_id: Number(this.state.service),
+      }).then((res) => {
         this.setState({ employees: Array.from(res.data.body) });
       });
     }
@@ -42,26 +45,54 @@ class Booking extends Component {
         this.reloadEmployeeList();
       }
     });
-  }
+  };
+
+  /**
+   * @param {Date} date object to format
+   * @return {string} with format like this '2020-09-07T17:00+10:00'
+   */
+  formatDate = (date) => {
+    const formatPad = (num) => String(num).padStart("2", "0");
+    const year = date.getUTCFullYear();
+    const month = formatPad(date.getUTCMonth() + 1);
+    const day = formatPad(date.getUTCDate());
+    const hour = formatPad(date.getUTCHours());
+    const minute = formatPad(date.getUTCMinutes());
+    return `${year}-${month}-${day}T${hour}:${minute}+00:00`;
+  };
 
   onsubmit = (e) => {
     e.preventDefault();
+    const date = this.state.date.split("-").map(Number);
+    const start_time = this.state.starttime.split(":").map(Number);
+    const end_time = this.state.endtime.split(":").map(Number);
+    const start_date = new Date(...date, ...start_time);
+    const end_date = new Date(...date, ...end_time);
+
     const booking = {
-      date: this.state.date,
-      start_time: this.state.start_time,
-      end_time: this.state.end_time
+      startDateTime: this.formatDate(start_date),
+      endDateTime: this.formatDate(end_date),
+      customer_ids: [1],
+      employees_ids: [Number(this.state.employee)],
     };
-    console.log(booking);
-  }
+    ApiService.createBooking(this, booking).then((res) => {
+      this.setState({ message: "Booking Created!" });
+    });
+    console.log(this.state.message);
+  };
 
   render() {
     const { schemas, employees } = this.state;
     return (
       <>
         <div>
-          <form className="booking-form" onSubmit={this.onsubmit}>
-            <div className="row">
-              <div className="col-md-6 offset-md-3">
+          <form
+            className="booking-form"
+            onSubmit={this.onsubmit}
+            style={{ overflow: "hidden" }}
+          >
+            <div className="row booking-form-row">
+              <div className="col-md-7 ml-auto mr-auto margin-offset">
                 <h3>Create A Booking</h3>
                 <br />
                 <div className="form-row">
@@ -73,15 +104,19 @@ class Booking extends Component {
                       onChange={this.onChange}
                       className="form-control"
                     >
-                      {this.state.service === "" && <option value="">Select A Service</option>}
+                      {this.state.service === "" && (
+                        <option value="">Select A Service</option>
+                      )}
                       {schemas &&
                         schemas.length > 0 &&
                         schemas.map((schema) => (
-                          <option key={schema.id} value={schema.id}>{schema.name}</option>
+                          <option key={schema.id} value={schema.id}>
+                            {schema.name}
+                          </option>
                         ))}
                     </select>
                   </div>
-                  <div className="form-group col-md-3">
+                  <div className="form-group col-md-2">
                     <label>Employees :</label>
                     <select
                       name="employee"
@@ -91,17 +126,18 @@ class Booking extends Component {
                     >
                       {this.state.service === "" ? (
                         <option value=""></option>
-                      ) : (employees &&
-                        employees.length > 0 ? (
-                          employees.map((employee) => (
-                            <option key={employee.id} value={employee.id}>{employee.name}</option>
-                          ))) : (
-                          <option disabled>No Employees</option>
-                        ))}
-
+                      ) : employees && employees.length > 0 ? (
+                        employees.map((employee) => (
+                          <option key={employee.id} value={employee.id}>
+                            {employee.name}
+                          </option>
+                        ))
+                      ) : (
+                        <option disabled>No Employees</option>
+                      )}
                     </select>
                   </div>
-                  <div className="form-group col-md-3" >
+                  <div className="form-group col-md-3">
                     <label>Date :</label>
                     <input
                       type="date"
@@ -137,9 +173,9 @@ class Booking extends Component {
                     <button
                       type="submit"
                       className="btn btn-primary"
-                      onClick={() => this.submit()}
+                      onClick={this.onsubmit}
                     >
-                      Submit
+                      Create Booking
                     </button>
                   </div>
                 </div>
