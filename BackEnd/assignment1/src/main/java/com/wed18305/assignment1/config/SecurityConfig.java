@@ -101,7 +101,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/user/createEmployee").hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/user/createAdmin").hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/user/getEmployees").hasAuthority(UserTypeID.getAdmin())
-			.antMatchers("/api/user/getEmployeesByService").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/getEmployeesByService").hasAuthority(UserTypeID.getCustomer())
 			.antMatchers("/api/user/deleteUser").hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/user/deleteCustomer").hasAuthority(UserTypeID.getCustomer())
 			.antMatchers("/api/booking/createBooking").hasAnyAuthority(UserTypeID.getAdmin(), UserTypeID.getCustomer())

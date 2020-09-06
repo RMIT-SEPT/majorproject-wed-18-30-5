@@ -123,12 +123,12 @@ public class DemoApplication {
 														OffsetDateTime.parse("2020-09-07T19:00+10:00", DateTimeStatic.getFormatter()), 
 														customers,
 														employees);
-			// Entity_Booking completedBooking = new Entity_Booking(OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()), 
-			// 													 OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()), 
-			// 											customers,
-			// 											employees);
+			Entity_Booking completedBooking = new Entity_Booking(OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()),
+			 													 OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()),
+			 											customers,
+			 											employees);
 			BookingRepository.save(Booking);
-			// BookingRepository.save(completedBooking);
+			BookingRepository.save(completedBooking);
       	};
 	}
 }
