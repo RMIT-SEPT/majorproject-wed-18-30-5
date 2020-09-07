@@ -147,6 +147,6 @@ public class Schedule_Controller {
         }
         //Success
         Response response = new Response(true, "schedule(s) deleted!", null, null);
-        return new ResponseEntity<Response>(response, HttpStatus.CREATED);
+        return new ResponseEntity<Response>(response, HttpStatus.OK);
     }
 }

@@ -210,9 +210,9 @@ public class User_Controller {
     }
 
     /**
-     * Get all employees by service *only admins can call this endpoint
+     * Get all employees by service *only registered users can call this endpoint
      * <p>
-     * GET ENDPOINT: http://localhost:8080/api/user/getEmployeesByService
+     * POST ENDPOINT: http://localhost:8080/api/user/getEmployeesByService
      * <p>
      * @param ur
      * @param result

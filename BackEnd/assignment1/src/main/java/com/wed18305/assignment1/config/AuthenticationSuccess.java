@@ -24,7 +24,7 @@ public class AuthenticationSuccess implements AuthenticationSuccessHandler {
         User p = (User) authentication.getPrincipal();
         Response newresponse = new Response(true, p.getUsername()+" has logged in!", null, null);
         response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        // response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpStatus.OK.value());
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         response.setHeader("Access-Control-Allow-Methods", "POST");
