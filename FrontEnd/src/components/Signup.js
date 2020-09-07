@@ -35,13 +35,19 @@ class Signup extends Component {
 
   addUser = (e) => {
     e.preventDefault();
-    let user = { name: this.state.name, username: this.state.username, password: this.state.password, contactNumber: this.state.contactNumber };
-    ApiService.addUser(user)
-      .then(res => {
-        this.setState({ message: 'User added successfully.' });
-        this.props.history.push('/login');
-      }).catch(console.log)
-  }
+    let user = {
+      name: this.state.name,
+      username: this.state.username,
+      password: this.state.password,
+      contactNumber: this.state.contactNumber,
+    };
+    ApiService.addUser(this, user)
+      .then((res) => {
+        this.setState({ message: "User added successfully." });
+        this.props.history.push("/login");
+      })
+      .catch(console.log);
+  };
 
   render() {
     return (
@@ -53,6 +59,7 @@ class Signup extends Component {
               <hr />
               <div>{this.state.message}</div>
               <form onSubmit={this.onSubmit}>
+                <h6>Full Name</h6>
                 <div className="form-group">
                   <input
                     type="text"
@@ -63,6 +70,7 @@ class Signup extends Component {
                     onChange={this.onChange}
                   />
                 </div>
+                <h6>Username</h6>
                 <div className="form-group">
                   <input
                     type="text"
@@ -73,7 +81,7 @@ class Signup extends Component {
                     onChange={this.onChange}
                   />
                 </div>
-
+                <h6>Password</h6>
                 <div className="form-group">
                   <input
                     type="password"
@@ -87,9 +95,10 @@ class Signup extends Component {
                 <h6>Contact Number</h6>
                 <div className="form-group">
                   <input
-                    type="text"
+                    type="number"
                     className="form-control form-control-lg"
                     name="contactNumber"
+                    placeholder="Contact Number"
                     value={this.state.contactNumber}
                     onChange={this.onChange}
                   />
@@ -100,6 +109,7 @@ class Signup extends Component {
                     type="text"
                     className="form-control form-control-lg"
                     name="Address"
+                    placeholder="Address"
                     value={this.state.Address}
                     onChange={this.onChange}
                   />
@@ -110,7 +120,7 @@ class Signup extends Component {
                   className="btn btn-primary btn-block mt-4"
                   onClick={this.addUser}
                 />
-                <a href="/">Back</a>
+                <a href="/login">Back</a>
               </form>
             </div>
           </div>
