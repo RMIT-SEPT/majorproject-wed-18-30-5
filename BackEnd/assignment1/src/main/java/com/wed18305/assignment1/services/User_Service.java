@@ -202,6 +202,24 @@ public class User_Service {
         return userRepository.saveAll(users);
     }
 
+    public Entity_User addBookingsToUser(Entity_User user,
+                                                        Iterable<Entity_Booking> bookings)
+                                                        throws NullPointerException{
+        if(user == null || bookings == null){
+            throw new NullPointerException("users or bookings cannot be null");
+        }
+        //Add the bookings to the user
+        for (Entity_Booking booking : bookings) {
+            //Check that the user doesn't already have the bookings.
+            if (user.getBookings().contains(booking) == false){
+                user.getBookings().add(booking);
+            }
+        }
+
+        //save the users
+        return userRepository.save(user);
+    }
+
     /**
      * Note that if you alter a booking after creating it for multiple users
      * it will update for ALL users
@@ -209,16 +227,16 @@ public class User_Service {
      * @param schedules
      * @return
      */
-    public Iterable<Entity_User> addBookingsToEmployees(Iterable<Entity_User> users,
+    public Iterable<Entity_User> addBookingsToUsers(Iterable<Entity_User> users,
                                                         Iterable<Entity_Booking> bookings)
                                                         throws NullPointerException{
         if(users == null || bookings == null){
             throw new NullPointerException("users or bookings cannot be null");
         }
-        //Add the services to the users
+        //Add the bookings to the users
         for (Entity_User u : users) {
             for (Entity_Booking booking : bookings) {
-                //Check that the user doesn't already have the schedule.
+                //Check that the user doesn't already have the bookings.
                 if (u.getBookings().contains(booking) == false){
                     u.getBookings().add(booking);
                 }

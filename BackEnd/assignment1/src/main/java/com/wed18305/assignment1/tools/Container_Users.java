@@ -21,6 +21,11 @@ public class Container_Users {
         this.users = (Set<Entity_User>) users;
     }
 
+    // Add new User to List of Users
+    public void addUser(Entity_User user) { users.add(user); } 
+
+    public Set<Entity_User> getUsers() { return users; }
+
     /**
      * 
      * @return List of Entity_User, may be empty.
