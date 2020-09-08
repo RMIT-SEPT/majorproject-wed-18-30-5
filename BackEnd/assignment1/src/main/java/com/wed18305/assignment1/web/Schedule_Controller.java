@@ -59,7 +59,7 @@ public class Schedule_Controller {
         }
         //Check that the employee ids provided are employees
         ArrayList<Entity_User> employees = new ArrayList<Entity_User>();
-        employees = userService.findEmployeesById(sr.getUserIds());
+        employees = (ArrayList<Entity_User>) userService.findEmployeesById(sr.getUserIds());
         if (employees.size() == 0) {
             Response response = new Response(false, "ERROR!", "No employees passed in", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
@@ -125,7 +125,7 @@ public class Schedule_Controller {
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
         //Get the schedules from the DB
-        ArrayList<Entity_Schedule> schedules_db = schService.findByIds(schedules);
+        ArrayList<Entity_Schedule> schedules_db = (ArrayList<Entity_Schedule>) schService.findByIds(schedules);
         if(schedules_db.size()==0){ //No schedule found in the DB
             Response response = new Response(false, "ERROR!", "No schedules found in the database", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);

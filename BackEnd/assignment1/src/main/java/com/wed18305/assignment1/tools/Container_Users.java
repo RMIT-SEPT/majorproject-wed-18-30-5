@@ -6,10 +6,19 @@ import com.wed18305.assignment1.model.Entity_User;
 import com.wed18305.assignment1.model.Entity_UserType;
 
 public class Container_Users {
-    private Set<Entity_User> users;
+    private Set<Entity_User> users = new HashSet<Entity_User>();
 
-    public Container_Users(Set<Entity_User> users){
+    public Container_Users(Set<Entity_User> users) throws NullPointerException{
+        if(users == null){
+            throw new NullPointerException("users cannot be null");
+        }
         this.users = users;
+    }
+    public Container_Users(Iterable<Entity_User> users) throws NullPointerException,Exception{
+        if(users == null){
+            throw new NullPointerException("users cannot be null");
+        }
+        this.users = (Set<Entity_User>) users;
     }
 
     /**
