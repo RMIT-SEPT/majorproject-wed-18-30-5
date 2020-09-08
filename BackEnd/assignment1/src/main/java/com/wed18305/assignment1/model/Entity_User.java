@@ -52,6 +52,12 @@ public class Entity_User {
                 joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
                 inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
     protected Set<Entity_Service> services = new HashSet<Entity_Service>();
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_bookings", 
+                joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
+                inverseJoinColumns = @JoinColumn(name = "booking_id", referencedColumnName = "id"))
+    protected Set<Entity_Booking> bookings = new HashSet<Entity_Booking>();
     
 
     @JsonIgnore
@@ -147,7 +153,21 @@ public class Entity_User {
     public Set<Entity_Schedule> getSchedules() {
         return this.schedules;
     }
-
+    /**
+     * Only call this from User_service, standard procedure below
+     * <p>
+     * .getBookings().add()
+     * <p>
+     * .getBookings().remove()
+     * <p>
+     * After adding removing you must save the updated user
+     * <p>
+     * User_service.saveOrUpdateUser(user)
+     * @return List<Schedule>
+     */
+    public Set<Entity_Booking> getBookings() {
+        return this.bookings;
+    }
 
 
     //Comparisons
