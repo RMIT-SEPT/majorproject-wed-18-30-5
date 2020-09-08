@@ -2,8 +2,10 @@ package com.wed18305.assignment1.services;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import com.wed18305.assignment1.model.Entity_Service;
 import com.wed18305.assignment1.model.Entity_Booking;
@@ -44,14 +46,19 @@ public class User_Service {
         return userRepository.findById(id);
     }
 
-    public List<Entity_User> findManyById(Long[] ids){
+    public Set<Entity_User> findManyById(Long[] ids){
         
-        List<Entity_User> users = new ArrayList<Entity_User>();
+        Set<Entity_User> users = new HashSet<Entity_User>();
 
         for (int i = 0; i < ids.length; i++) {
-            users.add(userRepository.findById(ids[i]).get());
+            try {
+                users.add(userRepository.findById(ids[i]).get());
+            } catch (Exception e) {
+                //Catch silent, probably a duplicate
+                System.err.println(e.getClass().getCanonicalName());
+                System.err.println(e.getMessage());
+            }
         }
-
         return users;
     }
     //Employees are users that are either employees or admins
@@ -175,6 +182,27 @@ public class User_Service {
                 //Check that the user doesn't already have the schedule.
                 if (u.getSchedules().contains(schedule) == false){
                     u.getSchedules().add(schedule);
+                }
+            }
+        }
+        //save the users
+        return userRepository.saveAll(users);
+    }
+
+    /**
+     * Note that if you alter a booking after creating it for multiple users
+     * it will update for ALL users
+     * @param users
+     * @param schedules
+     * @return
+     */
+    public Iterable<Entity_User> addBookingsToEmployees(Set<Entity_User> users, Set<Entity_Booking> bookings){
+        //Add the services to the users
+        for (Entity_User u : users) {
+            for (Entity_Booking booking : bookings) {
+                //Check that the user doesn't already have the schedule.
+                if (u.getBookings().contains(booking) == false){
+                    u.getBookings().add(booking);
                 }
             }
         }

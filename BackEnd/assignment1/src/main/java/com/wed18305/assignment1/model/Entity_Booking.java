@@ -2,14 +2,14 @@ package com.wed18305.assignment1.model;
 
 import java.time.OffsetDateTime;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -32,15 +32,19 @@ public class Entity_Booking {
     protected OffsetDateTime endDateTime;
 
     //Relations
-    @JsonIgnore
-    @ManyToMany
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    protected List<Entity_User> customers;
+    // @JsonIgnore
+    // @ManyToMany
+    // @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    // protected List<Entity_User> customers;
+
+    // @JsonIgnore
+    // @ManyToMany
+    // @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    // protected List<Entity_User> employees;
 
     @JsonIgnore
-    @ManyToMany
-    @JoinColumn(name = "employee_id", referencedColumnName = "id")
-    protected List<Entity_User> employees;
+    @ManyToMany(mappedBy = "bookings")
+    protected Set<Entity_User> users  = new HashSet<Entity_User>();
     
     // Created/Updated Recordings
     @JsonIgnore
@@ -65,14 +69,19 @@ public class Entity_Booking {
     /// Constructor
     public Entity_Booking() {
     }
+    // public Entity_Booking(OffsetDateTime startDateTime,
+    //                     OffsetDateTime endDateTime,
+    //                     List<Entity_User> customers,
+    //                     List<Entity_User> employees) {
+    //     this.startDateTime = startDateTime;
+    //     this.endDateTime = endDateTime;
+    //     this.customers = customers;
+    //     this.employees = employees;
+    // }
     public Entity_Booking(OffsetDateTime startDateTime,
-                        OffsetDateTime endDateTime,
-                        List<Entity_User> customers,
-                        List<Entity_User> employees) {
+                        OffsetDateTime endDateTime) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        this.customers = customers;
-        this.employees = employees;
     }
 
     /// Getters/Setters
@@ -89,8 +98,38 @@ public class Entity_Booking {
     public Long getId() { return id; }
     public OffsetDateTime getStartDateTime()             { return startDateTime;}
     public OffsetDateTime getEndDateTime()             { return endDateTime;}
-    public List<Entity_User> getCustomers()              { return customers;}
-    public List<Entity_User> getEmployees()              { return employees;}
+    // public List<Entity_User> getCustomers()              { return customers;}
+    // public List<Entity_User> getEmployees()              { return employees;}
+    public Set<Entity_User> getUsers()              { return users;}
+    /**
+     * 
+     * @return List of Entity_User, may be empty.
+     */
+    public Set<Entity_User> getCustomers(){
+        Set<Entity_User> customers = new HashSet<Entity_User>();
+        for (Entity_User user : users) {
+            if( user.getType().getId() == Entity_UserType.UserTypeID.CUSTOMER.id){
+                //Customer
+                customers.add(user);
+            }
+        }
+        return customers;
+    }
+    /**
+     * 
+     * @return List of Entity_User, may be empty.
+     */
+    public Set<Entity_User> getEmployees(){
+        Set<Entity_User> employees = new HashSet<Entity_User>();
+        for (Entity_User user : users) {
+            if( user.getType().getId() == Entity_UserType.UserTypeID.EMPLOYEE.id){
+                //Customer
+                employees.add(user);
+            }
+        }
+        return employees;
+    }
+
 
     public Boolean getApproved() { return approved; }
     public void approveBooking() { approved = true; }
