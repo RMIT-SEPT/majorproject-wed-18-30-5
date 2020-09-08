@@ -1,7 +1,9 @@
 package com.wed18305.assignment1.services;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -9,7 +11,7 @@ import com.wed18305.assignment1.model.Entity_Service;
 import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.model.Entity_Schedule;
 import com.wed18305.assignment1.model.Entity_User;
-import com.wed18305.assignment1.repositories.Booking_Repository;
+// import com.wed18305.assignment1.repositories.Booking_Repository;
 // import com.wed18305.assignment1.repositories.Schedule_Repository;
 // import com.wed18305.assignment1.repositories.Service_Repository;
 import com.wed18305.assignment1.repositories.User_Repository;
@@ -21,8 +23,8 @@ import org.springframework.stereotype.Service;
 public class User_Service {
     @Autowired
     private User_Repository userRepository;
-    @Autowired
-    private Booking_Repository bookingRepository;
+    // @Autowired
+    // private Booking_Repository bookingRepository;
     // @Autowired
     // private Service_Repository serviceRepository;
     // @Autowired
@@ -41,12 +43,12 @@ public class User_Service {
     }
 
     public Iterable<Entity_User> findByIds(Long[] ids){
-        Set<Long> idsSet = new HashSet<Long>();
+        List<Long> idsSet = new ArrayList<Long>();
         for (Long id : ids) {
             try {
                 idsSet.add(id);
             } catch (Exception e) {
-                System.err.println(e.getClass().getCanonicalName());
+                System.out.println(e.getClass().getCanonicalName());
                 System.out.println(e.getMessage());
             }
         }
@@ -56,7 +58,7 @@ public class User_Service {
 
     //Employees are users that are either employees or admins
     public Iterable<Entity_User> findEmployeesById(Long[] ids){   
-        Set<Entity_User> users = new HashSet<Entity_User>();
+        List<Entity_User> users = new ArrayList<Entity_User>();
         for (int i = 0; i < ids.length; i++) {
             Entity_User u = userRepository.findById(ids[i]).get();
             if(u.getType().getId() == 1 || u.getType().getId() == 2){
@@ -232,9 +234,30 @@ public class User_Service {
 
     //DELETION
     public void deleteById(Long id){
-        userRepository.deleteById(id);
+        Optional<Entity_User> user = userRepository.findById(id);
+        if(user.isPresent()){
+            //remove any connection to services,bookings,schedules
+            user.get().getBookings().clear();
+            user.get().getServices().clear();
+            user.get().getSchedules().clear();
+            userRepository.save(user.get());
+            //Now delete
+            userRepository.deleteById(id);
+        }
+
     }
-    public void deleteAll(Iterable<Entity_User> users){
-        userRepository.deleteAll(users);
+    public void deleteAll(Long[] ids){
+        Iterable<Entity_User> users = this.findByIds(ids);
+        if(users != null){
+            for (Entity_User user : users) {
+                //remove any connection to services,bookings,schedules
+                user.getBookings().clear();
+                user.getServices().clear();
+                user.getSchedules().clear();
+                userRepository.save(user);
+            }
+            //Now delete
+            userRepository.deleteAll(users);
+        } 
     }
 }

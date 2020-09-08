@@ -52,7 +52,11 @@ public class DemoApplication {
 			Entity_User kim = new Entity_User("Kim", "Bauer", "1234", "0000000000", customer);
 			Entity_User david = new Entity_User("David", "Palmer", "1234", "0000000000", admin);
 			Entity_User michelle = new Entity_User("Michelle", "Dessler", "1234", "0000000000", employee);
-			Entity_User leslie = new Entity_User("Leslie", "Messler", "1234", "0000000000", employee);			
+			Entity_User leslie = new Entity_User("Leslie", "Messler", "1234", "0000000000", employee);		
+			//Delete users - JUST used for JUnit test so that I can delete them
+			Entity_User delete1 = new Entity_User("Joe","delete1","1234","0000000000", customer);	
+			Entity_User delete2 = new Entity_User("Joe","delete2","1234","0000000000", employee);
+			Entity_User delete3 = new Entity_User("Joe","delete3","1234","0000000000", admin);		
 
 			//Save the users
 			UserRepository.save(jack);
@@ -61,6 +65,9 @@ public class DemoApplication {
 			UserRepository.save(david);
 			UserRepository.save(michelle);
 			UserRepository.save(leslie);
+			UserRepository.save(delete1);
+			UserRepository.save(delete2);
+			UserRepository.save(delete3);
 
 			// Save Services
 			Entity_Service falafel = new Entity_Service("Freddie's Falafels");
@@ -85,6 +92,9 @@ public class DemoApplication {
 			leslie.getServices().add(service3);
 			leslie.getServices().add(service4);
 			leslie.getServices().add(service5);
+			delete1.getServices().add(service5);
+			delete2.getServices().add(service5);
+			delete3.getServices().add(service5);
 
 			//Save Schedules 
 			//Date 2020-09-07
@@ -104,6 +114,9 @@ public class DemoApplication {
 			david.getSchedules().add(scheduleDavid);
 			michelle.getSchedules().add(scheduleMichelle);
 			leslie.getSchedules().add(scheduleLeslie);
+			delete1.getSchedules().add(scheduleLeslie);
+			delete2.getSchedules().add(scheduleLeslie);
+			delete3.getSchedules().add(scheduleLeslie);
 			
 			// Save Bookings
 			Entity_Booking Booking = new Entity_Booking(OffsetDateTime.parse("2020-09-07T17:00+10:00", DateTimeStatic.getFormatter()), 
@@ -119,6 +132,9 @@ public class DemoApplication {
 			michelle.getBookings().add(Booking);
 			jack.getBookings().add(completedBooking);
 			michelle.getBookings().add(completedBooking);
+			delete1.getBookings().add(completedBooking);
+			delete2.getBookings().add(completedBooking);
+			delete3.getBookings().add(completedBooking);
 
 			//Update the users
 			UserRepository.save(jack);
@@ -127,6 +143,9 @@ public class DemoApplication {
 			UserRepository.save(david);
 			UserRepository.save(michelle);
 			UserRepository.save(leslie);
+			UserRepository.save(delete1);
+			UserRepository.save(delete2);
+			UserRepository.save(delete3);
       	};
 	}
 }

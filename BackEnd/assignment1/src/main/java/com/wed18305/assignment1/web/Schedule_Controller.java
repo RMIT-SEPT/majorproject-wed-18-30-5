@@ -58,8 +58,7 @@ public class Schedule_Controller {
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
         //Check that the employee ids provided are employees
-        ArrayList<Entity_User> employees = new ArrayList<Entity_User>();
-        employees = (ArrayList<Entity_User>) userService.findEmployeesById(sr.getUserIds());
+        ArrayList<Entity_User> employees = (ArrayList<Entity_User>) userService.findEmployeesById(sr.getUserIds());
         if (employees.size() == 0) {
             Response response = new Response(false, "ERROR!", "No employees passed in", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);

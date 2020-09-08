@@ -336,7 +336,7 @@ public class User_Controller {
             Response response = new Response(false, "ERROR!", "Id of user is null", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }catch (Exception e) {
-           Response response = new Response(false, "ERROR!", "Unable to delete user", null);
+           Response response = new Response(false, "ERROR!", "Unable to delete user "+e.getMessage(), null);
            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
@@ -350,7 +350,7 @@ public class User_Controller {
      * <p>
      * POST ENDPOINT: http://localhost:8080/api/user/deleteUser
      * <p>
-     * @param ur
+     * @param dr
      * @param result
      * @return Response object, if successfull the body will be null
      * otherwise the error object will contain either a single string or array of field errors 
@@ -363,29 +363,15 @@ public class User_Controller {
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
-        List<Entity_User> users = new ArrayList<Entity_User>();
-        String[] subStrings = dr.getString();
-        // Make sure the user(s) we want to delete exists
-        if(subStrings != null){
-            if(subStrings.length > 0){
-                for (String i : subStrings) {
-                    try{
-                        Optional<Entity_User> um = userService.findByUsername(i);
-                        if(um.isPresent()){
-                            users.add(um.get());
-                        } 
-                    }catch(Exception e){
-                        //shouldn't be able to get here but just incase
-                        Response response = new Response(false, "ERROR!", "Unable to get users!", null);
-                        return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
-                    }
-                }
-            }
+        Long[] userIds = dr.getLong();
+        if(userIds == null){
+            Response response = new Response(false, "ERROR!", "Unable to get users!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
         
         //Delete the user(s)
         try {
-            userService.deleteAll(users);  
+            userService.deleteAll(userIds);  
         }catch (IllegalArgumentException e) {
             Response response = new Response(false, "ERROR!", "Id of user is null", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
