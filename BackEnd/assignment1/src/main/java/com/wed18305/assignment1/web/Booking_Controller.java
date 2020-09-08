@@ -61,7 +61,7 @@ public class Booking_Controller {
 
         // Is a Customer Logged In?
         Optional<Entity_User> loggedInUser = userService.findByUsername(p.getName());
-        if(loggedInUser.isEmpty() || !loggedInUser.get().getType().getId().equals(UserTypeID.CUSTOMER.id)){
+        if(loggedInUser == null || !loggedInUser.get().getType().getId().equals(UserTypeID.CUSTOMER.id)){
              Response response = new Response(false, "ERROR!", "No customer ids provided", null);
              return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
