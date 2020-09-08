@@ -2,7 +2,6 @@ package com.wed18305.assignment1.web;
 
 import java.security.Principal;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -16,8 +15,8 @@ import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.services.Booking_Service;
 // import com.wed18305.assignment1.services.Service_Service;
 import com.wed18305.assignment1.model.Entity_User;
-import com.wed18305.assignment1.model.Entity_UserType.UserTypeID;
 import com.wed18305.assignment1.services.User_Service;
+import com.wed18305.assignment1.tools.Container_Users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,83 +40,53 @@ public class Booking_Controller {
      * POST ENDPOINT: http://localhost:8080/api/booking/createBooking
      * INPUT JSON {"startDateTime":"dd/mm/yyyyThh:MM:00 UTC+nn:nn", (Format)
      *             "endDateTime"  :"03/08/2019T16:20:00 UTC+05:30",
-     *             "customer_ids" : ["1", "2"], // Input an Array of Values (Considered valid)
-     *             "employees_ids": ["5"], // Array with one (Both equally possible!)
-     *             "service_id"   : 1
+     *             "user_ids" : ["1", "2"], // Input an Array of Values
      */
     @PostMapping("createBooking")
-    public ResponseEntity<Response> createNewBooking(@Valid @RequestBody Booking_Request br, BindingResult result) {
-
-        Entity_User duplicateUser;
-
+    public ResponseEntity<Response> createNewBooking(@Valid @RequestBody Booking_Request br, BindingResult result) { 
         // Binding validation checks
         if (result.hasErrors()) {
-            
             Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
-        // Does Customers Column Only Contain Customer IDs?
-        for (Entity_User user : userService.findManyById(br.getCustomerIds())) {
+        // Create a Booking entity using the Booking_Request
+        Set<Entity_Booking> bookings = new HashSet<Entity_Booking>();
+        Entity_Booking booking = new Entity_Booking(br.getStartDate(),
+                                                    br.getEndDate());
+        bookings.add(booking);
 
-            if (!user.getType().getId().equals(UserTypeID.CUSTOMER.id)) {
-                
-                Response response = new Response(false, "ERROR! The user named '" + user.getName() + "' isn't registed as a Customer!", result.getFieldErrors(), null);
-                return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
-            }
+        //Get the users
+        Container_Users users = new Container_Users(userService.findManyById(br.getUserIds()));
+
+        //Do we have at least one customer
+        if(users.getCustomers().isEmpty()){
+            Response response = new Response(false, "ERROR!", "No customer ids provided", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
-        // Has the Same User Been Inputted into the Customer Field Twice?
-        duplicateUser = returnFirstDuplicate(userService.findManyById(br.getCustomerIds()));
-        if (duplicateUser != null) {
-                Response response = new Response(false, "ERROR! The user named '" + duplicateUser.getName() + "' was already entered!", result.getFieldErrors(), null);
-                return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
-        }
-
-        // Does Employees Column Only Contain Employee IDs?
-        for (Entity_User user : userService.findManyById(br.getEmployeeIds())) {
-
-            if (!user.getType().getId().equals(UserTypeID.EMPLOYEE.id)) {
-                
-                Response response = new Response(false, "ERROR! The user named '" + user.getName() + "' isn't registed as a Employee!", result.getFieldErrors(), null);
-                return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
-            }
-        }
-
-        // Has the Same User Been Inputted into the Employee Field Twice?
-        duplicateUser = returnFirstDuplicate(userService.findManyById(br.getEmployeeIds()));
-        if (duplicateUser != null) {
-                Response response = new Response(false, "ERROR! The user named '" + duplicateUser.getName() + "' was already entered!", result.getFieldErrors(), null);
-                return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        //Do we have at least one employee
+        if(users.getEmployees().isEmpty()){
+            Response response = new Response(false, "ERROR!", "No employee ids provided", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
         // Save new Booking
         Entity_Booking booking1 = null;
         try {
-
-            // Create a Booking entity using the Booking_Request
-            Entity_Booking booking = new Entity_Booking(br.getStartDate(),
-                                          br.getEndDate(),
-                                          userService.findManyById(br.getCustomerIds()),
-                                          userService.findManyById(br.getEmployeeIds()));
-
             // Save Booking
             booking1 = bookingService.saveOrUpdateBooking(booking);
-
+            userService.addBookingsToEmployees(users.getEmployees(), bookings);
         } catch (Exception e) {
-            
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
         // Check booking result
         if (booking1 == null) {
-
             Response response = new Response(false, "ERROR!", "booking returned NULL", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
-
         } else {
-
             Response response = new Response(true, "booking created!", null, booking1);
             return new ResponseEntity<Response>(response, HttpStatus.CREATED);
         }
@@ -236,7 +205,6 @@ public class Booking_Controller {
      * GET ENDPOINT: http://localhost:8080/api/booking/getCustomerBookings
      */
     @GetMapping("getCustomerBookings")
-    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Response> getCustomerBookings(Principal p) {
 
         // Make sure the logged in user exists
@@ -512,20 +480,20 @@ public class Booking_Controller {
         return new ResponseEntity<Response>(response, HttpStatus.OK);
     }
 
-    // Helper Methods
-    private Entity_User returnFirstDuplicate(List<Entity_User> users) {
+    // // Helper Methods
+    // private Entity_User returnFirstDuplicate(List<Entity_User> users) {
         
-        Set<Entity_User> duplicateChecker = new HashSet<Entity_User>();
+    //     Set<Entity_User> duplicateChecker = new HashSet<Entity_User>();
 
-        for (Entity_User user : users) {
+    //     for (Entity_User user : users) {
 
-            if (!duplicateChecker.add(user)) {
-                return user;
-            }
-        }
+    //         if (!duplicateChecker.add(user)) {
+    //             return user;
+    //         }
+    //     }
 
-        return null;
-    }
+    //     return null;
+    // }
 
     /*
         Everything below here won't work.

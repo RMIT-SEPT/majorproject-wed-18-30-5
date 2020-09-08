@@ -9,7 +9,7 @@ import com.wed18305.assignment1.repositories.UserType_Repository;
 import com.wed18305.assignment1.repositories.User_Repository;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
+
 import com.wed18305.assignment1.services.User_Service;
 
 // import org.slf4j.Logger;
@@ -104,6 +104,21 @@ public class DemoApplication {
 			david.getSchedules().add(scheduleDavid);
 			michelle.getSchedules().add(scheduleMichelle);
 			leslie.getSchedules().add(scheduleLeslie);
+			
+			// Save Bookings
+			Entity_Booking Booking = new Entity_Booking(OffsetDateTime.parse("2020-09-07T17:00+10:00", DateTimeStatic.getFormatter()), 
+														OffsetDateTime.parse("2020-09-07T19:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking completedBooking = new Entity_Booking(OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()),
+																 OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()));
+			BookingRepository.save(Booking);
+			BookingRepository.save(completedBooking);
+
+			//Add bookings to users
+			jack.getBookings().add(Booking);
+			chloe.getBookings().add(Booking);
+			michelle.getBookings().add(Booking);
+			jack.getBookings().add(completedBooking);
+			michelle.getBookings().add(completedBooking);
 
 			//Update the users
 			UserRepository.save(jack);
@@ -112,23 +127,6 @@ public class DemoApplication {
 			UserRepository.save(david);
 			UserRepository.save(michelle);
 			UserRepository.save(leslie);
-			
-			// Save Bookings
-			ArrayList<Entity_User> customers = new ArrayList<>();
-			customers.add(jack);
-			customers.add(chloe);
-			ArrayList<Entity_User> employees = new ArrayList<>();
-			employees.add(michelle);
-			Entity_Booking Booking = new Entity_Booking(OffsetDateTime.parse("2020-09-07T17:00+10:00", DateTimeStatic.getFormatter()), 
-														OffsetDateTime.parse("2020-09-07T19:00+10:00", DateTimeStatic.getFormatter()), 
-														customers,
-														employees);
-			Entity_Booking completedBooking = new Entity_Booking(OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()),
-			 													 OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()),
-			 											customers,
-			 											employees);
-			BookingRepository.save(Booking);
-			BookingRepository.save(completedBooking);
       	};
 	}
 }
