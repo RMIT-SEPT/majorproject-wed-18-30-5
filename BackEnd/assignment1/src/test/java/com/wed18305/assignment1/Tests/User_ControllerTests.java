@@ -9,6 +9,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 
 import javax.servlet.http.Cookie;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -86,6 +88,24 @@ public class User_ControllerTests{
 			ResultActions result = mvc.perform(MockMvcRequestBuilders
 											.post("/login").contentType(MediaType.APPLICATION_FORM_URLENCODED)
 											.content(buildUrlEncodedFormEntity("username", "Jacky", "password", "1234")));
+			this.session = (MockHttpSession) result.andReturn().getRequest().getSession();
+			this.cookies = result.andReturn().getResponse().getCookies();
+			return true;				
+		} catch (Exception e) {
+			this.session = null;
+			this.cookies = null;
+		}
+		return false;
+	}
+	/**
+	 * If the login is unsuccessful the session and cookie variables will be null
+	 * Always make sure you check if your login was success
+	 */
+	protected boolean startCustomerDelete1Session() {//Jacky is customer
+		try {
+			ResultActions result = mvc.perform(MockMvcRequestBuilders
+											.post("/login").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+											.content(buildUrlEncodedFormEntity("username", "delete1", "password", "1234")));
 			this.session = (MockHttpSession) result.andReturn().getRequest().getSession();
 			this.cookies = result.andReturn().getResponse().getCookies();
 			return true;				
@@ -721,7 +741,7 @@ public class User_ControllerTests{
 	@Test
 	public void deleteCustomer_loggedIn_Customer() throws Exception {
 		//Create Session
-		if(startCustomerSession()){
+		if(startCustomerDelete1Session()){
 			//Delete logged in customer
 			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/deleteCustomer")
 																			.session(session)
@@ -874,14 +894,17 @@ public class User_ControllerTests{
 	@Test
 	public void deleteUser_loggedIn_Admin() throws Exception {
 		// Creating a JSONObject object
-		JSONObject delete = new JSONObject();
-		delete.put("input", "[1,2]");
-		String contentSTRING = delete.toString();
+		JSONObject input = new JSONObject();
+		JSONArray inputIDS = new JSONArray();
+		inputIDS.put(7);
+		inputIDS.put(9);
+		input.put("input", inputIDS);
+		String contentSTRING = input.toString();
 
 		//Create Session
 		if(startAdminSession()){
 			//delte employees
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/user/deleteUser")
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/deleteUser")
 																		.session(session)
 																		.cookie(cookies)
 																		.contentType(MediaType.APPLICATION_JSON)
@@ -902,7 +925,10 @@ public class User_ControllerTests{
 	public void deleteUser_loggedIn_Customer() throws Exception {
 		// Creating a JSONObject object
 		JSONObject delete = new JSONObject();
-		delete.put("input", "[1,2]");
+		JSONArray inputIDS = new JSONArray();
+		inputIDS.put(7);
+		inputIDS.put(9);
+		delete.put("input", inputIDS);
 		String contentSTRING = delete.toString();
 
 		//Create Session
@@ -927,7 +953,10 @@ public class User_ControllerTests{
 	public void deleteUser_loggedIn_Employee() throws Exception {
 		// Creating a JSONObject object
 		JSONObject delete = new JSONObject();
-		delete.put("input", "[1,2]");
+		JSONArray inputIDS = new JSONArray();
+		inputIDS.put(7);
+		inputIDS.put(9);
+		delete.put("input", inputIDS);
 		String contentSTRING = delete.toString();
 
 		//Create Session
@@ -952,7 +981,10 @@ public class User_ControllerTests{
 	public void deleteUser_NOTloggedIn() throws Exception {
 		// Creating a JSONObject object
 		JSONObject delete = new JSONObject();
-		delete.put("input", "[1,2]");
+		JSONArray inputIDS = new JSONArray();
+		inputIDS.put(7);
+		inputIDS.put(9);
+		delete.put("input", inputIDS);
 		String contentSTRING = delete.toString();
 
 		//delete employees
