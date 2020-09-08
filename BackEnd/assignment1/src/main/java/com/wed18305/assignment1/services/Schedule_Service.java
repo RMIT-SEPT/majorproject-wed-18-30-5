@@ -1,7 +1,8 @@
 package com.wed18305.assignment1.services;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import com.wed18305.assignment1.model.Entity_Schedule;
 import com.wed18305.assignment1.repositories.Schedule_Repository;
@@ -22,15 +23,18 @@ public class Schedule_Service {
         return schRepository.findById(id);
     }
 
-    public ArrayList<Entity_Schedule> findByIds(Long[] ids){
-        ArrayList<Entity_Schedule> schedules = new ArrayList<Entity_Schedule>();
-        for (int i = 0; i < ids.length; i++) {
-            Optional<Entity_Schedule> s = schRepository.findById(ids[i]);
-            if(s.isPresent()){
-                schedules.add(s.get());
+    public Iterable<Entity_Schedule> findByIds(Long[] ids){
+        //Create a set of Ids
+        Set<Long> idsSet = new HashSet<Long>();
+        for (Long id : ids) {
+            try {
+                idsSet.add(id);
+            } catch (Exception e) {
+                System.out.println(e.getClass().getCanonicalName());
+                System.out.println(e.getMessage());
             }
         }
-        return schedules;
+        return schRepository.findAllById(idsSet);
     }
 
     //DELETION
