@@ -8,6 +8,8 @@ import com.wed18305.assignment1.model.Entity_UserType;
 public class Container_Users {
     private Set<Entity_User> users = new HashSet<Entity_User>();
 
+    public Container_Users() {}
+
     public Container_Users(Set<Entity_User> users) throws NullPointerException{
         if(users == null){
             throw new NullPointerException("users cannot be null");

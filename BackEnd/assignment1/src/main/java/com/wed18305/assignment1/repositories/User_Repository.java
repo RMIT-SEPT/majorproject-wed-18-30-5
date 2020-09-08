@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 public interface User_Repository extends CrudRepository<Entity_User, Long> {
 
     @Override
-    Set<Entity_User> findAllById(Iterable<Long> iterable);
+    Iterable<Entity_User> findAllById(Iterable<Long> iterable);
 
     Optional<Entity_User> findByUsername(String username);
 

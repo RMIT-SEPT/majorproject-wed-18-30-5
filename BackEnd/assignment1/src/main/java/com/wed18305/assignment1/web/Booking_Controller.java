@@ -20,6 +20,7 @@ import com.wed18305.assignment1.model.Entity_UserType.UserTypeID;
 import com.wed18305.assignment1.services.User_Service;
 import com.wed18305.assignment1.tools.Container_Users;
 
+import org.hamcrest.beans.HasProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,9 +67,13 @@ public class Booking_Controller {
         }
 
         //Get the users
-        Container_Users users;
+        Container_Users users = new Container_Users();
         try {
-            users = new Container_Users(userService.findByIds(br.getUserIds()));
+            // Add All Users Manually (as ArrayList -> Set issues seem to occur when done via constructor)
+            for (Entity_User user : userService.findByIds(br.getUserIds())) {
+                users.addUser(user);
+            }
+
             users.addUser(userService.findById(loggedInUser.get().getId()).get());
         } catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
