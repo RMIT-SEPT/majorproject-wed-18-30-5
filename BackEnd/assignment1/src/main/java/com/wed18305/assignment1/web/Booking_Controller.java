@@ -57,7 +57,13 @@ public class Booking_Controller {
         bookings.add(booking);
 
         //Get the users
-        Container_Users users = new Container_Users(userService.findManyById(br.getUserIds()));
+        Container_Users users;
+        try {
+            users = new Container_Users(userService.findByIds(br.getUserIds()));
+        } catch (Exception e) {
+            Response response = new Response(false, "ERROR!", e.getMessage(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
 
         //Do we have at least one customer
         if(users.getCustomers().isEmpty()){

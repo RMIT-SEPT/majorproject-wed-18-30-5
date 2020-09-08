@@ -1,9 +1,7 @@
 package com.wed18305.assignment1.services;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -38,36 +36,36 @@ public class User_Service {
         return userRepository.findByUsername(username);
     }
 
-    public Optional<Entity_User> findByUsernameAndPassword(String username, String password) {
-        return userRepository.findByUsernameAndPassword(username, password);
-    }
-
     public Optional<Entity_User> findById(Long id){
         return userRepository.findById(id);
     }
 
-    public Set<Entity_User> findManyById(Long[] ids){
-        
-        Set<Entity_User> users = new HashSet<Entity_User>();
-
-        for (int i = 0; i < ids.length; i++) {
+    public Iterable<Entity_User> findByIds(Long[] ids){
+        Set<Long> idsSet = new HashSet<Long>();
+        for (Long id : ids) {
             try {
-                users.add(userRepository.findById(ids[i]).get());
+                idsSet.add(id);
             } catch (Exception e) {
-                //Catch silent, probably a duplicate
                 System.err.println(e.getClass().getCanonicalName());
-                System.err.println(e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
-        return users;
+        //Get the ids
+        return userRepository.findAllById(idsSet);
     }
+
     //Employees are users that are either employees or admins
-    public ArrayList<Entity_User> findEmployeesById(Long[] ids){   
-        ArrayList<Entity_User> users = new ArrayList<Entity_User>();
+    public Iterable<Entity_User> findEmployeesById(Long[] ids){   
+        Set<Entity_User> users = new HashSet<Entity_User>();
         for (int i = 0; i < ids.length; i++) {
             Entity_User u = userRepository.findById(ids[i]).get();
             if(u.getType().getId() == 1 || u.getType().getId() == 2){
-                users.add(u);
+                try {
+                    users.add(u);
+                } catch (Exception e) {
+                    System.out.println(e.getClass().getCanonicalName());
+                    System.out.println(e.getMessage());
+                }
             }
         }
         return users;
@@ -77,74 +75,79 @@ public class User_Service {
         return userRepository.findAllByUserTypeId(id);
     }
 
-    // What Bookings has a Customer Made?
-    public List<Entity_Booking> findUserBookings(Long id) {
+    // What Bookings has a Customer Made? may be null
+    public Iterable<Entity_Booking> findUserBookings(Long id) {
         Entity_User user = userRepository.findById(id).get();
-        List<Entity_Booking> userBookings = new ArrayList<Entity_Booking>();
-        for (Entity_Booking booking : bookingRepository.findAll()) {
-            if (booking.getCustomers().contains(user)) {
-                userBookings.add(booking);
-            }
-        }
-        return userBookings;
+        return user.getBookings();
     }
 
-    public List<Entity_Booking> findUpcomingUserBookings(Long id) {
+    public Iterable<Entity_Booking> findUpcomingUserBookings(Long id) {
         return returnUpcoming(id, false);
     }
 
-    public List<Entity_Booking> findCompletedUserBookings(Long id) {
+    public Iterable<Entity_Booking> findCompletedUserBookings(Long id) {
         return returnCompleted(id, false);
     }
 
     // What Approved Bookings does an Employee Have?
-    public List<Entity_Booking> findApprovedUserBookings(Long id) {
+    public Iterable<Entity_Booking> findApprovedUserBookings(Long id) {
         Entity_User user = userRepository.findById(id).get();
-        List<Entity_Booking> userBookings = new ArrayList<Entity_Booking>();
-        for (Entity_Booking booking : bookingRepository.findAll()) {
-            if (booking.getEmployees().contains(user) && booking.getApproved()) {
+        if(user.getBookings() == null){
+            return null;
+        }
+        Set<Entity_Booking> userBookings = new HashSet<Entity_Booking>();
+        for (Entity_Booking booking :user.getBookings()) {
+            if(booking.getApproved()){
                 userBookings.add(booking);
             }
         }
         return userBookings;
     }
 
-    public List<Entity_Booking> findApprovedUpcomingBookings(Long id) {
+    public Iterable<Entity_Booking> findApprovedUpcomingBookings(Long id) {
         return returnUpcoming(id, true);
     }
 
-    public List<Entity_Booking> findApprovedCompletedBookings(Long id) {
+    public Iterable<Entity_Booking> findApprovedCompletedBookings(Long id) {
         return returnCompleted(id, true);
     }
 
-    private ArrayList<Entity_Booking> returnUpcoming(Long id, Boolean isApproved) {
+    private Iterable<Entity_Booking> returnUpcoming(Long id, Boolean isApproved) {
         Entity_User user = userRepository.findById(id).get();
-        ArrayList<Entity_Booking> bookings = new ArrayList<>();
-        for (Entity_Booking booking : bookingRepository.findAll()) {
-            // Booking hasn't Occurred, or Finished Yet
-            if (isApproved && booking.getApproved() || !isApproved) {
-                if ((booking.getEmployees().contains(user) || booking.getCustomers().contains(user)) 
-                     && OffsetDateTime.now().compareTo(booking.getEndDateTime()) < 0) {
-                    bookings.add(booking);
+        if(user == null){
+            return null;
+        }
+        if(user.getBookings() == null){
+            return null;
+        }
+        Set<Entity_Booking> userBookings = new HashSet<Entity_Booking>();
+        for (Entity_Booking booking : user.getBookings()) {
+            if(isApproved && booking.getApproved() || !isApproved){
+                if(OffsetDateTime.now().compareTo(booking.getStartDateTime()) < 0){
+                    userBookings.add(booking);
                 }
             }
         }
-        return bookings;
+        return userBookings;
     } 
 
-    private ArrayList<Entity_Booking> returnCompleted(Long id, Boolean checkingApproval) {
+    private Iterable<Entity_Booking> returnCompleted(Long id, Boolean checkingApproval) {
         Entity_User user = userRepository.findById(id).get();
-        ArrayList<Entity_Booking> bookings = new ArrayList<>();
-        for (Entity_Booking booking : bookingRepository.findAll()) {
-            // Booking has Occurred
-            if (checkingApproval && booking.getApproved() || !checkingApproval) {
-                if ((booking.getEmployees().contains(user) || booking.getCustomers().contains(user)) 
-                     && OffsetDateTime.now().compareTo(booking.getEndDateTime()) > 0) {
-                    bookings.add(booking);
+        if(user == null){
+            return null;
+        }
+        if(user.getBookings() == null){
+            return null;
+        }
+        Set<Entity_Booking> userBookings = new HashSet<Entity_Booking>();
+        for (Entity_Booking booking : user.getBookings()) {
+            if(checkingApproval && booking.getApproved() || !checkingApproval){
+                if(OffsetDateTime.now().compareTo(booking.getEndDateTime()) > 0){
+                    userBookings.add(booking);
                 }
             }
         }
-        return bookings;
+        return userBookings;
     } 
 
     /**
@@ -154,7 +157,12 @@ public class User_Service {
      * @param services
      * @return
      */
-    public Iterable<Entity_User> addServicesToEmployees(ArrayList<Entity_User> users, ArrayList<Entity_Service> services){
+    public Iterable<Entity_User> addServicesToEmployees(Iterable<Entity_User> users,
+                                                        Iterable<Entity_Service> services)
+                                                        throws NullPointerException{
+        if(users == null || services == null){
+            throw new NullPointerException("users or services cannot be null");
+        }
         //Add the services to the users
         for (Entity_User u : users) {
             for (Entity_Service service: services) {
@@ -175,7 +183,12 @@ public class User_Service {
      * @param schedules
      * @return
      */
-    public Iterable<Entity_User> addSchedulesToEmployees(ArrayList<Entity_User> users, ArrayList<Entity_Schedule> schedules){
+    public Iterable<Entity_User> addSchedulesToEmployees(Iterable<Entity_User> users,
+                                                         Iterable<Entity_Schedule> schedules)
+                                                         throws NullPointerException{
+        if(users == null || schedules == null){
+            throw new NullPointerException("users or schedules cannot be null");
+        }
         //Add the services to the users
         for (Entity_User u : users) {
             for (Entity_Schedule schedule : schedules) {
@@ -196,7 +209,12 @@ public class User_Service {
      * @param schedules
      * @return
      */
-    public Iterable<Entity_User> addBookingsToEmployees(Set<Entity_User> users, Set<Entity_Booking> bookings){
+    public Iterable<Entity_User> addBookingsToEmployees(Iterable<Entity_User> users,
+                                                        Iterable<Entity_Booking> bookings)
+                                                        throws NullPointerException{
+        if(users == null || bookings == null){
+            throw new NullPointerException("users or bookings cannot be null");
+        }
         //Add the services to the users
         for (Entity_User u : users) {
             for (Entity_Booking booking : bookings) {
