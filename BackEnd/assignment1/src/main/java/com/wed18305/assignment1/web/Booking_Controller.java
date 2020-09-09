@@ -5,10 +5,10 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.metamodel.EntityType;
 import javax.validation.Valid;
 
 import com.wed18305.assignment1.Responses.Response;
+import com.wed18305.assignment1.Responses.Response_Booking;
 import com.wed18305.assignment1.Requests.Booking_Request;
 import com.wed18305.assignment1.Requests.Delete_Request;
 import com.wed18305.assignment1.Requests.Get_Request;
@@ -20,7 +20,6 @@ import com.wed18305.assignment1.model.Entity_UserType.UserTypeID;
 import com.wed18305.assignment1.services.User_Service;
 import com.wed18305.assignment1.tools.Container_Users;
 
-import org.hamcrest.beans.HasProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,26 +53,20 @@ public class Booking_Controller {
         }
 
         // Create a Booking entity using the Booking_Request
-        Set<Entity_Booking> bookings = new HashSet<Entity_Booking>();
         Entity_Booking booking = new Entity_Booking(br.getStartDate(),
                                                     br.getEndDate());
-        bookings.add(booking);
 
         // Is a Customer Logged In?
         Optional<Entity_User> loggedInUser = userService.findByUsername(p.getName());
-        if(loggedInUser.isEmpty() || !loggedInUser.get().getType().getId().equals(UserTypeID.CUSTOMER.id)){
+        if(!loggedInUser.isPresent() || !loggedInUser.get().getType().getId().equals(UserTypeID.CUSTOMER.id)){
              Response response = new Response(false, "ERROR!", "No customer ids provided", null);
              return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
         //Get the users
-        Container_Users users = new Container_Users();
+        Container_Users users; //= new Container_Users();
         try {
-            // Add All Users Manually (as ArrayList -> Set issues seem to occur when done via constructor)
-            for (Entity_User user : userService.findByIds(br.getUserIds())) {
-                users.addUser(user);
-            }
-
+            users = new Container_Users(userService.findAllById(br.getUserIds()));     
             users.addUser(userService.findById(loggedInUser.get().getId()).get());
         } catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
@@ -97,6 +90,8 @@ public class Booking_Controller {
         try {
             // Save Booking
             booking1 = bookingService.saveOrUpdateBooking(booking);
+            Set<Entity_Booking> bookings = new HashSet<Entity_Booking>();
+            bookings.add(booking1);
             userService.addBookingsToUsers(users.getUsers(), bookings);
         } catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
@@ -203,8 +198,10 @@ public class Booking_Controller {
         // Get the Employee's Bookings
         Entity_User curUser = user.get();
         Iterable<Entity_Booking> bookings =  null;
+        Response_Booking bkgResponse = null;
         try {
             bookings = userService.findApprovedUserBookings(curUser.getId());
+            bkgResponse = new Response_Booking(bookings);
         }
         catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
@@ -216,7 +213,7 @@ public class Booking_Controller {
             Response response = new Response(false, "ERROR!", "Employee has no approved bookings associated with them!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         } else {
-            Response response = new Response(true, "Bookings found!", null, bookings);
+            Response response = new Response(true, "Bookings found!", null, bkgResponse);
             return new ResponseEntity<Response>(response, HttpStatus.OK);
         }
     }
