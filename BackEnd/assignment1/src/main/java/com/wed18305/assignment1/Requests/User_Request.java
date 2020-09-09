@@ -3,7 +3,7 @@ package com.wed18305.assignment1.Requests;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class Employee_Request {
+public class User_Request{
 
     @NotBlank(message = "name is required")
     protected String name;
@@ -13,20 +13,18 @@ public class Employee_Request {
     protected String password;
     @NotNull(message = "contact number is required")
     protected Integer contactNumber;
-    @NotNull(message = "request ID is required")
-    protected Long requestID;
 
     //Constructors
-    public Employee_Request(String name,
+    public User_Request() {
+    }
+    public User_Request(String name,
                             String username,
                             String password,
-                            Integer contactNumber,
-                            Long requestID) {
+                            Integer contactNumber) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.contactNumber = contactNumber;
-        this.requestID = requestID;
     }
 
     //Getters
@@ -41,8 +39,5 @@ public class Employee_Request {
     }
     public Integer getContactNumber() {
         return this.contactNumber;
-    }
-    public Long getRequestID() {
-        return requestID;
     }
 }
