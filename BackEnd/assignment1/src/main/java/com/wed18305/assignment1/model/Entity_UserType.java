@@ -12,9 +12,12 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 // import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 @Entity
-// @Table(name = "userType") //Not sure if the html table creation will be needed
-public class UserType {
+public class Entity_UserType {
 
     public static enum UserTypeID {
         ADMIN((long) 1),
@@ -22,10 +25,12 @@ public class UserType {
         CUSTOMER((long) 3);
 
         public final Long id;
-
         UserTypeID(Long id) {
             this.id = id;
         }
+        public static String getAdmin()    { return ADMIN.id.toString();    }
+        public static String getCustomer() { return CUSTOMER.id.toString(); }
+        public static String getEmployee() { return EMPLOYEE.id.toString(); }
     }
       
 
@@ -34,8 +39,12 @@ public class UserType {
     @Column(name = "id")
     private Long id;
     private String name;
-
+    
+    @JsonIgnore
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date created_at;
+    @JsonIgnore
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date updated_at;
 
 
@@ -49,9 +58,9 @@ public class UserType {
     }
 
     //Constructors
-    public UserType() {
+    public Entity_UserType() {
     }
-    public UserType(String name) {
+    public Entity_UserType(String name) {
         this.name = name;
     }
 
@@ -90,7 +99,7 @@ public class UserType {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final UserType other = (UserType) obj;
+        final Entity_UserType other = (Entity_UserType) obj;
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
@@ -100,7 +109,7 @@ public class UserType {
     //String output
     @Override
     public String toString() {
-        var builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         builder.append("UserType{id=").append(id).append(", name=")
                 .append(name).append("}");
 

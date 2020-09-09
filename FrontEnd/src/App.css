@@ -36,3 +36,37 @@
     transform: rotate(360deg);
   }
 }
+
+.home-bq {
+  width: 1920px;
+  position: absolute;
+}
+
+.booking-wrapper {
+  position: relative;
+  color: white;
+  overflow: auto;
+}
+
+.active-booking-wrapper {
+  margin-top: 10%;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.color-nav {
+  background-color: rgb(212, 12, 96);
+  font-weight: 700;
+}
+
+.booking-form {
+  margin: 10px;
+}
+
+@media (max-width: 414px){
+  .home-bq {
+    background-size: contain !important;
+background-repeat: repeat !important;
+  }
+}
+

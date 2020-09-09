@@ -1,54 +1,32 @@
 package com.wed18305.assignment1.Requests;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.time.OffsetDateTime;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.wed18305.assignment1.model.User_model;
-import com.wed18305.assignment1.services.User_Service;
+import com.wed18305.assignment1.config.DateTimeStatic;
 
 public class Booking_Request {
 
     /// Variables
-    // @NotBlank(message = "A StartDate is required.")
-    protected LocalDateTime startDateTime;
-    // @NotBlank(message = "A EndDate is required.")
-    protected LocalDateTime endDateTime;
-    // @NotBlank(message = "Please assign a customer to this booking.")
-    protected Long[] customer_ids;
-    // @NotBlank(message = "Please assign a worker to this booking.")
-    protected Long[] employees_ids;
+    @NotNull(message = "A StartDate is required.")
+    protected OffsetDateTime startDateTime;
+    @NotNull(message = "A EndDate is required.")
+    protected OffsetDateTime endDateTime;
+    @NotNull(message = "Users must exist.")
+    protected Long[] user_ids;
 
-    protected Long service_id;
-    @NotNull(message = "request ID is required.")
-    protected Long requestID;
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); // "Day, Month, Year, Hour, Minute."
-    
     //Constructors
     public Booking_Request(String startDateTime,
                            String endDateTime,
-                           Long[] customer_ids,
-                           Long[] employee_ids,
-                           Long service_id,
-                           Long requestID) {
-        this.startDateTime  = LocalDateTime.parse(startDateTime, formatter);
-        this.endDateTime    = LocalDateTime.parse(endDateTime, formatter);
-        this.customer_ids   = customer_ids;
-        this.employees_ids  = employee_ids;
-        this.service_id     = service_id;
-        this.requestID      = requestID;
+                           Long[] user_ids) {
+        this.startDateTime  = OffsetDateTime.parse(startDateTime, DateTimeStatic.getFormatter());
+        this.endDateTime    = OffsetDateTime.parse(endDateTime, DateTimeStatic.getFormatter());
+        this.user_ids  = user_ids;
     }
 
     // Getters
-    public LocalDateTime getStartDate()      { return startDateTime;     }
-    public LocalDateTime getEndDate()        { return endDateTime;       }
-    public Long[] getCustomerIds()           { return customer_ids;      }
-    public Long[] getEmployeeIds()           { return employees_ids;     }
-    public Long getServiceId()               { return service_id;        }
-    public Long getRequestID()               { return requestID;         }
+    public OffsetDateTime getStartDate()      { return startDateTime;     }
+    public OffsetDateTime getEndDate()        { return endDateTime;       }
+    public Long[] getUserIds()           { return user_ids;     }
 }

@@ -10,8 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity // Add this to make the class a managed type.
-public class Service {
+public class Entity_Service {
 
     //// Variables
     @Id
@@ -20,7 +23,11 @@ public class Service {
     protected String name;
 
     // Datetime
+    @JsonIgnore
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date created_at;
+    @JsonIgnore
+    @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date updated_at;
 
     // Set created_at Value when Object's Created
@@ -32,8 +39,8 @@ public class Service {
     protected void onUpdate() { this.updated_at = new Date(); }
 
     //// Constructor
-    public Service() {}
-    public Service(String name) {
+    public Entity_Service() {}
+    public Entity_Service(String name) {
         this.name = name;
     }
 
@@ -65,7 +72,7 @@ public class Service {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Service other = (Service) obj;
+        final Entity_Service other = (Entity_Service) obj;
 
         if (!Objects.equals(this.name, other.name)) {
             return false;
@@ -77,7 +84,7 @@ public class Service {
     //String output
     @Override
     public String toString() {
-        var builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         builder.append("Booking{id= ").append(id).append(", name= ").append(name).append("}");
 
         return builder.toString();

@@ -18,6 +18,8 @@ package com.wed18305.assignment1.config;
 
 import javax.sql.DataSource;
 
+import com.wed18305.assignment1.model.Entity_UserType.UserTypeID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -29,12 +31,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
- * Spring Security configuration.
- * Good info for spring security https://www.marcobehler.com/guides/spring-security#_web_application_security_101
+ * Spring Security configuration. Good info for spring security
+ * https://www.marcobehler.com/guides/spring-security#_web_application_security_101
+ * 
  * @author Rob Winch
  * @author Vedran Pavic
  */
@@ -48,8 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
-				.usersByUsernameQuery("SELECT username, password, 'true' AS enabled FROM USER_MODEL WHERE username=?")
-				.authoritiesByUsernameQuery("SELECT username, type_id AS authority FROM USER_MODEL WHERE username=?");
+				.usersByUsernameQuery("SELECT username, password, 'true' AS enabled FROM ENTITY_USER WHERE username=?")
+				.authoritiesByUsernameQuery("SELECT username, type_id AS authority FROM ENTITY_USER WHERE username=?");
 	}
 
 	@Bean
@@ -65,36 +68,59 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public AuthenticationSuccessHandler authSuccessHandler() {
-   		return new AuthenticationSuccess();
-	}
-
-	@Bean
-	public AuthenticationFailureHandler authFailureHandler() {
-   		return new AuthenticationFailure();
-	}
+    public UsernamePasswordAuthenticationFilter authenticationFilter() throws Exception {
+        UsernamePasswordAuthenticationFilter authenticationFilter
+			= new UsernamePasswordAuthenticationFilter();
+		authenticationFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", "POST"));
+		authenticationFilter.setAuthenticationSuccessHandler(new AuthenticationSuccess());
+		authenticationFilter.setAuthenticationFailureHandler(new AuthenticationFailure());
+        authenticationFilter.setAuthenticationManager(authenticationManagerBean());
+        return authenticationFilter;
+    }
 
 	@Override
 	public void configure(WebSecurity web) {
 		web.ignoring().requestMatchers(PathRequest.toH2Console());
 	}
 
+	/*
+	 * Tip: When testing, login through Postman, so it holds all session data.
+	 */
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+		http.cors().and().authorizeRequests()
+			.antMatchers("/login").permitAll()
 			.antMatchers("/api/user/createCustomer").permitAll()
-			.antMatchers("/api/user/createEmployee").hasAuthority("1")
-			.antMatchers("/api/user/createAdmin").hasAuthority("1")
-      		.antMatchers("/api/user/getEmployees").hasAuthority("1")
-			.antMatchers("/api/user/deleteUser").hasAuthority("1")
-			.antMatchers("/api/user/deleteCustomer").hasAuthority("3")
-			.antMatchers("/api/booking/createBooking").hasAnyAuthority("1","3")
-			.antMatchers("/api/service/createService").hasAuthority("1")
+			.antMatchers("/api/user/createEmployee").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/createAdmin").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/deleteUser").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/user/deleteCustomer").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/user/getEmployees").hasAnyAuthority(UserTypeID.getAdmin(),UserTypeID.getCustomer())
+			.antMatchers("/api/user/getEmployeesByService").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/booking/createBooking").hasAnyAuthority(UserTypeID.getAdmin(), UserTypeID.getCustomer())
+			.antMatchers("/api/booking/approveBooking").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getAdminBookings").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getUpcomingAdminBookings").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getCompletedAdminBookings").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
+			.antMatchers("/api/booking/getUpcomingEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
+			.antMatchers("/api/booking/getCompletedEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
+			.antMatchers("/api/booking/getCustomerBookings").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/booking/getUpcomingCustomerBookings").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/booking/getCompletedCustomerBookings").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/booking/deleteBooking").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/service/createService").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/schedule/createSchedule").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/schedule/deleteSchedule").hasAuthority(UserTypeID.getAdmin())
 			.anyRequest().authenticated()
-			.and()
-			.formLogin().successHandler(authSuccessHandler())
-						.failureHandler(authFailureHandler())
-						.permitAll()
+			// .and()
+			// .formLogin().loginPage("http://localhost:3000/login")
+			// 			.loginProcessingUrl("http://localhost:8080/login")
+			// 			.failureForwardUrl("http://localhost:3000/login")
+			// 			.successHandler(authSuccessHandler())
+			// 			.failureHandler(authFailureHandler())
+			// 			.permitAll()
             .and()
 			.logout().permitAll()
 			.deleteCookies("JSESSIONID")
