@@ -39,9 +39,18 @@ public class Schedule_Service {
 
     //DELETION
     public void deleteById(Long id){
+        //remove any reference to this schedule, TODO check this works properly
+        Optional<Entity_Schedule> schedule = schRepository.findById(id);
+        if(schedule.isPresent()){
+            schedule.get().getEmployees().clear();
+        }
         schRepository.deleteById(id);
     }
     public void deleteAll(Iterable<Entity_Schedule> schedules){
+        //remove any reference to this schedule, TODO check this works properly
+        for (Entity_Schedule schedule : schedules) {
+            schedule.getEmployees().clear();
+        }
         schRepository.deleteAll(schedules);
     }
 }

@@ -3,11 +3,15 @@ package com.wed18305.assignment1.model;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,8 +38,8 @@ public class Entity_Schedule {
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     protected OffsetDateTime endDateTime;
     @JsonIgnore
-    @ManyToMany(mappedBy = "schedules")
-    protected List<Entity_User> employees = new ArrayList<Entity_User>();
+    @ManyToMany(mappedBy = "schedules", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    protected Set<Entity_User> employees = new HashSet<Entity_User>();
     @JsonIgnore
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     private Date created_at;
@@ -71,7 +75,7 @@ public class Entity_Schedule {
     public OffsetDateTime getEndDateTime() {
         return this.endDateTime;
     }
-    public List<Entity_User> getEmployees() {
+    public Set<Entity_User> getEmployees() {
         return this.employees;
     }
     
@@ -81,7 +85,7 @@ public class Entity_Schedule {
     public int hashCode() {
         //Copied from http://zetcode.com/springboot/annotations/
         //change as we require
-        int hash = 7;
+        int hash = 3;
         hash = 79 * hash + Objects.hashCode(this.id);
         hash = 79 * hash + Objects.hashCode(this.startDateTime);
         hash = 79 * hash + Objects.hashCode(this.endDateTime);

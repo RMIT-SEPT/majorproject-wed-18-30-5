@@ -109,6 +109,9 @@ public class DemoApplication {
 			Entity_Schedule scheduleDavid = new Entity_Schedule(d_ts, d_te);
 			Entity_Schedule scheduleMichelle = new Entity_Schedule(m_ts, m_te);
 			Entity_Schedule scheduleLeslie = new Entity_Schedule(l_ts, l_te);
+			ScheduleRepository.save(scheduleDavid);
+			ScheduleRepository.save(scheduleMichelle);
+			ScheduleRepository.save(scheduleLeslie);
 
 			//Add Schedules to employees
 			david.getSchedules().add(scheduleDavid);

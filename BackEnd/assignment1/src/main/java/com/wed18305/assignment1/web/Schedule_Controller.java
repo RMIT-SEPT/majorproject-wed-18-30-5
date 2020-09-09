@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.validation.Valid;
 import com.wed18305.assignment1.model.Entity_User;
@@ -87,7 +86,7 @@ public class Schedule_Controller {
         }
         //Save the changes in the database
         try {
-            schService.saveOrUpdateSchedule(s1);
+            s1 = schService.saveOrUpdateSchedule(s1);
             userService.addSchedulesToEmployees(employees, schedules);
         } catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
@@ -129,16 +128,8 @@ public class Schedule_Controller {
             Response response = new Response(false, "ERROR!", "No schedules found in the database", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
-        //Since the user is the owner of the user_schedules ref table we have to remove from there.
-        try {
-            for (int i = 0; i < schedules_db.size(); i++) {
-                List<Entity_User> users = schedules_db.get(i).getEmployees();
-                for (int j = 0; j < users.size(); j++) {
-                    users.get(j).getSchedules().remove(schedules_db.get(i));
-                    userService.saveOrUpdateUser(users.get(j));
-                }
-            }
-            //Now delete the actual schedules
+        //Now delete the actual schedules
+        try {      
             schService.deleteAll(schedules_db);
         } catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);

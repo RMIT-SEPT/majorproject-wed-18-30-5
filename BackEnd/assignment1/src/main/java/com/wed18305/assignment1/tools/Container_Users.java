@@ -1,5 +1,6 @@
 package com.wed18305.assignment1.tools;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import com.wed18305.assignment1.model.Entity_User;
@@ -8,19 +9,21 @@ import com.wed18305.assignment1.model.Entity_UserType;
 public class Container_Users {
     private Set<Entity_User> users = new HashSet<Entity_User>();
 
-    public Container_Users() {}
+    public Container_Users() {
+    }
 
-    public Container_Users(Set<Entity_User> users) throws NullPointerException{
-        if(users == null){
+    public Container_Users(Set<Entity_User> users) throws NullPointerException {
+        if (users == null) {
             throw new NullPointerException("users cannot be null");
         }
         this.users = users;
     }
-    public Container_Users(Iterable<Entity_User> users) throws NullPointerException,Exception{
-        if(users == null){
+
+    public Container_Users(Iterable<Entity_User> users) throws NullPointerException, Exception {
+        if (users == null) {
             throw new NullPointerException("users cannot be null");
         }
-        this.users = (Set<Entity_User>) users;
+        this.users = new HashSet<Entity_User>((Collection<? extends Entity_User>) users);
     }
 
     // Add new User to List of Users
