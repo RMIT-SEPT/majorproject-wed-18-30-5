@@ -13,6 +13,7 @@ import com.wed18305.assignment1.Requests.Booking_Request;
 import com.wed18305.assignment1.Requests.Delete_Request;
 import com.wed18305.assignment1.Requests.Get_Request;
 import com.wed18305.assignment1.model.Entity_Booking;
+import com.wed18305.assignment1.model.Entity_Schedule;
 import com.wed18305.assignment1.services.Booking_Service;
 // import com.wed18305.assignment1.services.Service_Service;
 import com.wed18305.assignment1.model.Entity_User;
@@ -82,6 +83,33 @@ public class Booking_Controller {
         //Do we have at least one employee
         if(users.getEmployees().isEmpty()){
             Response response = new Response(false, "ERROR!", "No employee ids provided", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Does Booking Fit Into Employee's Work Schedule?
+        String busyEmployees = null;
+
+        for (Entity_User employee : users.getEmployees()) {
+
+            // Can Employee Attend Booking?
+            boolean canAttend = false;
+
+            for (Entity_Schedule schedule : employee.getSchedules()) {
+
+                if (br.getStartDate().compareTo(schedule.getStartDateTime()) >= 0 &&
+                    br.getEndDate().compareTo(schedule.getEndDateTime()) <= 0) {
+                        canAttend = true;
+                }
+            }
+
+            // Booking Can't Be Assigned to This Employee
+                 if (!canAttend && busyEmployees == null) { busyEmployees = employee.getName(); }
+            else if (!canAttend && busyEmployees != null) { busyEmployees += " & " + employee.getName(); }
+        }
+
+        // Employee/s can't attend. Print error.
+        if (busyEmployees != null) {
+            Response response = new Response(false, "ERROR!", busyEmployees + " is unavailble during this time. Cannot attend booking.", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
