@@ -22,6 +22,7 @@ export default class ActiveBookings extends Component {
       this.setState({ bookings: Array.from(res.data.body) });
     });
   };
+  
 
   render() {
     return (
