@@ -44,6 +44,7 @@ export default class ActiveBookings extends Component {
                       <li>End-Date : {booking.endDateTime}</li>
                     </ul>
                   </Card.Text>
+                  <span class="badge badge-pill badge-primary">Primary</span>
                 </Card.Body>
                 <Card.Footer>
                   <small className="text-muted">Last updated 3 mins ago</small>

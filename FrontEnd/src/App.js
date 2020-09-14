@@ -14,7 +14,7 @@ import ActiveBooking from "./components/ActiveBookings";
 function App() {
   return (
     <Router>
-      <Route exact path="/" component={() => <Redirect to="/home" />} />
+      <Route exact path="/" component={() => <Redirect to="/login" />} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/home" component={Home} />
       <Route exact path="/booking" component={Booking} />
