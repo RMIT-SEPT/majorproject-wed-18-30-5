@@ -38,7 +38,7 @@ export default class ActiveBookings extends Component {
                   <Card.Title>Service Name</Card.Title>
                   <Card.Text>
                     <ul>
-                      <li>Customer Name : </li>
+                      <li>Customer Name :</li>
                       <li>Employee Name : </li>
                       <li>Start-Date : {booking.startDateTime}</li>
                       <li>End-Date : {booking.endDateTime}</li>
