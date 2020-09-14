@@ -33,21 +33,40 @@ export default class ActiveBookings extends Component {
           <CardDeck>
             {this.state.bookings.map((booking) => (
               <Card key={booking.id}>
+                {/* <pre>{JSON.stringify(booking, null, "    ")}</pre> */}
                 {/* <Card.Img variant="top" src="holder.js/100px160" /> */}
                 <Card.Body>
                   <Card.Title>Service Name</Card.Title>
                   <Card.Text>
+                    <Card.Title>Customers</Card.Title>
                     <ul>
-                      <li>Customer Name :</li>
-                      <li>Employee Name : </li>
-                      <li>Start-Date : {booking.startDateTime}</li>
-                      <li>End-Date : {booking.endDateTime}</li>
+                      {booking.customers.map(({ name }) => (
+                        <li>Name: {name}</li>
+                      ))}
                     </ul>
+                    <Card.Title>Employees</Card.Title>
+
+                    <ul>
+                      {booking.employees.map(({ name }) => (
+                        <li>Name: {name} </li>
+                      ))}
+                    </ul>
+                    <Card.Text>Start-Date : {booking.startDateTime}</Card.Text>
+                    <Card.Text>End-Date : {booking.endDateTime}</Card.Text>
                   </Card.Text>
-                  <span class="badge badge-pill badge-primary">Primary</span>
                 </Card.Body>
                 <Card.Footer>
-                  <small className="text-muted">Last updated 3 mins ago</small>
+                  <span className="mr-2">
+                    {booking.approved ? (
+                      <span class="badge badge-success">Active</span>
+                    ) : (
+                      <span class="badge badge-secondary">Pending</span>
+                    )}
+                  </span>
+
+                  <small className="text-muted float-right">
+                    Last updated 3 mins ago
+                  </small>
                 </Card.Footer>
               </Card>
             ))}
