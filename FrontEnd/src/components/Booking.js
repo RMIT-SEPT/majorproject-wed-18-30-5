@@ -72,10 +72,10 @@ class Booking extends Component {
     const booking = {
       startDateTime: this.formatDate(start_date),
       endDateTime: this.formatDate(end_date),
-      customer_ids: [1],
-      employees_ids: [Number(this.state.employee)],
+      user_ids: [Number(5)]
     };
     ApiService.createBooking(this, booking).then((res) => {
+      console.log(booking);
       this.setState({ message: "Booking Created!" });
     });
     console.log(this.state.message);
@@ -133,8 +133,8 @@ class Booking extends Component {
                           </option>
                         ))
                       ) : (
-                        <option disabled>No Employees</option>
-                      )}
+                            <option disabled>No Employees</option>
+                          )}
                     </select>
                   </div>
                   <div className="form-group col-md-3">
