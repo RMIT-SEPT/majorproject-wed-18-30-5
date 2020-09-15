@@ -37,11 +37,11 @@ public class AuthenticationSuccess implements AuthenticationSuccessHandler {
             authorityID = grantedAuthority.getAuthority();
         }
         if(authorityID.compareTo(String.valueOf(Entity_UserType.UserTypeID.ADMIN.id)) == 0){
-            response.setHeader("Location", "http://localhost:3000/home");
+            response.setHeader("Location", "http://localhost:3000/dashboardA");
         }else if(authorityID.compareTo(String.valueOf(Entity_UserType.UserTypeID.CUSTOMER.id)) == 0){
-            response.setHeader("Location", "http://localhost:3000/booking");
+            response.setHeader("Location", "http://localhost:3000/dashboardU");
         }else if(authorityID.compareTo(String.valueOf(Entity_UserType.UserTypeID.EMPLOYEE.id)) == 0){
-            response.setHeader("Location", "http://localhost:3000/history");
+            response.setHeader("Location", "http://localhost:3000/dashboardE");
         }
         response.getWriter().print(newresponse.toString());
         response.getWriter().flush();
