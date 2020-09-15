@@ -17,9 +17,7 @@
 package com.wed18305.assignment1.config;
 
 import javax.sql.DataSource;
-
 import com.wed18305.assignment1.model.Entity_UserType.UserTypeID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +28,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -63,8 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return new DefaultEncoder();
-		// return new BCryptPasswordEncoder();
+		//return new DefaultEncoder();
+		return new BCryptPasswordEncoder();
 	}
 
 	@Bean
@@ -74,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		authenticationFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", "POST"));
 		authenticationFilter.setAuthenticationSuccessHandler(new AuthenticationSuccess());
 		authenticationFilter.setAuthenticationFailureHandler(new AuthenticationFailure());
-        authenticationFilter.setAuthenticationManager(authenticationManagerBean());
+		authenticationFilter.setAuthenticationManager(authenticationManagerBean());
         return authenticationFilter;
     }
 
