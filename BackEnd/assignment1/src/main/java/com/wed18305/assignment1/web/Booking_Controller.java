@@ -137,6 +137,43 @@ public class Booking_Controller {
     }
 
     /**
+     * Deny Existing Booking 
+     * PATCH ENDPOINT: http://localhost:8080/api/booking/denyBooking
+     * INPUT JSON {"id":1 }
+     */
+    @PatchMapping("denyBooking")
+    public ResponseEntity<Response> denyBooking(@Valid @RequestBody Get_Request gr, BindingResult result) {
+
+        // Binding validation checks
+        if (result.hasErrors()) {
+            
+            Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Attempt to Find Booking by ID
+        Optional<Entity_Booking> book = bookingService.findById(gr.getId());
+        if (book == null) {
+            Response response = new Response(false, "ERROR!", "Booking doesn't exist!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Attempt to Deny Booking
+        try {
+            Entity_Booking currentBooking = book.get();
+            currentBooking.denyBooking();
+            bookingService.saveOrUpdateBooking(currentBooking);
+        }
+        catch (Exception e) {
+            Response response = new Response(false, "ERROR!", "Booking couldn't be updated!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+         }
+
+        Response response = new Response(true, "Booking denied!", null, book);
+        return new ResponseEntity<Response>(response, HttpStatus.ACCEPTED);
+    }
+
+    /**
      * Approve Existing Booking 
      * PATCH ENDPOINT: http://localhost:8080/api/booking/approveBooking
      * INPUT JSON {"id":1 }

@@ -22,11 +22,28 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Entity_Booking {
 
+    public static enum ApprovalStatus {
+        ANY((long) 0), // Debug Value, for finding bookings with any approvalStatus.
+        PENDING((long) 1),
+        APPROVED((long) 2),
+        DENIED((long) 3);
+
+        public final Long id;
+        ApprovalStatus(Long id) {
+            this.id = id;
+        }
+        public static Long getAny()      { return ANY.id;      }
+        public static Long getPending()  { return PENDING.id;  }
+        public static Long getApproved() { return APPROVED.id; }
+        public static Long getDenied()   { return DENIED.id;   }
+    }
+
     /// Variables
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
-    protected Boolean approved = false; // Don't approve bookings by default.
+    // protected Boolean approved = false; // Don't approve bookings by default.
+    protected ApprovalStatus approvalStatus = ApprovalStatus.PENDING;
 
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     protected OffsetDateTime startDateTime;
@@ -134,9 +151,9 @@ public class Entity_Booking {
         return employees;
     }
 
-
-    public Boolean getApproved() { return approved; }
-    public void approveBooking() { approved = true; }
+    public long getApprovalStatus() { return approvalStatus.id;                 }
+    public void approveBooking()    { approvalStatus = ApprovalStatus.APPROVED; }
+    public void denyBooking()       { approvalStatus = ApprovalStatus.DENIED;   }
 
     /// Comparisons
     @Override
