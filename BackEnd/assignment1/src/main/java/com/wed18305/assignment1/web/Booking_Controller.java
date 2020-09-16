@@ -119,6 +119,7 @@ public class Booking_Controller {
      * INPUT JSON {"id":1 }
      */
     @PatchMapping("approveBooking")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Response> approveBooking(@Valid @RequestBody Get_Request gr, BindingResult result) {
 
         // Binding validation checks

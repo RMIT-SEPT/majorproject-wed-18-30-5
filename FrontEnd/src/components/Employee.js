@@ -1,73 +1,118 @@
-import React, { useState } from 'react';
-import Paper from '@material-ui/core/Paper';
-import { EditingState } from '@devexpress/dx-react-grid';
+import React, { useState } from "react";
+import Paper from "@material-ui/core/Paper";
+import { EditingState } from "@devexpress/dx-react-grid";
 import {
   Grid,
   Table,
   TableHeaderRow,
   TableEditRow,
-  TableEditColumn,
-} from '@devexpress/dx-react-grid-material-ui';
+  TableInlineCellEditing,
+} from "@devexpress/dx-react-grid-material-ui";
 
+import { generateRows, employeeValues } from "../../../demo-data/generator";
 
+const columns = [
+  { name: "firstName", title: "First Name" },
+  { name: "lastName", title: "Last Name" },
+  { name: "phone", title: "Phone" },
+  { name: "state", title: "State" },
+];
 
+const requiredRule = {
+  isValid: (value) => value?.trim().length > 0,
+  errorText: "This field is required",
+};
+const validationRules = {
+  phone: {
+    isValid: (phone) => phone.match(/^\(\d{3}\) \d{3}-\d{4}$/i),
+    errorText: 'Your phone must have "(555) 555-5555" format!',
+  },
+  firstName: requiredRule,
+  lastName: requiredRule,
+  state: requiredRule,
+};
 
-const getRowId = row => row.id;
+const validate = (changed, validationStatus) =>
+  Object.keys(changed).reduce((status, id) => {
+    let rowStatus = validationStatus[id] || {};
+    if (changed[id]) {
+      rowStatus = {
+        ...rowStatus,
+        ...Object.keys(changed[id]).reduce((acc, field) => {
+          const isValid = validationRules[field].isValid(changed[id][field]);
+          return {
+            ...acc,
+            [field]: {
+              isValid,
+              error: !isValid && validationRules[field].errorText,
+            },
+          };
+        }, {}),
+      };
+    }
 
-export default (Employee) => {
-  const [columns] = useState([
-    { name: 'EmployeeId', title: 'Employee ID' },
-    { name: 'name', title: 'Name' },
-    { name: 'DateTime', title: 'Date & Time' },
-    { name: 'Service', title: 'Service' },
-  ]);
-  const [rows, setRows] = useState(({
-    columnValues: { id: ({ index }) => index,},
-    length: 8,
-  }));
+    return { ...status, [id]: rowStatus };
+  }, {});
 
-  const commitChanges = ({ added, changed, deleted }) => {
+export default () => {
+  const [rows, setRows] = useState(
+    generateRows({
+      length: 8,
+      columnValues: { id: ({ index }) => index, ...employeeValues },
+    })
+  );
+  const [editingRowIds, setEditingRowIds] = useState([]);
+  const [rowChanges, setRowChanges] = useState({});
+  const [validationStatus, setValidationStatus] = useState({});
+
+  const commitChanges = ({ changed }) => {
     let changedRows;
-    if (added) {
-      const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
-      changedRows = [
-        ...rows,
-        ...added.map((row, index) => ({
-          id: startingAddedId + index,
-          ...row,
-        })),
-      ];
-    }
     if (changed) {
-      changedRows = rows.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
-    }
-    if (deleted) {
-      const deletedSet = new Set(deleted);
-      changedRows = rows.filter(row => !deletedSet.has(row.id));
+      changedRows = rows.map((row) =>
+        changed[row.id] ? { ...row, ...changed[row.id] } : row
+      );
+
+      setValidationStatus({
+        ...validationStatus,
+        ...validate(changed, validationStatus),
+      });
     }
     setRows(changedRows);
   };
 
+  const Cell = React.useCallback(
+    (props) => {
+      const {
+        tableRow: { rowId },
+        column: { name: columnName },
+      } = props;
+      const columnStatus = validationStatus[rowId]?.[columnName];
+      const valid = !columnStatus || columnStatus.isValid;
+      const style = {
+        ...(!valid ? { border: "1px solid red" } : null),
+      };
+      const title = valid ? "" : validationStatus[rowId][columnName].error;
+
+      return <Table.Cell {...props} style={style} title={title} />;
+    },
+    [validationStatus]
+  );
+
   return (
     <Paper>
-      <Grid
-        rows={rows}
-        columns={columns}
-        getRowId={getRowId}
-      >
+      <Grid rows={rows} columns={columns}>
         <EditingState
+          editingRowIds={editingRowIds}
+          onEditingRowIdsChange={setEditingRowIds}
+          rowChanges={rowChanges}
+          onRowChangesChange={setRowChanges}
           onCommitChanges={commitChanges}
         />
-        <Table />
+        <Table cellComponent={Cell} />
         <TableHeaderRow />
         <TableEditRow />
-        <TableEditColumn
-          showAddCommand
-          showEditCommand
-          showDeleteCommand
-        />
+        <TableInlineCellEditing />
       </Grid>
     </Paper>
   );
 };
-

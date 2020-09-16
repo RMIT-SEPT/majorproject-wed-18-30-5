@@ -9,7 +9,12 @@ class NavBar extends Component {
   render() {
     return (
       <>
-        <Navbar className="color-nav" collapseOnSelect expand="lg" variant="dark" >
+        <Navbar
+          className="color-nav"
+          collapseOnSelect
+          expand="lg"
+          variant="dark"
+        >
           <Navbar.Brand>AGME</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
@@ -31,7 +36,7 @@ class NavBar extends Component {
                   Separated link
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link eventKey={2} href="#memes">
+              <Nav.Link eventKey={2} href="/login">
                 Log Out
               </Nav.Link>
             </Nav>

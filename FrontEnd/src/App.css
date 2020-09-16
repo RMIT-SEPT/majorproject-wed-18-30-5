@@ -54,6 +54,12 @@
   margin-right: 5%;
 }
 
+.pending-booking-wrapper {
+  margin-top: 10%;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
 .color-nav {
   background-color: rgb(212, 12, 96);
   font-weight: 700;
@@ -63,10 +69,13 @@
   margin: 10px;
 }
 
-@media (max-width: 414px){
-  .home-bq {
-    background-size: contain !important;
-background-repeat: repeat !important;
-  }
+.admin-buttons {
+  margin-left: 10px;
 }
 
+@media (max-width: 414px) {
+  .home-bq {
+    background-size: contain !important;
+    background-repeat: repeat !important;
+  }
+}

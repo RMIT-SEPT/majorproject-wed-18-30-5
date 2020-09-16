@@ -100,6 +100,30 @@ class ApiService {
       })
       .then(handleLoginRedirect(component));
   }
+
+  fetchEmployees(component) {
+    return axios
+      .get(" http://localhost:8080/api/user/getEmployees", {
+        withCredentials: true,
+      })
+      .then(handleLoginRedirect(component));
+  }
+
+  fetchAdminBookings(component) {
+    return axios
+      .get("http://localhost:8080/api/booking/getAdminBookings", {
+        withCredentials: true,
+      })
+      .then(handleLoginRedirect(component));
+  }
+
+  approveBookingStatus(component, id) {
+    return axios
+      .patch("http://localhost:8080/api/booking/approveBooking", id, {
+        withCredentials: true,
+      })
+      .then(handleLoginRedirect(component));
+  }
 }
 
 export default new ApiService();
