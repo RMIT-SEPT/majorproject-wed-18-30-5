@@ -2,9 +2,7 @@ package com.wed18305.assignment1.web;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-
 import javax.validation.Valid;
 import com.wed18305.assignment1.Responses.Response;
 import com.wed18305.assignment1.Requests.AddService_Request;
@@ -20,6 +18,7 @@ import com.wed18305.assignment1.services.User_Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +32,8 @@ public class User_Controller {
     private UserType_Service userTypeService;
     @Autowired
     private Service_Service userServiceService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * Create new (customer)user 
@@ -62,7 +63,7 @@ public class User_Controller {
             //Create a User entity using the Customer_Request
             Entity_User user = new Entity_User(ur.getName(),
                                             ur.getUsername(),
-                                            ur.getPassword(),
+                                            passwordEncoder.encode(ur.getPassword()),
                                             ur.getContactNumber().toString(),
                                             userTypeService.findById((long)3).get());
             //Save user
@@ -110,7 +111,7 @@ public class User_Controller {
              //Create a User entity using the Employee_Request
              Entity_User user = new Entity_User(ur.getName(),
                                             ur.getUsername(),
-                                            ur.getPassword(),
+                                            passwordEncoder.encode(ur.getPassword()),
                                             ur.getContactNumber().toString(),
                                             userTypeService.findById((long)2).get());
             //Save user
@@ -158,7 +159,7 @@ public class User_Controller {
              //Create a User entity using the Admin_Request
              Entity_User user = new Entity_User(ur.getName(),
                                                 ur.getUsername(),
-                                                ur.getPassword(),
+                                                passwordEncoder.encode(ur.getPassword()),
                                                 ur.getContactNumber().toString(),
                                                 userTypeService.findById((long)1).get());
             //Save user
