@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import DashboardUser from "./components/DashboardUser";
+// import DashboardUser from "./components/DashboardUser";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   BrowserRouter as Router,
@@ -17,9 +17,9 @@ import History from "./components/History";
 import EditUser from "./components/Users/EditUser";
 import ActiveBooking from "./components/ActiveBookings";
 import DashboardAdmin from "./components/DashboardAdmin";
-import Employee from "./components/Employee";
+// import Employee from "./components/Employee";
 import PastBookings from "./components/PastBookings";
-import DashEmployee from "./components/DashEmployee";
+// import DashEmployee from "./components/DashEmployee";
 
 function App() {
   return (
@@ -34,9 +34,9 @@ function App() {
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/activebookings" component={ActiveBooking} />
         <Route exact path="/dashboardadmin" component={DashboardAdmin} />
-        <Route exact path="/employee" component={Employee} />
+        {/* <Route exact path="/employee" component={Employee} /> */}
         <Route exact path="/pastbookings" component={PastBookings} />
-        <Route exact path="/dashemployee" component={DashEmployee} />
+        {/* <Route exact path="/dashemployee" component={DashEmployee} /> */}
         <Route exact path="*" component={NoMatch} />
       </Switch>
     </Router>
