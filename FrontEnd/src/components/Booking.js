@@ -9,7 +9,7 @@ class Booking extends Component {
       employee: "",
       schemas: [],
       employees: [],
-      startdate: "",
+      startdate: "", 
       starttime: "",
       endtime: "",
       date: "",
