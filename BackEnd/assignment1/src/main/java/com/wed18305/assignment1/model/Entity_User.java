@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +17,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Entity_User {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -41,19 +39,19 @@ public class Entity_User {
     @JoinColumn(name = "type_id", referencedColumnName = "id")
     protected Entity_UserType userType;
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_schedules", 
                 joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
                 inverseJoinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id"))
     protected Set<Entity_Schedule> schedules = new HashSet<Entity_Schedule>();
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_services", 
                 joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
                 inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
     protected Set<Entity_Service> services = new HashSet<Entity_Service>();
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_bookings", 
                 joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
                 inverseJoinColumns = @JoinColumn(name = "booking_id", referencedColumnName = "id"))

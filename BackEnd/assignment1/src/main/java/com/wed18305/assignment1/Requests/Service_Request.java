@@ -7,12 +7,17 @@ public class Service_Request {
     //// Variables
     @NotBlank(message = "Please provide a name.")
     protected String name;
+    protected Integer length;
 
     //// Constructor
-    public Service_Request(String name, String empty) {
+    public Service_Request(String name, Integer length) {
         this.name = name;
+        this.length = length;
     }
 
     //// Getters
     public String getName()    { return name;}
+    public Integer getLength(){
+        return this.length;
+    }
 }

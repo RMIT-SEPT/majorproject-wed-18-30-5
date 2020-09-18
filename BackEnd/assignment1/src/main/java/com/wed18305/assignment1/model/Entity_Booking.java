@@ -6,7 +6,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,7 +45,7 @@ public class Entity_Booking {
     // protected List<Entity_User> employees;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "bookings")
+    @ManyToMany(mappedBy = "bookings", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     protected Set<Entity_User> users  = new HashSet<Entity_User>();
     
     // Created/Updated Recordings
@@ -101,6 +103,7 @@ public class Entity_Booking {
     // public List<Entity_User> getCustomers()              { return customers;}
     // public List<Entity_User> getEmployees()              { return employees;}
     public Set<Entity_User> getUsers()              { return users;}
+    @JsonIgnore
     /**
      * 
      * @return List of Entity_User, may be empty.
@@ -115,6 +118,7 @@ public class Entity_Booking {
         }
         return customers;
     }
+    @JsonIgnore
     /**
      * 
      * @return List of Entity_User, may be empty.

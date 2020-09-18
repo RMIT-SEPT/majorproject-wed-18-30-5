@@ -42,7 +42,7 @@ public class User_Service {
         return userRepository.findById(id);
     }
 
-    public Iterable<Entity_User> findByIds(Long[] ids){
+    public Iterable<Entity_User> findAllById(Long[] ids){
         List<Long> idsSet = new ArrayList<Long>();
         for (Long id : ids) {
             try {
@@ -258,21 +258,21 @@ public class User_Service {
             user.get().getBookings().clear();
             user.get().getServices().clear();
             user.get().getSchedules().clear();
-            userRepository.save(user.get());
+            // userRepository.save(user.get());
             //Now delete
             userRepository.deleteById(id);
         }
 
     }
     public void deleteAll(Long[] ids){
-        Iterable<Entity_User> users = this.findByIds(ids);
+        Iterable<Entity_User> users = this.findAllById(ids);
         if(users != null){
             for (Entity_User user : users) {
                 //remove any connection to services,bookings,schedules
                 user.getBookings().clear();
                 user.getServices().clear();
                 user.getSchedules().clear();
-                userRepository.save(user);
+                // userRepository.save(user);
             }
             //Now delete
             userRepository.deleteAll(users);
