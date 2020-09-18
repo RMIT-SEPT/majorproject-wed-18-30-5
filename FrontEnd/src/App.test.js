@@ -33,10 +33,10 @@ it("Navbar renders without crashing", () => {
   ReactDOM.render(<NavBar />, div);
 });
 
-it("Booking renders without crashing", () => {
-  const div = document.createElement("div");
-  ReactDOM.render(<Booking />, div); 
-});
+// it("Booking renders without crashing", () => {
+//   const div = document.createElement("div");
+//   ReactDOM.render(<Booking />, div); 
+// });
 
 // it("Bookings renders 'Employee' text", () => {
 //   const { getByText } = render(<Booking />);
