@@ -39,11 +39,11 @@ it("Booking renders without crashing", () => {
   ReactDOM.render(<Booking />, div);
 });
 
-it("Bookings renders 'Employee' text", () => {
-  const { getByText } = render(<Booking />);
-  const linkElement = getByText(/Employee/);
-  expect(linkElement).toBeInTheDocument();
-});
+// it("Bookings renders 'Employee' text", () => {
+//   const { getByText } = render(<Booking />);
+//   const linkElement = getByText(/Employee/);
+//   expect(linkElement).toBeInTheDocument();
+// });
 
 // it("shows the users from our server", async () => {
 //   server.get("/users", () => [
