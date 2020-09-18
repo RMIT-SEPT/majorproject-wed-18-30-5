@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import { Server } from "miragejs";
 import { render, waitForElement } from "@testing-library/react";
 import NavBar from "./components/NavBar";
 import ActiveBookings from "./components/ActiveBookings";
