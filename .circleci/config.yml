@@ -1,29 +1,29 @@
 version: 2
 jobs:
-  build:
-    docker:
-      - image: circleci/node:12.18.3-browsers
+  # build:
+  #   docker:
+  #     - image: circleci/node:12.18.3-browsers
 
-    working_directory: ~/repo/FrontEnd
+  #   working_directory: ~/repo/FrontEnd
 
-    steps:
-      - checkout:
-          path: ~/repo
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
+  #   steps:
+  #     - checkout:
+  #         path: ~/repo
+  #     - restore_cache:
+  #         keys:
+  #           - v1-dependencies-{{ checksum "package.json" }}
+  #           - v1-dependencies-
 
-      - run: yarn install
+  #     - run: yarn install
 
-      - save_cache:
-          paths:
-            - node_modules
-            - ~/.npm
-            - ~/.cache
-          key: v1-dependencies-{{ checksum "package.json" }}
+  #     - save_cache:
+  #         paths:
+  #           - node_modules
+  #           - ~/.npm
+  #           - ~/.cache
+  #         key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run: yarn test
+  #     - run: yarn test
 
   # Back End
   BackBuild:
@@ -37,7 +37,6 @@ jobs:
 
   BackTest:
     working_directory: ~/repo/BackEnd/assignment1
-    
     docker:
       - image: circleci/openjdk:stretch
     steps:
