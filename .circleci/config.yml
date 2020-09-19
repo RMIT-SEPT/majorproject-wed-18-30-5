@@ -1,73 +1,56 @@
 version: 2
-# jobs:
-#   build:
-#     docker:
-#       - image: circleci/node:12.18.3-browsers
-
-#     working_directory: ~/repo/FrontEnd
-
-#     steps:
-#       - checkout:
-#           path: ~/repo
-#       - restore_cache:
-#           keys:
-#             - v1-dependencies-{{ checksum "package.json" }}
-#             - v1-dependencies-
-
-#       - run: yarn install
-
-#       - save_cache:
-#           paths:
-#             - node_modules
-#             - ~/.npm
-#             - ~/.cache
-#           key: v1-dependencies-{{ checksum "package.json" }}
-
-#       - run: yarn test
-
-# Back End
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:stretch
       - image: circleci/node:12.18.3-browsers
+
+    working_directory: ~/repo/FrontEnd
+
     steps:
       - checkout:
           path: ~/repo
-      #- working_directory: ~/repo/FrontEnd
-      # - restore_cache:
-      #     keys:
-      #       - v1-dependencies-{{ checksum "package.json" }}
-      #       - v1-dependencies-
-      # - run: yarn install
-      # - save_cache:
-      #     paths:
-      #       - node_modules
-      #       - ~/.npm
-      #       - ~/.cache
-      #     key: v1-dependencies-{{ checksum "package.json" }}
-      - working_directory: ~/repo/BackEnd/assignment1
-      - run: ./mvnw -Dmaven.test.skip=true package
-      
-  test:
-    working_directory: ~/repo/
-    docker:
-      - image: circleci/node:12.18.3-browsers
-      - image: circleci/openjdk:stretch
-    steps:
-      - checkout:
-          path: ~/repo
-      - working_directory: ~/repo/BackEnd/assignment1
-      - run: ./mvnw test
-      - working_directory: ~/repo/FrontEnd
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+            - ~/.npm
+            - ~/.cache
+          key: v1-dependencies-{{ checksum "package.json" }}
+
       - run: yarn test
+
+  # Back End
+  BackBuild:
+    working_directory: ~/repo/BackEnd/assignment1
+    docker:
+      - image: circleci/openjdk:stretch
+    steps:
+      - checkout:
+          path: ~/repo
+      - run: ./mvnw -Dmaven.test.skip=true package
+
+  BackTest:
+    working_directory: ~/repo/BackEnd/assignment1
+    
+    docker:
+      - image: circleci/openjdk:stretch
+    steps:
+      - checkout:
+          path: ~/repo
+      - run: ./mvnw test
 
 workflows:
   version: 2
 
   build-then-test:
     jobs:
-      - build
-      - test:
+      - BackBuild
+      - BackTest:
           requires:
-            - build
+            - BackBuild
