@@ -28,13 +28,13 @@ version: 2
 # Back End
 jobs:
   build:
-    #working_directory: ~/repo/BackEnd/assignment1
     docker:
       - image: circleci/openjdk:stretch
       - image: circleci/node:12.18.3-browsers
     steps:
       - checkout:
           path: ~/repo
+      #- working_directory: ~/repo/FrontEnd
       # - restore_cache:
       #     keys:
       #       - v1-dependencies-{{ checksum "package.json" }}
@@ -46,6 +46,7 @@ jobs:
       #       - ~/.npm
       #       - ~/.cache
       #     key: v1-dependencies-{{ checksum "package.json" }}
+      - working_directory: ~/repo/BackEnd/assignment1
       - run: ./mvnw -Dmaven.test.skip=true package
       
   test:
