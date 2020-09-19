@@ -25,21 +25,24 @@ jobs:
 
       - run: yarn test
 
-  # Back End
-  BackEndTest:
+# Back End
+BackEndJobs:
+  build:
     working_directory: ~/repo/BackEnd/assignment1
     docker:
       - image: circleci/openjdk:stretch
     steps:
-      - checkout
+      - checkout:
+          path: ~/repo
       - run: ./mvnw test
 
-  BackEndBuild:
+  test:
     working_directory: ~/repo/BackEnd/assignment1
     docker:
       - image: circleci/openjdk:stretch
     steps:
-      - checkout
+      - checkout:
+          path: ~/repo
       - run: ./mvnw -Dmaven.test.skip=true package
 
 workflows:
@@ -47,7 +50,7 @@ workflows:
 
   build-then-test:
     jobs:
-      - BackEndBuild
-      - BackEndTest:
+      - build
+      - test:
           requires:
             - build
