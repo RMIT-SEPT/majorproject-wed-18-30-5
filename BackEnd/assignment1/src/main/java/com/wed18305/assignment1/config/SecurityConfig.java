@@ -76,6 +76,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationFilter;
     }
 
+	/**
+	 * When using mySQL comment this out
+	 */
 	@Override
 	public void configure(WebSecurity web) {
 		web.ignoring().requestMatchers(PathRequest.toH2Console());
@@ -112,15 +115,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/schedule/createSchedule").hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/schedule/deleteSchedule").hasAuthority(UserTypeID.getAdmin())
 			.anyRequest().authenticated()
-			// .and()
-			// .formLogin().loginPage("http://localhost:3000/login")
-			// 			.loginProcessingUrl("http://localhost:8080/login")
-			// 			.failureForwardUrl("http://localhost:3000/login")
-			// 			.successHandler(authSuccessHandler())
-			// 			.failureHandler(authFailureHandler())
-			// 			.permitAll()
             .and()
 			.logout().permitAll()
+			.logoutSuccessHandler(new LogoutSuccess())
+			.invalidateHttpSession(true)
 			.deleteCookies("JSESSIONID")
 			.and()
 			.csrf().disable();
