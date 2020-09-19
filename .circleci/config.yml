@@ -35,17 +35,17 @@ jobs:
     steps:
       - checkout:
           path: ~/repo
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-      - run: yarn install
-      - save_cache:
-          paths:
-            - node_modules
-            - ~/.npm
-            - ~/.cache
-          key: v1-dependencies-{{ checksum "package.json" }}
+      # - restore_cache:
+      #     keys:
+      #       - v1-dependencies-{{ checksum "package.json" }}
+      #       - v1-dependencies-
+      # - run: yarn install
+      # - save_cache:
+      #     paths:
+      #       - node_modules
+      #       - ~/.npm
+      #       - ~/.cache
+      #     key: v1-dependencies-{{ checksum "package.json" }}
       - run: ./mvnw -Dmaven.test.skip=true package
       
   test:
@@ -56,8 +56,10 @@ jobs:
     steps:
       - checkout:
           path: ~/repo
-      - run: BackEnd/assignment1/mvnw test
-      - run: FrontEnd/yarn test
+      - working_directory: ~/repo/BackEnd/assignment1
+      - run: ./mvnw test
+      - working_directory: ~/repo/FrontEnd
+      - run: yarn test
 
 workflows:
   version: 2
