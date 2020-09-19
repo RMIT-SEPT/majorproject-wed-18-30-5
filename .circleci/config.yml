@@ -44,6 +44,7 @@ workflows:
 
   build-then-test:
     jobs:
+      - build
       - BackBuild
       - BackTest:
           requires:
