@@ -112,6 +112,35 @@ public class User_Service {
         return returnCompleted(id, ApprovalStatus.getApproved());
     }
 
+    // Which Bookings Have Been Denied?
+    public Iterable<Entity_Booking> findDeniedUserBookings(Long id) {
+        return returnBookings(id, ApprovalStatus.getDenied());
+    }
+
+    //// Helper Methods
+    private Iterable<Entity_Booking> returnBookings(Long id, Long approvalStatus) {
+
+        // Is User Valid an Already Existing?
+        Entity_User user = userRepository.findById(id).get();
+        if(user == null){
+            return null;
+        }
+
+        // Do They Have Any Bookings?
+        if(user.getBookings() == null){
+            return null;
+        }
+
+        // Find Appropriate Bookings Based on Input Parameters
+        Set<Entity_Booking> userBookings = new HashSet<Entity_Booking>();
+        for (Entity_Booking booking :user.getBookings()) {
+            if(booking.getApprovalStatus() == approvalStatus || approvalStatus == ApprovalStatus.getAny()){ // Return every booking if applicable.
+                userBookings.add(booking);
+            }
+        }
+        return userBookings;
+    }
+
     private Iterable<Entity_Booking> returnUpcoming(Long id, Long approvalStatus) {
         Entity_User user = userRepository.findById(id).get();
         if(user == null){

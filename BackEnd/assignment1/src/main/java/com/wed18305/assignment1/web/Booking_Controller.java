@@ -41,8 +41,8 @@ public class Booking_Controller {
     /**
      * Create New Booking 
      * POST ENDPOINT: http://localhost:8080/api/booking/createBooking
-     * INPUT JSON {"startDateTime":"dd/mm/yyyyThh:MM:00 UTC+nn:nn", (Format)
-     *             "endDateTime"  :"03/08/2019T16:20:00 UTC+05:30",
+     * INPUT JSON {"startDateTime":"uuuu-MM-dd'T'HH:mmXXXXX", (Format)
+     *             "endDateTime"  :"2020-09-07T17:00+10:00",
      *             "user_ids" : ["1", "2"], // Input an Array of Values
      */
     @PostMapping("createBooking")
