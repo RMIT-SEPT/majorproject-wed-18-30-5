@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import AdminNav from "./AdminNav";
 import { Table, Card, CardDeck } from "react-bootstrap";
-import ApiService from "../api/ApiService";
-import BookingCard from "./BookingCard";
+import ApiService from "../../api/ApiService";
+import BookingCard from "../BookingCard";
 
 class DashboardAdmin extends Component {
   constructor(props) {
@@ -50,17 +50,19 @@ class DashboardAdmin extends Component {
                   <div>
                     <button
                       type="button"
-                      className="btn btn-success"
-                      onClick={() => this.approveBooking(booking.id)}
+                      className="btn btn-danger"
+                      onClick={() => alert("Declining bookings unsupported")}
+                      style={{ float: "right", margin: "5px" }}
                     >
-                      Approve
+                      Reject
                     </button>
                     <button
                       type="button"
-                      className="btn btn-danger"
-                      onClick={() => alert("Declining bookings unsupported")}
+                      className="btn btn-success"
+                      onClick={() => this.approveBooking(booking.id)}
+                      style={{ float: "right", margin: "5px" }}
                     >
-                      Reject
+                      Approve
                     </button>
                   </div>
                 )}
