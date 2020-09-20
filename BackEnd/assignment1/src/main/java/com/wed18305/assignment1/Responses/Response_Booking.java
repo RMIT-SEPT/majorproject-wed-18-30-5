@@ -1,11 +1,96 @@
 package com.wed18305.assignment1.Responses;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wed18305.assignment1.model.Entity_Booking;
+
+public class Response_Booking{
+
+    private List<Response_Object> bookings = new ArrayList<Response_Object>();
+
+    public Response_Booking(Iterable<Entity_Booking> bkgList)
+                            throws NullPointerException{
+        //Create the bookings list
+        for (Entity_Booking booking : bkgList) {
+            Response_Object bkg = new Response_Object(
+                                                    booking.getStartDateTime().toLocalDateTime(),
+                                                    booking.getEndDateTime().toLocalDateTime(),
+                                                    booking.getCustomers().iterator().next().getName(),
+                                                    booking.getEmployees().iterator().next().getName(),
+                                                    booking.getEmployees().iterator().next().getServices().iterator().next().getName());
+            bookings.add(bkg);
+        }
+    } 
+
+    //Getters
+    public List<Response_Object> getBookings(){
+        return this.bookings;
+    }
+
+    //Container object
+    public class Response_Object{
+
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        protected LocalDate date;
+        @JsonFormat(pattern="HH:mm a") // Hour:Minute AM/Pm
+        protected LocalDateTime startTime;
+        @JsonFormat(pattern="HH:mm a")
+        protected LocalDateTime endTime;
+        protected String customer;
+        protected String employee;
+        protected String service;
+    
+        public Response_Object( 
+                                LocalDateTime startDateTime,
+                                LocalDateTime endDateTime,
+                                String customer,
+                                String employee,
+                                String service)
+                                throws NullPointerException{
+            //Cant pass null parameters                       
+            if( startDateTime == null ||
+                endDateTime == null ||
+                customer == null ||
+                employee == null ||
+                service == null){
+                    throw new NullPointerException("parameters cannot be null");
+            }
+            this.date = startDateTime.toLocalDate();
+            this.startTime = startDateTime;
+            this.endTime = endDateTime;
+            this.customer = customer;
+            this.employee = employee;
+            this.service = service;
+        }
+    
+        //Getters
+        public LocalDate getDate() {
+            return this.date;
+        }
+
+        public LocalDateTime getStartTime(){
+            return this.startTime;
+        }
+        public LocalDateTime getEndTime(){
+            return this.endTime;
+        }
+        public String getCustomer(){
+            return this.customer;
+        }
+        public String getEmployee(){
+            return this.employee;
+        }
+        public String getService(){
+            return this.service;
+        }
+    }
+}
+
+/*
 
 public class Response_Booking{
 
@@ -33,41 +118,46 @@ public class Response_Booking{
     //Container object
     public class Response_Object{
 
-        @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
-        protected OffsetDateTime startDateTime;
-        @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
-        protected OffsetDateTime endDateTime;
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        protected Date date;
+        @JsonFormat(pattern="HH:mm a") // Hour:Minute AM/PM
+        protected OffsetDateTime startTime;
+        @JsonFormat(pattern="HH:mm a")
+        protected OffsetDateTime endTime;
         protected String customer;
         protected String employee;
         protected String service;
     
-        public Response_Object(OffsetDateTime startDateTime,
+        public Response_Object(
+                                OffsetDateTime startDateTime,
                                 OffsetDateTime endDateTime,
                                 String customer,
                                 String employee,
                                 String service)
                                 throws NullPointerException{
             //Cant pass null parameters                       
-            if(startDateTime == null ||
+            if(          date == null ||
+                startDateTime == null ||
                 endDateTime == null ||
                 customer == null ||
                 employee == null ||
                 service == null){
                     throw new NullPointerException("parameters cannot be null");
             }
-            this.startDateTime = startDateTime;
-            this.endDateTime = endDateTime;
+            this.date = date;
+            this.startTime = startDateTime;
+            this.endTime = endDateTime;
             this.customer = customer;
             this.employee = employee;
             this.service = service;
         }
     
         //Getters
-        public OffsetDateTime getStartDateTime(){
-            return this.startDateTime;
+        public OffsetDateTime getStartTime(){
+            return this.startTime;
         }
         public OffsetDateTime getEndDateTime(){
-            return this.endDateTime;
+            return this.endTime;
         }
         public String getCustomer(){
             return this.customer;
@@ -81,4 +171,4 @@ public class Response_Booking{
     }
 }
 
-
+*/

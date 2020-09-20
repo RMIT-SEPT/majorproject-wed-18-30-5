@@ -13,6 +13,7 @@ import com.wed18305.assignment1.Requests.Booking_Request;
 import com.wed18305.assignment1.Requests.Delete_Request;
 import com.wed18305.assignment1.Requests.Get_Request;
 import com.wed18305.assignment1.model.Entity_Booking;
+import com.wed18305.assignment1.model.Entity_Schedule;
 import com.wed18305.assignment1.services.Booking_Service;
 // import com.wed18305.assignment1.services.Service_Service;
 import com.wed18305.assignment1.model.Entity_User;
@@ -40,8 +41,8 @@ public class Booking_Controller {
     /**
      * Create New Booking 
      * POST ENDPOINT: http://localhost:8080/api/booking/createBooking
-     * INPUT JSON {"startDateTime":"dd/mm/yyyyThh:MM:00 UTC+nn:nn", (Format)
-     *             "endDateTime"  :"03/08/2019T16:20:00 UTC+05:30",
+     * INPUT JSON {"startDateTime":"uuuu-MM-dd'T'HH:mmXXXXX", (Format)
+     *             "endDateTime"  :"2020-09-07T17:00+10:00",
      *             "user_ids" : ["1", "2"], // Input an Array of Values
      */
     @PostMapping("createBooking")
@@ -85,6 +86,33 @@ public class Booking_Controller {
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
+        // Does Booking Fit Into Employee's Work Schedule?
+        String busyEmployees = null;
+
+        for (Entity_User employee : users.getEmployees()) {
+
+            // Can Employee Attend Booking?
+            boolean canAttend = false;
+
+            for (Entity_Schedule schedule : employee.getSchedules()) {
+
+                if (br.getStartDate().compareTo(schedule.getStartDateTime()) >= 0 &&
+                    br.getEndDate().compareTo(schedule.getEndDateTime()) <= 0) {
+                        canAttend = true;
+                }
+            }
+
+            // Booking Can't Be Assigned to This Employee
+                 if (!canAttend && busyEmployees == null) { busyEmployees = employee.getName(); }
+            else if (!canAttend && busyEmployees != null) { busyEmployees += " & " + employee.getName(); }
+        }
+
+        // Employee/s can't attend. Print error.
+        if (busyEmployees != null) {
+            Response response = new Response(false, "ERROR!", busyEmployees + " is unavailble during this time. Cannot attend booking.", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
         // Save new Booking
         Entity_Booking booking1 = null;
         try {
@@ -106,6 +134,43 @@ public class Booking_Controller {
             Response response = new Response(true, "booking created!", null, booking1);
             return new ResponseEntity<Response>(response, HttpStatus.CREATED);
         }
+    }
+
+    /**
+     * Deny Existing Booking 
+     * PATCH ENDPOINT: http://localhost:8080/api/booking/denyBooking
+     * INPUT JSON {"id":1 }
+     */
+    @PatchMapping("denyBooking")
+    public ResponseEntity<Response> denyBooking(@Valid @RequestBody Get_Request gr, BindingResult result) {
+
+        // Binding validation checks
+        if (result.hasErrors()) {
+            
+            Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Attempt to Find Booking by ID
+        Optional<Entity_Booking> book = bookingService.findById(gr.getId());
+        if (book == null) {
+            Response response = new Response(false, "ERROR!", "Booking doesn't exist!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Attempt to Deny Booking
+        try {
+            Entity_Booking currentBooking = book.get();
+            currentBooking.denyBooking();
+            bookingService.saveOrUpdateBooking(currentBooking);
+        }
+        catch (Exception e) {
+            Response response = new Response(false, "ERROR!", "Booking couldn't be updated!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+         }
+
+        Response response = new Response(true, "Booking denied!", null, book);
+        return new ResponseEntity<Response>(response, HttpStatus.ACCEPTED);
     }
 
     /**
