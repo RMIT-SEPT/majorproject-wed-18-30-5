@@ -43,6 +43,10 @@ public class Response {
         this.body = body;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     @Override
     public String toString() {
         JSONObject json = new JSONObject();

@@ -5,7 +5,6 @@ const USER_API_BASE_URL = "http://localhost:8080/user";
 const handleLoginRedirect = (component) => {
   return (res) => {
     if (res.request.responseURL === "http://localhost:8080/login") {
-      debugger;
       component.props.history.push("/login");
       return Promise.reject({});
     }
@@ -96,6 +95,30 @@ class ApiService {
   createBooking(component, booking) {
     return axios
       .post("http://localhost:8080/api/booking/createBooking", booking, {
+        withCredentials: true,
+      })
+      .then(handleLoginRedirect(component));
+  }
+
+  fetchEmployees(component) {
+    return axios
+      .get(" http://localhost:8080/api/user/getEmployees", {
+        withCredentials: true,
+      })
+      .then(handleLoginRedirect(component));
+  }
+
+  fetchAdminBookings(component) {
+    return axios
+      .get("http://localhost:8080/api/booking/getAdminBookings", {
+        withCredentials: true,
+      })
+      .then(handleLoginRedirect(component));
+  }
+
+  approveBookingStatus(component, id) {
+    return axios
+      .patch("http://localhost:8080/api/booking/approveBooking", id, {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));

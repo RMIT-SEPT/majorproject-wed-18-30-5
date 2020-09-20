@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { Navbar, NavDropdown, Nav } from "react-bootstrap";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Booking from "./Booking";
-import Home from "./Home";
-import History from "./History";
+import DashboardAdmin from "./DashboardAdmin";
+import Employee from "../Emp/Employee";
 
-class NavBar extends Component {
+class AdminNav extends Component {
   render() {
     return (
       <>
@@ -19,9 +18,9 @@ class NavBar extends Component {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="/home"> Home</Nav.Link>
-              <Nav.Link href="/activebookings">Current Bookings</Nav.Link>
-              <Nav.Link href="/history">History</Nav.Link>
+              <Nav.Link href="/PastBookings"> Past Bookings</Nav.Link>
+              <Nav.Link href="/DashboardAdmin">Home</Nav.Link>
+              <Nav.Link href="/Employee">Employee</Nav.Link>
             </Nav>
             <Nav>
               <NavDropdown title="Profile" id="collasible-nav-dropdown">
@@ -36,7 +35,7 @@ class NavBar extends Component {
                   Separated link
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link eventKey={2} href="/login">
+              <Nav.Link eventKey={2} href="#memes">
                 Log Out
               </Nav.Link>
             </Nav>
@@ -47,4 +46,4 @@ class NavBar extends Component {
   }
 }
 
-export default NavBar;
+export default AdminNav;

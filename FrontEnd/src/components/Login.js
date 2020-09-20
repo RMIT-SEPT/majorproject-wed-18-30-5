@@ -81,13 +81,17 @@ export default function SignIn() {
     if (!loginResult) {
       setSubmit(false);
     } else if (loginResult) {
-      history.push("/home");
+      if (loginResult.message === "admin") {
+        history.push("/dashboardadmin");
+      } else if (loginResult.message === "customer") {
+        history.push("/home");
+      }
     }
   }, [loginResult, setSubmit, history]);
 
   return (
     <Container component="main" maxWidth="xs">
-      <div>{JSON.stringify(loginResult)}</div>
+      {/* <div>{JSON.stringify(loginResult)}</div> */}
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}></Avatar>
