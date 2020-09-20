@@ -78,10 +78,10 @@ public class Response_Booking{
         public LocalDateTime getEndTime(){
             return this.endTime;
         }
-        public String getCustomer(){
+        public String getCustomerName(){
             return this.customer;
         }
-        public String getEmployee(){
+        public String getEmployeeName(){
             return this.employee;
         }
         public String getService(){
