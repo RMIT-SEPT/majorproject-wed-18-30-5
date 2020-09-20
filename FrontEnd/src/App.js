@@ -16,9 +16,8 @@ import Booking from "./components/Booking";
 import History from "./components/History";
 import EditUser from "./components/Users/EditUser";
 import ActiveBooking from "./components/ActiveBookings";
-import DashboardAdmin from "./components/DashboardAdmin";
+import DashboardAdmin from "./components/Admin/DashboardAdmin";
 // import Employee from "./components/Employee";
-import PastBookings from "./components/PastBookings";
 // import DashEmployee from "./components/DashEmployee";
 
 function App() {
@@ -35,7 +34,6 @@ function App() {
         <Route exact path="/activebookings" component={ActiveBooking} />
         <Route exact path="/dashboardadmin" component={DashboardAdmin} />
         {/* <Route exact path="/employee" component={Employee} /> */}
-        <Route exact path="/pastbookings" component={PastBookings} />
         {/* <Route exact path="/dashemployee" component={DashEmployee} /> */}
         <Route exact path="*" component={NoMatch} />
       </Switch>
