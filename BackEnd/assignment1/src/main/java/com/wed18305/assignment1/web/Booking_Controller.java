@@ -151,6 +151,7 @@ public class Booking_Controller {
      * GET ENDPOINT: http://localhost:8080/api/booking/getAdminBookings
      */
     @GetMapping("getAdminBookings")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Response> getAdminBookings(Principal p) {
 
         // Make sure the logged in user exists
