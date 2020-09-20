@@ -1,7 +1,32 @@
 version: 2
 jobs:
-  build:
+  
+  # Back End
+  BackBuild:
+    working_directory: ~/repo/BackEnd/assignment1
     docker:
+      - image: circleci/openjdk:stretch
+    steps:
+      - checkout:
+          path: ~/repo
+      - run: ./mvnw -Dmaven.test.skip=true package
+
+  BackTest:
+    working_directory: ~/repo/BackEnd/assignment1
+    docker:
+      - image: circleci/openjdk:stretch
+    steps:
+      - checkout:
+          path: ~/repo
+      - run: ./mvnw test
+      
+  FrontTest:
+    docker:
+      - image: circleci/node:12.18.3-browsers
+    working_directory: ~/repo/FrontEnd
+    steps:
+      - checkout:
+          path: ~/repo
       - image: circleci/node:12.18.3-browsers
 
     working_directory: ~/repo/FrontEnd
@@ -13,14 +38,26 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
-
       - run: yarn install
-
       - save_cache:
           paths:
             - node_modules
             - ~/.npm
             - ~/.cache
           key: v1-dependencies-{{ checksum "package.json" }}
-
       - run: yarn test
+    
+
+workflows:
+  version: 2
+
+  build-then-test:
+    jobs:
+      - build
+      - BackBuild
+      - BackTest:
+          requires:
+            - BackBuild
+      - FrontTest:
+          requires:
+            - BackBuild

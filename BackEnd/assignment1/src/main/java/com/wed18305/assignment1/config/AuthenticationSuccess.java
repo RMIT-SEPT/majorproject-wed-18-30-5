@@ -20,7 +20,8 @@ public class AuthenticationSuccess implements AuthenticationSuccessHandler {
             Authentication authentication) throws IOException, ServletException {
 
         User p = (User) authentication.getPrincipal();
-        Response newresponse = new Response(true, p.getUsername()+" has logged in!",null, null);
+        Response newresponse = new Response(true, null, null, null);
+        response.setContentType("application/json");
         response.setStatus(HttpStatus.OK.value());
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         response.setHeader("Access-Control-Allow-Methods", "POST");
@@ -37,11 +38,11 @@ public class AuthenticationSuccess implements AuthenticationSuccessHandler {
             authorityID = grantedAuthority.getAuthority();
         }
         if(authorityID.compareTo(String.valueOf(Entity_UserType.UserTypeID.ADMIN.id)) == 0){
-            response.setHeader("Location", "http://localhost:3000/dashboardA");
+            newresponse.setMessage("admin");
         }else if(authorityID.compareTo(String.valueOf(Entity_UserType.UserTypeID.CUSTOMER.id)) == 0){
-            response.setHeader("Location", "http://localhost:3000/dashboardU");
+            newresponse.setMessage("customer");
         }else if(authorityID.compareTo(String.valueOf(Entity_UserType.UserTypeID.EMPLOYEE.id)) == 0){
-            response.setHeader("Location", "http://localhost:3000/dashboardE");
+            newresponse.setMessage("employee");
         }
         response.getWriter().print(newresponse.toString());
         response.getWriter().flush();

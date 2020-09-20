@@ -2,23 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { render, waitForElement } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import ActiveBookings from "./components/ActiveBookings";
 import Booking from "./components/Booking";
+import AdminNav from "./components/Admin/AdminNav";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import DashboardAdmin from "./components/Admin/DashboardAdmin";
+import DashboardUser from "./components/Users/DashboardUser";
 
-// /**
-//  * @param {Server} server
-//  */
-// let server;
-
-// beforeEach(() => {
-//   server = new Server();
-//   server.namespace = "http://localhost:8080";
-// });
-
-// afterEach(() => {
-//   server.shutdown();
-// });
 
 /*
  *  Testing If the Components Render Properly.
@@ -33,27 +26,67 @@ it("Navbar renders without crashing", () => {
   ReactDOM.render(<NavBar />, div);
 });
 
-// it("Booking renders without crashing", () => {
+it("Booking renders without crashing", () => {
+  const div = document.createElement("div");
+  ReactDOM.render(
+    <BrowserRouter>
+      <Booking />
+    </BrowserRouter>,
+    div
+  );
+});
+
+it("ActiveBookings renders without crashing", () => {
+  const div = document.createElement("div");
+  ReactDOM.render(<ActiveBookings />, div);
+});
+
+// it("AdminNav renders without crashing", () => {
 //   const div = document.createElement("div");
-//   ReactDOM.render(<Booking />, div); 
+//   ReactDOM.render(
+//     <BrowserRouter>
+//       <AdminNav />
+//     </BrowserRouter>,
+//     div
+//   );
 // });
 
-// it("Bookings renders 'Employee' text", () => {
-//   const { getByText } = render(<Booking />);
-//   const linkElement = getByText(/Employee/);
-//   expect(linkElement).toBeInTheDocument();
+// it("Signup renders without crashing", () => {
+//   const div = document.createElement("div");
+//   ReactDOM.render(
+//     <BrowserRouter>
+//       <Signup />
+//     </BrowserRouter>,
+//     div
+//   );
 // });
 
-// it("shows the users from our server", async () => {
-//   server.get("/users", () => [
-//     { id: 1, name: "Luke" },
-//     { id: 2, name: "Leia" },
-//   ]);
+// it("Login renders without crashing", () => {
+//   const div = document.createElement("div");
+//   ReactDOM.render(
+//     <BrowserRouter>
+//       <Login />
+//     </BrowserRouter>,
+//     div
+//   );
+// });
 
-//   const { getByTestId } = render(<App />);
-//   await waitForElement(() => getByTestId("user-1"));
-//   await waitForElement(() => getByTestId("user-2"));
+// it("DashboardAdmin renders without crashing", () => {
+//   const div = document.createElement("div");
+//   ReactDOM.render(
+//     <BrowserRouter>
+//       <DashboardAdmin />
+//     </BrowserRouter>,
+//     div
+//   );
+// });
 
-//   expect(getByTestId("user-1")).toHaveTextContent("Luke");
-//   expect(getByTestId("user-2")).toHaveTextContent("Leia");
+// it("DashboardUser renders without crashing", () => {
+//   const div = document.createElement("div");
+//   ReactDOM.render(
+//     <BrowserRouter>
+//       <DashboardUser />
+//     </BrowserRouter>,
+//     div
+//   );
 // });

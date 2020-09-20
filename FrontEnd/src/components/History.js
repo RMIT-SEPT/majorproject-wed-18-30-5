@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Table, Card, CardDeck } from "react-bootstrap";
 import NavBar from "./NavBar";
 import ApiService from "../api/ApiService";
+import BookingCard from "./BookingCard";
 
 class History extends Component {
   constructor(props) {
@@ -27,30 +28,14 @@ class History extends Component {
         <header>
           <NavBar />
         </header>
+
         <div className="active-booking-wrapper">
           <CardDeck>
-            {this.state.pastbookings.map((pastbooking) => (
-              <Card>
-                <Card.Img variant="top" src="holder.js/100px160" />
-                <Card.Body>
-                  <Card.Title>Service Name</Card.Title>
-                  <Card.Text>
-                    <ul>
-                      <li>
-                        Customer Name : {pastbooking.customers[0]["name"]}
-                      </li>
-                      <li>
-                        Employee Name : {pastbooking.employees[0]["name"]}
-                      </li>
-                      <li>Start-Date : {pastbooking.startDateTime}</li>
-                      <li>End-Date : {pastbooking.endDateTime}</li>
-                    </ul>
-                  </Card.Text>
-                </Card.Body>
-                <Card.Footer>
-                  <small className="text-muted">Last updated 3 mins ago</small>
-                </Card.Footer>
-              </Card>
+            {this.state.pastbookings.map((pastbookings) => (
+              <BookingCard
+                key={pastbookings.id}
+                booking={pastbookings}
+              ></BookingCard>
             ))}
           </CardDeck>
         </div>

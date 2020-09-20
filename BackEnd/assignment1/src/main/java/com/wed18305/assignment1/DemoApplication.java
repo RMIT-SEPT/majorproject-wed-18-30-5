@@ -29,7 +29,7 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class);
 	}
 
-	// Comment out CommandLineRunner when not using it for testing
+	// Comment out CommandLineRunner when not using it for testing OR when using mySQL
 	@Bean
 	public CommandLineRunner demo(User_Repository UserRepository, 
 								  UserType_Repository TypeRepository, 
