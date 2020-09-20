@@ -17,9 +17,7 @@
 package com.wed18305.assignment1.config;
 
 import javax.sql.DataSource;
-
 import com.wed18305.assignment1.model.Entity_UserType.UserTypeID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +28,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -63,8 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return new DefaultEncoder();
-		// return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder();
 	}
 
 	@Bean
@@ -74,10 +72,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		authenticationFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", "POST"));
 		authenticationFilter.setAuthenticationSuccessHandler(new AuthenticationSuccess());
 		authenticationFilter.setAuthenticationFailureHandler(new AuthenticationFailure());
-        authenticationFilter.setAuthenticationManager(authenticationManagerBean());
+		authenticationFilter.setAuthenticationManager(authenticationManagerBean());
         return authenticationFilter;
     }
 
+	/**
+	 * When using mySQL comment this out
+	 */
 	@Override
 	public void configure(WebSecurity web) {
 		web.ignoring().requestMatchers(PathRequest.toH2Console());
@@ -88,7 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().authorizeRequests()
 			.antMatchers("/login").permitAll()
 			.antMatchers("/api/user/createCustomer").permitAll()
@@ -115,15 +116,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/schedule/createSchedule").hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/schedule/deleteSchedule").hasAuthority(UserTypeID.getAdmin())
 			.anyRequest().authenticated()
-			// .and()
-			// .formLogin().loginPage("http://localhost:3000/login")
-			// 			.loginProcessingUrl("http://localhost:8080/login")
-			// 			.failureForwardUrl("http://localhost:3000/login")
-			// 			.successHandler(authSuccessHandler())
-			// 			.failureHandler(authFailureHandler())
-			// 			.permitAll()
             .and()
 			.logout().permitAll()
+			.logoutSuccessHandler(new LogoutSuccess())
+			.invalidateHttpSession(true)
 			.deleteCookies("JSESSIONID")
 			.and()
 			.csrf().disable();

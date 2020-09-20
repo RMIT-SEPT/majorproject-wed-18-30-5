@@ -41,6 +41,10 @@ export default class InputMoment extends Component {
     const cls = cx('m-input-moment', className);
 
     return (
+      <>
+      <header>
+        <AdminNav />
+      </header>
       <div className={cls} {...props}>
         <div className="options">
           <button
@@ -86,6 +90,7 @@ export default class InputMoment extends Component {
           </button>
         ) : null}
       </div>
+      </>
     );
   }
 }
