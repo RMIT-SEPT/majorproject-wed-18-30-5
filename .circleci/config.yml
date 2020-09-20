@@ -1,25 +1,6 @@
 version: 2
 jobs:
-  build:
-    docker:
-      - image: circleci/node:12.18.3-browsers
-    working_directory: ~/repo/FrontEnd
-    steps:
-      - checkout:
-          path: ~/repo
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-      - run: yarn install
-      - save_cache:
-          paths:
-            - node_modules
-            - ~/.npm
-            - ~/.cache
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn test
-
+  
   # Back End
   BackBuild:
     working_directory: ~/repo/BackEnd/assignment1
@@ -38,6 +19,27 @@ jobs:
       - checkout:
           path: ~/repo
       - run: ./mvnw test
+      
+  FrontTest:
+    docker:
+      - image: circleci/node:12.18.3-browsers
+    working_directory: ~/repo/FrontEnd
+    steps:
+      - checkout:
+          path: ~/repo
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+            - ~/.npm
+            - ~/.cache
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn test
+    
 
 workflows:
   version: 2
@@ -47,5 +49,8 @@ workflows:
       - build
       - BackBuild
       - BackTest:
+          requires:
+            - BackBuild
+      - FrontTest:
           requires:
             - BackBuild
