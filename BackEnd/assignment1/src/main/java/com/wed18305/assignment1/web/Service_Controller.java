@@ -29,8 +29,9 @@ public class Service_Controller {
      * <p>
      * POST ENDPOINT: http://localhost:8080/api/service/createService
      * <p>
-     * INPUT JSON {"name" : "Freddie's Falaf"
-     *             "requestID":"1"
+     * INPUT JSON {"name" : "Freddie's Falaf"}
+     * OR
+     * INPUT JSON {"name" : "Freddie's Falaf", "length" : "15"} //length must be an integer
      */
     @PostMapping("createService")
     public ResponseEntity<Response> createNewService(@Valid @RequestBody Service_Request sr, BindingResult result) {
@@ -45,7 +46,12 @@ public class Service_Controller {
         try {
 
             // Create a Service entity using the Service_Request
-            Entity_Service service = new Entity_Service(sr.getName());
+            Entity_Service service;
+            if(sr.getLength() == 0){
+                service = new Entity_Service(sr.getName());
+            }else{
+                service = new Entity_Service(sr.getName(),sr.getLength());
+            }
 
             // Save Service
             service1 = serviceService.saveOrUpdateService(service);

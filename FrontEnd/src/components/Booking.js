@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ApiService from "../api/ApiService";
+import { withRouter } from "react-router-dom";
 
 class Booking extends Component {
   constructor() {
@@ -54,7 +55,7 @@ class Booking extends Component {
   formatDate = (date) => {
     const formatPad = (num) => String(num).padStart("2", "0");
     const year = date.getUTCFullYear();
-    const month = formatPad(date.getUTCMonth() + 1);
+    const month = formatPad(date.getUTCMonth());
     const day = formatPad(date.getUTCDate());
     const hour = formatPad(date.getUTCHours());
     const minute = formatPad(date.getUTCMinutes());
@@ -72,11 +73,12 @@ class Booking extends Component {
     const booking = {
       startDateTime: this.formatDate(start_date),
       endDateTime: this.formatDate(end_date),
-      user_ids: [Number(5)]
+      user_ids: [Number(5)],
     };
     ApiService.createBooking(this, booking).then((res) => {
       console.log(booking);
       this.setState({ message: "Booking Created!" });
+      this.props.history.push("/activebookings");
     });
     console.log(this.state.message);
   };
@@ -133,8 +135,8 @@ class Booking extends Component {
                           </option>
                         ))
                       ) : (
-                            <option disabled>No Employees</option>
-                          )}
+                        <option disabled>No Employees</option>
+                      )}
                     </select>
                   </div>
                   <div className="form-group col-md-3">
@@ -188,4 +190,4 @@ class Booking extends Component {
   }
 }
 
-export default Booking;
+export default withRouter(Booking);

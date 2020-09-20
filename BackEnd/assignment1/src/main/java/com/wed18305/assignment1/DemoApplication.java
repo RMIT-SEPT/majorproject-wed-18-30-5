@@ -18,6 +18,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class DemoApplication {
@@ -28,14 +29,15 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class);
 	}
 
-	// Comment out CommandLineRunner when not using it for testing
+	// Comment out CommandLineRunner when not using it for testing OR when using mySQL
 	@Bean
 	public CommandLineRunner demo(User_Repository UserRepository, 
 								  UserType_Repository TypeRepository, 
 								  Service_Repository ServiceRepository, 
 								  Booking_Repository BookingRepository,
 								  Schedule_Repository ScheduleRepository,
-								  User_Service UsrService) {
+								  User_Service UsrService,
+								  PasswordEncoder passwordEncoder) {
 
 		return (args) -> {
 			//save the three types
@@ -47,16 +49,16 @@ public class DemoApplication {
 			TypeRepository.save(customer);//3
 			
 			// Create admn/employee/customer(s)
-			Entity_User jack = new Entity_User("Jack", "Jacky", "1234", "0000000000", customer);
-			Entity_User chloe = new Entity_User("Chloe", "O'Brian", "1234", "0000000000", customer);
-			Entity_User kim = new Entity_User("Kim", "Bauer", "1234", "0000000000", customer);
-			Entity_User david = new Entity_User("David", "Palmer", "1234", "0000000000", admin);
-			Entity_User michelle = new Entity_User("Michelle", "Dessler", "1234", "0000000000", employee);
-			Entity_User leslie = new Entity_User("Leslie", "Messler", "1234", "0000000000", employee);		
+			Entity_User jack = new Entity_User("Jack", "Jacky", passwordEncoder.encode("1234"), "0000000000", customer);
+			Entity_User chloe = new Entity_User("Chloe", "O'Brian", passwordEncoder.encode("1234"), "0000000000", customer);
+			Entity_User kim = new Entity_User("Kim", "Bauer", passwordEncoder.encode("1234"), "0000000000", customer);
+			Entity_User david = new Entity_User("David", "Palmer", passwordEncoder.encode("1234"), "0000000000", admin);
+			Entity_User michelle = new Entity_User("Michelle", "Dessler", passwordEncoder.encode("1234"), "0000000000", employee);
+			Entity_User leslie = new Entity_User("Leslie", "Messler", passwordEncoder.encode("1234"), "0000000000", employee);		
 			//Delete users - JUST used for JUnit test so that I can delete them
-			Entity_User delete1 = new Entity_User("Joe","delete1","1234","0000000000", customer);	
-			Entity_User delete2 = new Entity_User("Joe","delete2","1234","0000000000", employee);
-			Entity_User delete3 = new Entity_User("Joe","delete3","1234","0000000000", admin);		
+			Entity_User delete1 = new Entity_User("Joe","delete1",passwordEncoder.encode("1234"),"0000000000", customer);	
+			Entity_User delete2 = new Entity_User("Joe","delete2",passwordEncoder.encode("1234"),"0000000000", employee);
+			Entity_User delete3 = new Entity_User("Joe","delete3",passwordEncoder.encode("1234"),"0000000000", admin);		
 
 			//Save the users
 			UserRepository.save(jack);

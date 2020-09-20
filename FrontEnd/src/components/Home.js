@@ -5,13 +5,9 @@ import Booking from "./Booking";
 import background from "../images/background.jpg";
 
 class Home extends Component {
-
-
-
   render() {
     return (
       <>
-
         <header>
           <NavBar />
         </header>
@@ -22,16 +18,10 @@ class Home extends Component {
               <Booking />
             </div>
           </div>
-
-
-
         </section>
-
       </>
-
     );
   }
-
 }
 
 export default Home;
