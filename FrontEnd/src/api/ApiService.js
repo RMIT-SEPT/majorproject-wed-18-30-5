@@ -5,7 +5,6 @@ const USER_API_BASE_URL = "http://localhost:8080/user";
 const handleLoginRedirect = (component) => {
   return (res) => {
     if (res.request.responseURL === "http://localhost:8080/login") {
-      debugger;
       component.props.history.push("/login");
       return Promise.reject({});
     }
