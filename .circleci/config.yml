@@ -27,13 +27,6 @@ jobs:
     steps:
       - checkout:
           path: ~/repo
-      - image: circleci/node:12.18.3-browsers
-
-    working_directory: ~/repo/FrontEnd
-
-    steps:
-      - checkout:
-          path: ~/repo
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
