@@ -1,0 +1,22 @@
+version: '3'
+services:
+  back-end-app-container:
+    image: backend-app:1
+    build:
+      context: ./BackEnd/assignment1/
+      dockerfile: Dockerfile
+    volumes:
+      - /data/backend-app
+    ports:
+      - "8080:8080"
+  front-end-app-container:
+    image: frontend-app:1
+    stdin_open: true
+    build:
+      context: ./FrontEnd/
+      dockerfile: Dockerfile
+    volumes:
+      - /data/frontend-app
+    ports:
+      - "3000:3000"
+    command: npm start
