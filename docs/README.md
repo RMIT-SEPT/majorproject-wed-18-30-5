@@ -46,3 +46,7 @@
    - DateTimeStatic.java, static file for formatting strings into OffsettDateTime
    - DefaultEncoder.java, temporary encoder for passwords(doesn't encode)
    - SecurityConfig.java, the most important file here, tells JDBC auth where to look for user login also handles login endpoint and authority required for other endpoints
+   
+## Docker
+ - Both the front and back ends have an individual dockerfile which handles building and running the container for that service
+ - In the root directory there is a docker-compose.yml this will call both of the individual dockerfiles in order to run the docker service type 'docker-compose up -d' to build(if neccessary) and start the services(locally) in VM containers.
