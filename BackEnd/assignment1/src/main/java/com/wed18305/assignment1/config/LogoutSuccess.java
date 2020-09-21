@@ -15,7 +15,7 @@ public class LogoutSuccess implements LogoutSuccessHandler {
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
                                 throws IOException, ServletException{
 
-        Response newresponse = new Response(true, "Successfull logout!",null, null);
+        Response newresponse = new Response(true, "login",null, null);
         response.setContentType("application/json");
         response.setStatus(HttpStatus.OK.value());
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -24,7 +24,7 @@ public class LogoutSuccess implements LogoutSuccessHandler {
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Headers",
                 "Content-Type, Authorization, Content-Length, X-Requested-With");
-        response.setHeader("Location", "http://localhost:3000/login");
+        // response.setHeader("Location", "http://localhost:3000/login");
         response.getWriter().print(newresponse.toString());
         response.getWriter().flush();
     }
