@@ -1,24 +1,44 @@
 import React from 'react';
 import Login from './Login';
-import { mount } from "enzyme";
+import { shallow, mount } from "enzyme";
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
 Enzyme.configure({ adapter: new Adapter() });
 
-describe('Login tests', () => {
-    it('should find href link', () => {
-        const component = mount(<Login />);
-        expect(component.find('[href="/Signup"]').length).toEqual(5);
+describe('Test case for testing login',() =>{
+    let wrapper;
+    test('username check',()=>
+    {
+    wrapper = shallow(<Login/>);
+    wrapper.find('input[id="email"]')
+    wrapper.simulate('change', {target: {name: 'username', value: 'test@test.com'}});
+    expect(wrapper.find('input[id="email"]')).toEqual('test@test.com');
     })
-    
-    it('should input username', () => {
-        const component = mount(<Login />);
-        const inputname = component.find('TextField#username').hostNodes();
-        inputname.instance().value = 'Jacob';
-        inputname.simulate('change');
-        expect(inputname.instance().value).toEqual('Jacob');
-    });
-
-});
-
+    it('password check',()=>{
+    wrapper = shallow(<Login/>);
+    wrapper.find('input[type="password"]');
+    wrapper.simulate('change', {target: {name: 'password', value: 'testpassword123'}});
+    expect(wrapper.find('password')).toEqual('testpassword123');
+    })
+    // it('login check with right data',()=>{
+    // wrapper = shallow(<Login/>);
+    // wrapper.find('input[type="text"]');
+    // wrapper.simulate('change', {target: {name: 'username', value: 'krishankantsinghal'}});
+    // wrapper.find('input[type="password"]');
+    // wrapper.simulate('change', {target: {name: 'password', value: 'krishankant123'}});
+    // wrapper.find('button');
+    // wrapper.simulate('click');
+    // expect(wrapper.find('isLogined')).toBe(true);
+    // })
+    // it('login check with wrong data',()=>{
+    // wrapper = shallow(<Login/>);
+    // wrapper.find('input[type="text"]');
+    // wrapper.simulate('change', {target: {name: 'username', value: 'krishankantsinghal'}});
+    // wrapper.find('input[type="password"]');
+    // wrapper.simulate('change', {target: {name: 'password', value: 'krishankant1234'}});
+    // wrapper.find('button');
+    // wrapper.simulate('click');
+    // expect(wrapper.find('isLogined')).toBe(false);
+    // })
+    })
