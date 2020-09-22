@@ -23,7 +23,8 @@ class DashboardAdmin extends Component {
 
   reloadBookingList = () => {
     ApiService.fetchAdminBookings(this).then((res) => {
-      this.setState({ bookings: Array.from(res.data.body) });
+      this.setState({ bookings: Array.from(res.data.body.bookings) });
+      debugger;
     });
   };
 
@@ -48,6 +49,7 @@ class DashboardAdmin extends Component {
                 booking={booking}
                 render={() => (
                   <div>
+                    {booking.date}
                     <button
                       type="button"
                       className="btn btn-danger"

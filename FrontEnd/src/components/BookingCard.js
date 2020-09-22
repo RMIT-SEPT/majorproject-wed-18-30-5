@@ -7,32 +7,29 @@ class BookingCard extends Component {
   }
 
   render() {
-    const { customers, employees } = this.props.booking;
     return (
       <Card>
         {/* <pre>{JSON.stringify(booking, null, "    ")}</pre> */}
         {/* <Card.Img variant="top" src="holder.js/100px160" /> */}
         <Card.Body>
-          <Card.Title>Service Name</Card.Title>
+          <Card.Title>{this.props.booking.service} </Card.Title>
           {/* <Card.Title>Customers</Card.Title> */}
           <ListGroup variant="flush">
             <ListGroup.Item>
-              Customer :{" "}
-              {customers &&
-                customers.map(({ name }) => (
-                  <li key={name}>Name: {name}</li>
-                ))}{" "}
+              <b>Customer : </b>
+              {this.props.booking.customerName}{" "}
             </ListGroup.Item>
             <ListGroup.Item>
-              Employee :{" "}
-              {employees &&
-                employees.map(({ name }) => <li key={name}>Name: {name} </li>)}
+              <b>Employee : </b>
+              {this.props.booking.employeeName}{" "}
             </ListGroup.Item>
             <ListGroup.Item>
-              Start-Date : {this.props.booking.startDateTime}{" "}
+              {" "}
+              <b>Date : </b> {this.props.booking.date}{" "}
             </ListGroup.Item>
             <ListGroup.Item>
-              End-Date : {this.props.booking.endDateTime}{" "}
+              <b>Time From : </b> {this.props.booking.startTime} <b> To : </b>{" "}
+              {this.props.booking.endTime}{" "}
             </ListGroup.Item>
           </ListGroup>
           {/* <ul>
@@ -51,11 +48,18 @@ class BookingCard extends Component {
         {this.props.render && this.props.render()}
         <Card.Footer>
           <span className="mr-2">
-            {this.props.booking.approved ? (
-              <span className="badge badge-success">Active</span>
-            ) : (
-              <span className="badge badge-secondary">Pending</span>
-            )}
+            {(() => {
+              switch (this.props.booking.status) {
+                case "PENDING":
+                  return <span className="badge badge-secondary">Pending</span>;
+                case "APPROVED":
+                  return <span className="badge badge-success">Active</span>;
+                case "CANCELLED":
+                  return <span className="badge badge-warning">Cancelled</span>;
+                default:
+                  return <span className="badge badge-warning">Cancelled</span>;
+              }
+            })()}
           </span>
 
           <small className="text-muted float-right">
