@@ -8,7 +8,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wed18305.assignment1.model.Entity_Booking;
 
-public class Response_Booking{
+public class Response_Booking{//TODO need to handle the arrays better in the constructor
 
     private List<Response_Object> bookings = new ArrayList<Response_Object>();
 
@@ -22,7 +22,8 @@ public class Response_Booking{
                                                     booking.getCustomers().iterator().next().getName(),
                                                     booking.getEmployees().iterator().next().getName(),
                                                     booking.getEmployees().iterator().next().getServices().iterator().next().getName(),
-                                                    booking.getStatus());
+                                                    booking.getStatus(),
+                                                    booking.getId());
             bookings.add(bkg);
         }
     }
@@ -36,7 +37,8 @@ public class Response_Booking{
                                                     booking.getCustomers().iterator().next().getName(),
                                                     booking.getEmployees().iterator().next().getName(),
                                                     booking.getEmployees().iterator().next().getServices().iterator().next().getName(),
-                                                    booking.getStatus());
+                                                    booking.getStatus(),
+                                                    booking.getId());
         bookings.add(bkg);
     }
 
@@ -58,14 +60,15 @@ public class Response_Booking{
         protected String employee;
         protected String service;
         protected String status;
+        protected Long bookingID;
     
-        public Response_Object( 
-                                LocalDateTime startDateTime,
+        public Response_Object( LocalDateTime startDateTime,
                                 LocalDateTime endDateTime,
                                 String customer,
                                 String employee,
                                 String service,
-                                String status)
+                                String status,
+                                Long bookingID)
                                 throws NullPointerException{
             //Cant pass null parameters                       
             if( startDateTime == null ||
@@ -73,7 +76,8 @@ public class Response_Booking{
                 customer == null ||
                 employee == null ||
                 service == null  ||
-                status  == null){
+                status  == null ||
+                bookingID == null){
                     throw new NullPointerException("parameters cannot be null");
             }
             this.date = startDateTime.toLocalDate();
@@ -83,13 +87,13 @@ public class Response_Booking{
             this.employee = employee;
             this.service = service;
             this.status = status;
+            this.bookingID = bookingID;
         }
     
         //Getters
         public LocalDate getDate() {
             return this.date;
         }
-
         public LocalDateTime getStartTime(){
             return this.startTime;
         }
@@ -107,6 +111,9 @@ public class Response_Booking{
         }
         public String getStatus(){
             return this.status;
+        }
+        public Long getBookingID(){
+            return this.bookingID;
         }
     }
 }

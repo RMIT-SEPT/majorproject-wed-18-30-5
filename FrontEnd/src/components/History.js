@@ -19,7 +19,7 @@ class History extends Component {
 
   reloadBookingList = () => {
     ApiService.fetchPastBookings(this).then((res) => {
-      this.setState({ pastbookings: Array.from(res.data.body) });
+      this.setState({ pastbookings: Array.from(res.data.body.bookings) });
     });
   };
   render() {

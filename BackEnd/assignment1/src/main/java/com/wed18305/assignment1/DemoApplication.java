@@ -108,38 +108,53 @@ public class DemoApplication {
 			OffsetDateTime m_te = OffsetDateTime.parse("2020-09-07T24:00+10:00", DateTimeStatic.getFormatter());
 			OffsetDateTime l_ts = OffsetDateTime.parse("2020-09-07T05:00+10:00", DateTimeStatic.getFormatter());
 			OffsetDateTime l_te = OffsetDateTime.parse("2020-09-07T12:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime dlong_ts = OffsetDateTime.parse("2020-09-22T00:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime dlong_te = OffsetDateTime.parse("2025-09-22T00:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime mlong_ts = OffsetDateTime.parse("2020-09-22T00:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime mlong_te = OffsetDateTime.parse("2025-09-22T00:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime llong_ts = OffsetDateTime.parse("2020-09-22T00:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime llong_te = OffsetDateTime.parse("2025-09-22T00:00+10:00", DateTimeStatic.getFormatter());
 			Entity_Schedule scheduleDavid = new Entity_Schedule(d_ts, d_te);
+			Entity_Schedule scheduleDavidLong = new Entity_Schedule(dlong_ts, dlong_te);
 			Entity_Schedule scheduleMichelle = new Entity_Schedule(m_ts, m_te);
+			Entity_Schedule scheduleMichelleLong = new Entity_Schedule(mlong_ts, mlong_te);
 			Entity_Schedule scheduleLeslie = new Entity_Schedule(l_ts, l_te);
+			Entity_Schedule scheduleLeslieLong = new Entity_Schedule(llong_ts, llong_te);
 			ScheduleRepository.save(scheduleDavid);
+			ScheduleRepository.save(scheduleDavidLong);
 			ScheduleRepository.save(scheduleMichelle);
+			ScheduleRepository.save(scheduleMichelleLong);
 			ScheduleRepository.save(scheduleLeslie);
+			ScheduleRepository.save(scheduleLeslieLong);
 
 			//Add Schedules to employees
 			david.getSchedules().add(scheduleDavid);
+			david.getSchedules().add(scheduleDavidLong);
 			michelle.getSchedules().add(scheduleMichelle);
+			michelle.getSchedules().add(scheduleMichelleLong);
 			leslie.getSchedules().add(scheduleLeslie);
+			leslie.getSchedules().add(scheduleLeslieLong);
 			delete1.getSchedules().add(scheduleLeslie);
 			delete2.getSchedules().add(scheduleLeslie);
 			delete3.getSchedules().add(scheduleLeslie);
 			
 			// Save Bookings
-			Entity_Booking Booking = new Entity_Booking(OffsetDateTime.parse("2020-09-07T17:00+10:00", DateTimeStatic.getFormatter()), 
+			Entity_Booking Booking1 = new Entity_Booking(OffsetDateTime.parse("2020-09-07T17:00+10:00", DateTimeStatic.getFormatter()), 
 														OffsetDateTime.parse("2020-09-07T19:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking completedBooking = new Entity_Booking(OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()),
+			Entity_Booking Booking2 = new Entity_Booking(OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()),
 																 OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()));
-			BookingRepository.save(Booking);
-			BookingRepository.save(completedBooking);
+			BookingRepository.save(Booking1);
+			BookingRepository.save(Booking2);
 
 			//Add bookings to users
-			jack.getBookings().add(Booking);
-			chloe.getBookings().add(Booking);
-			michelle.getBookings().add(Booking);
-			jack.getBookings().add(completedBooking);
-			michelle.getBookings().add(completedBooking);
-			delete1.getBookings().add(completedBooking);
-			delete2.getBookings().add(completedBooking);
-			delete3.getBookings().add(completedBooking);
+			jack.getBookings().add(Booking1);
+			//chloe.getBookings().add(Booking);
+			michelle.getBookings().add(Booking1);
+			jack.getBookings().add(Booking2);
+			michelle.getBookings().add(Booking2);
+			//delete1.getBookings().add(completedBooking);
+			//delete2.getBookings().add(completedBooking);
+			//delete3.getBookings().add(completedBooking);
 
 			//Update the users
 			UserRepository.save(jack);

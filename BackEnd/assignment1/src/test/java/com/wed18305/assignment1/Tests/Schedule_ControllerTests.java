@@ -119,7 +119,7 @@ public class Schedule_ControllerTests {
 	@BeforeEach
     protected void endSession() {
 		try {
-			ResultActions result = mvc.perform(MockMvcRequestBuilders.post("/logout").session(session).cookie(cookies));
+			mvc.perform(MockMvcRequestBuilders.post("/logout").session(session).cookie(cookies));
 		} catch (Exception e) {
 			//Catch silent
 		}
