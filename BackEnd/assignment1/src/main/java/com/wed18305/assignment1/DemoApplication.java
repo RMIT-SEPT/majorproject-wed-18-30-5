@@ -141,6 +141,8 @@ public class DemoApplication {
 			// Save Bookings
 			Entity_Booking Booking = new Entity_Booking(OffsetDateTime.parse("2020-09-07T17:00+10:00", DateTimeStatic.getFormatter()), 
 														OffsetDateTime.parse("2020-09-07T19:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking Booking2 = new Entity_Booking(OffsetDateTime.parse("2020-09-08T17:00+10:00", DateTimeStatic.getFormatter()),
+					OffsetDateTime.parse("2020-09-08T19:00+10:00", DateTimeStatic.getFormatter()));
 			Entity_Booking completedBooking = new Entity_Booking(OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()),
 																 OffsetDateTime.parse("3019-08-03T16:20+05:30", DateTimeStatic.getFormatter()));
 			BookingRepository.save(Booking);

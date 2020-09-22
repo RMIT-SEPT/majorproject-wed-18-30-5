@@ -45,11 +45,10 @@ class DashboardAdmin extends Component {
           <CardDeck>
             {this.state.bookings.map((booking) => (
               <BookingCard
-                key={booking.id}
+                key={booking.bookingID}
                 booking={booking}
                 render={() => (
                   <div>
-                    {booking.date}
                     <button
                       type="button"
                       className="btn btn-danger"
@@ -61,7 +60,7 @@ class DashboardAdmin extends Component {
                     <button
                       type="button"
                       className="btn btn-success"
-                      onClick={() => this.approveBooking(booking.id)}
+                      onClick={() => this.approveBooking(booking.bookingID)}
                       style={{ float: "right", margin: "5px" }}
                     >
                       Approve
