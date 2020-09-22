@@ -62,8 +62,7 @@ public class Response_Booking{
         protected String status;
         protected Long bookingID;
     
-        public Response_Object( 
-                                LocalDateTime startDateTime,
+        public Response_Object( LocalDateTime startDateTime,
                                 LocalDateTime endDateTime,
                                 String customer,
                                 String employee,
@@ -95,7 +94,6 @@ public class Response_Booking{
         public LocalDate getDate() {
             return this.date;
         }
-
         public LocalDateTime getStartTime(){
             return this.startTime;
         }
