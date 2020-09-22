@@ -23,7 +23,8 @@ class DashboardAdmin extends Component {
 
   reloadBookingList = () => {
     ApiService.fetchAdminBookings(this).then((res) => {
-      this.setState({ bookings: Array.from(res.data.body) });
+      this.setState({ bookings: Array.from(res.data.body.bookings) });
+      debugger;
     });
   };
 
@@ -44,7 +45,7 @@ class DashboardAdmin extends Component {
           <CardDeck>
             {this.state.bookings.map((booking) => (
               <BookingCard
-                key={booking.id}
+                key={booking.bookingID}
                 booking={booking}
                 render={() => (
                   <div>
@@ -59,7 +60,7 @@ class DashboardAdmin extends Component {
                     <button
                       type="button"
                       className="btn btn-success"
-                      onClick={() => this.approveBooking(booking.id)}
+                      onClick={() => this.approveBooking(booking.bookingID)}
                       style={{ float: "right", margin: "5px" }}
                     >
                       Approve
