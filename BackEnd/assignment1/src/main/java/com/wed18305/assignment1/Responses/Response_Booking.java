@@ -22,7 +22,8 @@ public class Response_Booking{
                                                     booking.getCustomers().iterator().next().getName(),
                                                     booking.getEmployees().iterator().next().getName(),
                                                     booking.getEmployees().iterator().next().getServices().iterator().next().getName(),
-                                                    booking.getStatus());
+                                                    booking.getStatus(),
+                                                    booking.getId());
             bookings.add(bkg);
         }
     }
@@ -36,7 +37,8 @@ public class Response_Booking{
                                                     booking.getCustomers().iterator().next().getName(),
                                                     booking.getEmployees().iterator().next().getName(),
                                                     booking.getEmployees().iterator().next().getServices().iterator().next().getName(),
-                                                    booking.getStatus());
+                                                    booking.getStatus(),
+                                                    booking.getId());
         bookings.add(bkg);
     }
 
@@ -58,6 +60,7 @@ public class Response_Booking{
         protected String employee;
         protected String service;
         protected String status;
+        protected Long bookingID;
     
         public Response_Object( 
                                 LocalDateTime startDateTime,
@@ -65,7 +68,8 @@ public class Response_Booking{
                                 String customer,
                                 String employee,
                                 String service,
-                                String status)
+                                String status,
+                                Long bookingID)
                                 throws NullPointerException{
             //Cant pass null parameters                       
             if( startDateTime == null ||
@@ -73,7 +77,8 @@ public class Response_Booking{
                 customer == null ||
                 employee == null ||
                 service == null  ||
-                status  == null){
+                status  == null ||
+                bookingID == null){
                     throw new NullPointerException("parameters cannot be null");
             }
             this.date = startDateTime.toLocalDate();
@@ -83,6 +88,7 @@ public class Response_Booking{
             this.employee = employee;
             this.service = service;
             this.status = status;
+            this.bookingID = bookingID;
         }
     
         //Getters
@@ -107,6 +113,9 @@ public class Response_Booking{
         }
         public String getStatus(){
             return this.status;
+        }
+        public Long getBookingID(){
+            return this.bookingID;
         }
     }
 }

@@ -1,6 +1,10 @@
 version: 2
+general:
+  branches:
+    only:
+     - master
+     
 jobs:
-  
   # Back End
   BackBuild:
     working_directory: ~/repo/BackEnd/assignment1
