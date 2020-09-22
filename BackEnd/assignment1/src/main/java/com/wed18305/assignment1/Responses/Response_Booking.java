@@ -8,7 +8,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wed18305.assignment1.model.Entity_Booking;
 
-public class Response_Booking{
+public class Response_Booking{//TODO need to handle the arrays better in the constructor
 
     private List<Response_Object> bookings = new ArrayList<Response_Object>();
 
