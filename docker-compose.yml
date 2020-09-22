@@ -1,7 +1,7 @@
 version: '3'
 services:
   back-end-app-container:
-    image: backend-app:1
+    image: 386724395914.dkr.ecr.us-east-1.amazonaws.com/backend-app:latest
     build:
       context: ./BackEnd/assignment1/
       dockerfile: Dockerfile
@@ -10,7 +10,7 @@ services:
     ports:
       - "8080:8080"
   front-end-app-container:
-    image: frontend-app:1
+    image: 386724395914.dkr.ecr.us-east-1.amazonaws.com/frontend-app:latest
     stdin_open: true
     build:
       context: ./FrontEnd/
@@ -20,3 +20,7 @@ services:
     ports:
       - "3000:3000"
     command: npm start
+
+# AWS account credentials code required for pushing, NOTE:this ecr registry was setup by NeilK
+# Since we have no ability to setup Users or groups in AWS student I'm unsure how others can help out at this time.
+# aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 386724395914.dkr.ecr.us-east-1.amazonaws.com
