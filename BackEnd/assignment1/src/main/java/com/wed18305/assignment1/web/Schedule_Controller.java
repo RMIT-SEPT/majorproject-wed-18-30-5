@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -139,6 +140,21 @@ public class Schedule_Controller {
         }
         //Success
         Response response = new Response(true, "schedule(s) deleted!", null, null);
+        return new ResponseEntity<Response>(response, HttpStatus.OK);
+    }
+
+    /**
+     * TODO need a new request that has the users name, this will be used for returning that persons schedule
+     * TODO this needs to return all the schedules for the next month(from today)
+     * @param dr
+     * @param result
+     * @return
+     */
+    @GetMapping("getSchedule")
+    public ResponseEntity<Response> getSchedule(@Valid @RequestBody Delete_Request dr, BindingResult result){
+        //TODO implement
+        //Success TODO only tempt
+        Response response = new Response(true, "schedule(s) found!", null, null);
         return new ResponseEntity<Response>(response, HttpStatus.OK);
     }
 }
