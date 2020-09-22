@@ -49,4 +49,19 @@
    
 ## Docker
  - Both the front and back ends have an individual dockerfile which handles building and running the container for that service
- - In the root directory there is a docker-compose.yml this will call both of the individual dockerfiles in order to run the docker service type 'docker-compose up -d' to build(if neccessary) and start the services(locally) in VM containers.
+ - In the root directory there is a docker-compose.yml this will call both of the individual dockerfiles in order to run the docker service type 'docker-compose up -d' to start the services(locally) in VM containers.
+ - Image names are
+  - 386724395914.dkr.ecr.us-east-1.amazonaws.com/backend-app:latest
+  - 386724395914.dkr.ecr.us-east-1.amazonaws.com/frontend-app:latest
+ - This allows pushing to the AWS ECR via the following command(provided you have access SEE AWS BELOW)
+  - docker push 386724395914.dkr.ecr.us-east-1.amazonaws.com/backend-app:latest
+  - docker push 386724395914.dkr.ecr.us-east-1.amazonaws.com/frontend-app:latest
+ 
+## CircleCI
+ - CircleCI config.yaml contains three jobs, BackBuild, BackTest and FrontTest, as the names suggest BackBuild performs a maven build on the back end(without test) the BackTest requires a successful build then performs the testing for the back end, FrontTest performs all tests for the front end.
+ 
+## AWS
+ - AWS account is currently setup for s3561388@student.rmit.edu.au(NeilK) and contains an ECR(elastic container registry) with both of the registry created using docker contained here named backend-app and frontend-app
+ - Since we have no ability to setup Users or groups in AWS student I'm unsure how others can help out at this time.
+ - CODE for getting aws credentials for pushing  
+   - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 386724395914.dkr.ecr.us-east-1.amazonaws.com

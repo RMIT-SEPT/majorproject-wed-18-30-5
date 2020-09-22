@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/booking")
+@CrossOrigin(origins = "http://localhost:3000")
 public class Booking_Controller {
 
     @Autowired
@@ -159,17 +160,19 @@ public class Booking_Controller {
         }
 
         // Attempt to Deny Booking
+        Response_Booking bkgResponse = null;
         try {
             Entity_Booking currentBooking = book.get();
             currentBooking.denyBooking();
             bookingService.saveOrUpdateBooking(currentBooking);
+            bkgResponse = new Response_Booking(currentBooking);
         }
         catch (Exception e) {
             Response response = new Response(false, "ERROR!", "Booking couldn't be updated!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
          }
 
-        Response response = new Response(true, "Booking denied!", null, book);
+        Response response = new Response(true, "Booking denied!", null, bkgResponse);
         return new ResponseEntity<Response>(response, HttpStatus.ACCEPTED);
     }
 
@@ -179,7 +182,6 @@ public class Booking_Controller {
      * INPUT JSON {"id":1 }
      */
     @PatchMapping("approveBooking")
-    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Response> approveBooking(@Valid @RequestBody Get_Request gr, BindingResult result) {
 
         // Binding validation checks
@@ -191,6 +193,7 @@ public class Booking_Controller {
 
         // Attempt to Find Booking by ID
         Optional<Entity_Booking> book = bookingService.findById(gr.getId());
+        Response_Booking bkgResponse = null;
         if (book == null) {
             Response response = new Response(false, "ERROR!", "Booking doesn't exist!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
@@ -201,13 +204,14 @@ public class Booking_Controller {
             Entity_Booking currentBooking = book.get();
             currentBooking.approveBooking();
             bookingService.saveOrUpdateBooking(currentBooking);
+            bkgResponse = new Response_Booking(currentBooking);
         }
         catch (Exception e) {
             Response response = new Response(false, "ERROR!", "Booking couldn't be updated!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
          }
 
-        Response response = new Response(true, "Booking approved!", null, book);
+        Response response = new Response(true, "Booking approved!", null, bkgResponse);
         return new ResponseEntity<Response>(response, HttpStatus.ACCEPTED);
     }
 
@@ -216,7 +220,6 @@ public class Booking_Controller {
      * GET ENDPOINT: http://localhost:8080/api/booking/getAdminBookings
      */
     @GetMapping("getAdminBookings")
-    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Response> getAdminBookings(Principal p) {
 
         // Make sure the logged in user exists
@@ -229,8 +232,10 @@ public class Booking_Controller {
         
         // Get All Bookings
         Iterable<Entity_Booking> bookings =  null;
+        Response_Booking bkgResponse = null;
         try {
             bookings = bookingService.findAll();
+            bkgResponse = new Response_Booking(bookings);
         }
         catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
@@ -242,7 +247,7 @@ public class Booking_Controller {
             Response response = new Response(false, "ERROR!", "No bookings within the repository!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         } else {
-            Response response = new Response(true, "Bookings found!", null, bookings);
+            Response response = new Response(true, "Bookings found!", null, bkgResponse);
             return new ResponseEntity<Response>(response, HttpStatus.OK);
         }
     }
@@ -300,11 +305,13 @@ public class Booking_Controller {
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
-        // Get the Customer's Bookings
+        // Get the Employee's Bookings
         Entity_User curUser = user.get();
         Iterable<Entity_Booking> bookings =  null;
+        Response_Booking bkgResponse = null;
         try {
             bookings = userService.findUserBookings(curUser.getId());
+            bkgResponse = new Response_Booking(bookings);
         }
         catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
@@ -316,7 +323,7 @@ public class Booking_Controller {
             Response response = new Response(false, "ERROR!", "Customer has made no bookings!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         } else {
-            Response response = new Response(true, "Bookings found!", null, bookings);
+            Response response = new Response(true, "Bookings found!", null, bkgResponse);
             return new ResponseEntity<Response>(response, HttpStatus.OK);
         }
     }
@@ -338,8 +345,10 @@ public class Booking_Controller {
 
         // Get All Bookings
         Iterable<Entity_Booking> bookings =  null;
+        Response_Booking bkgResponse = null;
         try {
             bookings = bookingService.findAllUpcoming();
+            bkgResponse = new Response_Booking(bookings);
         }
         catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
@@ -351,7 +360,7 @@ public class Booking_Controller {
             Response response = new Response(false, "ERROR!", "No bookings within the repository!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         } else {
-            Response response = new Response(true, "Bookings found!", null, bookings);
+            Response response = new Response(true, "Bookings found!", null, bkgResponse);
             return new ResponseEntity<Response>(response, HttpStatus.OK);
         }
     }
@@ -373,8 +382,10 @@ public class Booking_Controller {
 
         // Get All Bookings
         Iterable<Entity_Booking> bookings =  null;
+        Response_Booking bkgResponse = null;
         try {
             bookings = bookingService.findAllCompleted();
+            bkgResponse = new Response_Booking(bookings);
         }
         catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
@@ -386,7 +397,7 @@ public class Booking_Controller {
             Response response = new Response(false, "ERROR!", "No bookings within the repository!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         } else {
-            Response response = new Response(true, "Bookings found!", null, bookings);
+            Response response = new Response(true, "Bookings found!", null, bkgResponse);
             return new ResponseEntity<Response>(response, HttpStatus.OK);
         }
     }
@@ -409,8 +420,10 @@ public class Booking_Controller {
         // Get Employee's Bookings
         Entity_User curUser = user.get();
         Iterable<Entity_Booking> bookings =  null;
+        Response_Booking bkgResponse = null;
         try {
             bookings = userService.findApprovedUpcomingBookings(curUser.getId());
+            bkgResponse = new Response_Booking(bookings);
         }
         catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
@@ -422,7 +435,7 @@ public class Booking_Controller {
             Response response = new Response(false, "ERROR!", "Employee has no approved bookings associated with them coming up!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         } else {
-            Response response = new Response(true, "Bookings found!", null, bookings);
+            Response response = new Response(true, "Bookings found!", null, bkgResponse);
             return new ResponseEntity<Response>(response, HttpStatus.OK);
         }
     }
@@ -445,8 +458,10 @@ public class Booking_Controller {
         // Get Employee's Bookings
         Entity_User curUser = user.get();
         Iterable<Entity_Booking> bookings =  null;
+        Response_Booking bkgResponse = null;
         try {
             bookings = userService.findApprovedCompletedBookings(curUser.getId());
+            bkgResponse = new Response_Booking(bookings);
         }
         catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
@@ -458,7 +473,7 @@ public class Booking_Controller {
             Response response = new Response(false, "ERROR!", "Employee has not completed any approved bookings associated with them!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         } else {
-            Response response = new Response(true, "Bookings found!", null, bookings);
+            Response response = new Response(true, "Bookings found!", null, bkgResponse);
             return new ResponseEntity<Response>(response, HttpStatus.OK);
         }
     }
@@ -481,8 +496,10 @@ public class Booking_Controller {
         // Get Customer's Bookings
         Entity_User curUser = user.get();
         Iterable<Entity_Booking> bookings =  null;
+        Response_Booking bkgResponse = null;
         try {
             bookings = userService.findUpcomingUserBookings(curUser.getId());
+            bkgResponse = new Response_Booking(bookings);
         }
         catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
@@ -494,7 +511,7 @@ public class Booking_Controller {
             Response response = new Response(false, "ERROR!", "Customer has no bookings associated with them coming up!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         } else {
-            Response response = new Response(true, "Bookings found!", null, bookings);
+            Response response = new Response(true, "Bookings found!", null, bkgResponse);
             return new ResponseEntity<Response>(response, HttpStatus.OK);
         }
     }
@@ -517,8 +534,10 @@ public class Booking_Controller {
         // Get Customer's Bookings
         Entity_User curUser = user.get();
         Iterable<Entity_Booking> bookings =  null;
+        Response_Booking bkgResponse = null;
         try {
             bookings = userService.findCompletedUserBookings(curUser.getId());
+            bkgResponse = new Response_Booking(bookings);
         }
         catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
@@ -530,7 +549,7 @@ public class Booking_Controller {
             Response response = new Response(false, "ERROR!", "Customer has not completed any bookings associated with them!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         } else {
-            Response response = new Response(true, "Bookings found!", null, bookings);
+            Response response = new Response(true, "Bookings found!", null, bkgResponse);
             return new ResponseEntity<Response>(response, HttpStatus.OK);
         }
     }

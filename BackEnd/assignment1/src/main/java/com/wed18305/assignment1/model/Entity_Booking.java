@@ -152,6 +152,7 @@ public class Entity_Booking {
     }
 
     public long getApprovalStatus() { return approvalStatus.id;                 }
+    public String getStatus()       { return approvalStatus.name();             }
     public void approveBooking()    { approvalStatus = ApprovalStatus.APPROVED; }
     public void denyBooking()       { approvalStatus = ApprovalStatus.DENIED;   }
 
