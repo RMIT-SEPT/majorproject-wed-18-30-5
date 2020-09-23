@@ -22,7 +22,7 @@ public class Response_Booking{//TODO need to handle the arrays better in the con
                                                     booking.getCustomers().iterator().next().getName(),
                                                     booking.getEmployees().iterator().next().getName(),
                                                     booking.getEmployees().iterator().next().getServices().iterator().next().getName(),
-                                                    booking.getStatus(),
+                                                    booking.getStatusName(),
                                                     booking.getId());
             bookings.add(bkg);
         }
@@ -37,7 +37,7 @@ public class Response_Booking{//TODO need to handle the arrays better in the con
                                                     booking.getCustomers().iterator().next().getName(),
                                                     booking.getEmployees().iterator().next().getName(),
                                                     booking.getEmployees().iterator().next().getServices().iterator().next().getName(),
-                                                    booking.getStatus(),
+                                                    booking.getStatusName(),
                                                     booking.getId());
         bookings.add(bkg);
     }

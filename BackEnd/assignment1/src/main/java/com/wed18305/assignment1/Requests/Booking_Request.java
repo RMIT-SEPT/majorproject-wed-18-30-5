@@ -28,5 +28,5 @@ public class Booking_Request {
     // Getters
     public OffsetDateTime getStartDate()      { return startDateTime;     }
     public OffsetDateTime getEndDate()        { return endDateTime;       }
-    public Long[] getUserIds()           { return user_ids;     }
+    public Long[] getUserIds()                { return user_ids;          }
 }

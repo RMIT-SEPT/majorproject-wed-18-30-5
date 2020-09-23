@@ -22,20 +22,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Entity_Booking {
 
-    public static enum ApprovalStatus {
+    public static enum Status {
         ANY((long) 0), // Debug Value, for finding bookings with any approvalStatus.
         PENDING((long) 1),
         APPROVED((long) 2),
-        DENIED((long) 3);
+        DENIED((long) 3),
+        COMPLETED((long) 4);
 
         public final Long id;
-        ApprovalStatus(Long id) {
+        Status(Long id) {
             this.id = id;
         }
-        public static Long getAny()      { return ANY.id;      }
-        public static Long getPending()  { return PENDING.id;  }
-        public static Long getApproved() { return APPROVED.id; }
-        public static Long getDenied()   { return DENIED.id;   }
+        public static Long getAny()         { return ANY.id;        }
+        public static Long getPending()     { return PENDING.id;    }
+        public static Long getApproved()    { return APPROVED.id;   }
+        public static Long getDenied()      { return DENIED.id;     }
+        public static Long getCompleted()   { return COMPLETED.id;  }
     }
 
     /// Variables
@@ -43,7 +45,7 @@ public class Entity_Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
     // protected Boolean approved = false; // Don't approve bookings by default.
-    protected ApprovalStatus approvalStatus = ApprovalStatus.PENDING;
+    protected Status status = Status.PENDING;
 
     @JsonFormat(pattern="yyyy-MM-dd@HH:mm")
     protected OffsetDateTime startDateTime;
@@ -151,10 +153,11 @@ public class Entity_Booking {
         return employees;
     }
 
-    public long getApprovalStatus() { return approvalStatus.id;                 }
-    public String getStatus()       { return approvalStatus.name();             }
-    public void approveBooking()    { approvalStatus = ApprovalStatus.APPROVED; }
-    public void denyBooking()       { approvalStatus = ApprovalStatus.DENIED;   }
+    public long getStatus()         { return status.id;             }
+    public String getStatusName()   { return status.name();         }
+    public void approveBooking()    { status = Status.APPROVED;     }
+    public void denyBooking()       { status = Status.DENIED;       }
+    public void completeBooking()   { status = Status.COMPLETED;    }
 
     /// Comparisons
     @Override

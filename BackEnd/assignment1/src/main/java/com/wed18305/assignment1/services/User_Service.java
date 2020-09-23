@@ -11,7 +11,7 @@ import com.wed18305.assignment1.model.Entity_Service;
 import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.model.Entity_Schedule;
 import com.wed18305.assignment1.model.Entity_User;
-import com.wed18305.assignment1.model.Entity_Booking.ApprovalStatus;
+import com.wed18305.assignment1.model.Entity_Booking.Status;
 import com.wed18305.assignment1.repositories.User_Repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,11 +82,11 @@ public class User_Service {
     }
 
     public Iterable<Entity_Booking> findUpcomingUserBookings(Long id) {
-        return returnUpcoming(id, ApprovalStatus.getAny());
+        return returnUpcoming(id, Status.getAny());
     }
 
     public Iterable<Entity_Booking> findCompletedUserBookings(Long id) {
-        return returnCompleted(id, ApprovalStatus.getAny());
+        return returnCompleted(id, Status.getAny());
     }
 
     // What Approved Bookings does an Employee Have?
@@ -97,7 +97,7 @@ public class User_Service {
         }
         Set<Entity_Booking> userBookings = new HashSet<Entity_Booking>();
         for (Entity_Booking booking :user.getBookings()) {
-            if(booking.getApprovalStatus() == ApprovalStatus.getApproved()){
+            if(booking.getStatus() == Status.getApproved()){
                 userBookings.add(booking);
             }
         }
@@ -105,16 +105,16 @@ public class User_Service {
     }
 
     public Iterable<Entity_Booking> findApprovedUpcomingBookings(Long id) {
-        return returnUpcoming(id, ApprovalStatus.getApproved());
+        return returnUpcoming(id, Status.getApproved());
     }
 
     public Iterable<Entity_Booking> findApprovedCompletedBookings(Long id) {
-        return returnCompleted(id, ApprovalStatus.getApproved());
+        return returnCompleted(id, Status.getApproved());
     }
 
     // Which Bookings Have Been Denied?
     public Iterable<Entity_Booking> findDeniedUserBookings(Long id) {
-        return returnBookings(id, ApprovalStatus.getDenied());
+        return returnBookings(id, Status.getDenied());
     }
 
     //// Helper Methods
@@ -134,7 +134,7 @@ public class User_Service {
         // Find Appropriate Bookings Based on Input Parameters
         Set<Entity_Booking> userBookings = new HashSet<Entity_Booking>();
         for (Entity_Booking booking :user.getBookings()) {
-            if(booking.getApprovalStatus() == approvalStatus || approvalStatus == ApprovalStatus.getAny()){ // Return every booking if applicable.
+            if(booking.getStatus() == approvalStatus || approvalStatus == Status.getAny()){ // Return every booking if applicable.
                 userBookings.add(booking);
             }
         }
@@ -189,8 +189,8 @@ public class User_Service {
 
     // Helper Method
     private boolean approvalCheck(Entity_Booking booking, Long approvalStatus) {
-        if(approvalStatus == ApprovalStatus.getApproved() && booking.getApprovalStatus() == ApprovalStatus.getApproved()
-        || approvalStatus != ApprovalStatus.getApproved()) {
+        if(approvalStatus == Status.getApproved() && booking.getStatus() == Status.getApproved()
+        || approvalStatus != Status.getApproved()) {
             return true;
         }
         return false;
