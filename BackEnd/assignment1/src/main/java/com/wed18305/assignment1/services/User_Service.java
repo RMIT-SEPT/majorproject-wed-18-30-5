@@ -1,11 +1,14 @@
 package com.wed18305.assignment1.services;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.persistence.Entity;
 
 import com.wed18305.assignment1.model.Entity_Service;
 import com.wed18305.assignment1.model.Entity_Booking;
@@ -246,6 +249,42 @@ public class User_Service {
         }
         //save the users
         return userRepository.saveAll(users);
+    }
+
+    public Iterable<Entity_Schedule> findSchedulesByDate(Entity_User user,
+                                              LocalDate date) {
+        if(user.getSchedules() == null){
+            return null;
+        }
+        // Find Schedules By Date
+        Set<Entity_Schedule> userSchedules = new HashSet<Entity_Schedule>();
+        for (Entity_Schedule schedule :user.getSchedules()) {
+
+            // Does Current Schedule Occur on the Passed in Date?
+            LocalDate meep = schedule.getStartDateTime().toLocalDate();
+            if(meep.equals(date)) {
+                userSchedules.add(schedule);
+            }
+        }
+        return userSchedules;
+    }
+
+    public Iterable<Entity_Booking> findBookingsByDate(Entity_User user,
+                                                        LocalDate date) {
+        if(user.getSchedules() == null){
+            return null;
+        }
+        // Find Schedules By Date
+        Set<Entity_Booking> userBookings = new HashSet<Entity_Booking>();
+        for (Entity_Booking booking :user.getBookings()) {
+
+            // Does Current Booking Occur on the Passed in Date?
+            LocalDate meep = booking.getStartDateTime().toLocalDate();
+            if(meep.equals(date)) {
+                userBookings.add(booking);
+            }
+        }
+        return userBookings;
     }
 
     public Entity_User addBookingsToUser(Entity_User user,

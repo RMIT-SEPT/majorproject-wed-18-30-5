@@ -1,6 +1,7 @@
 package com.wed18305.assignment1.web;
 
 import java.security.Principal;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -9,9 +10,13 @@ import javax.validation.Valid;
 
 import com.wed18305.assignment1.Responses.Response;
 import com.wed18305.assignment1.Responses.Response_Booking;
+import com.wed18305.assignment1.Responses.Response_Timeslots;
+import com.jayway.jsonpath.Option;
 import com.wed18305.assignment1.Requests.Booking_Request;
 import com.wed18305.assignment1.Requests.Delete_Request;
 import com.wed18305.assignment1.Requests.Get_Request;
+import com.wed18305.assignment1.Requests.Timeslot_Request;
+import com.wed18305.assignment1.Requests.User_Request;
 import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.model.Entity_Schedule;
 import com.wed18305.assignment1.services.Booking_Service;
@@ -94,14 +99,28 @@ public class Booking_Controller {
         for (Entity_User employee : users.getEmployees()) {
 
             // Can Employee Attend Booking?
-            boolean canAttend = false;
+            boolean canAttend = true;
 
+            // Is an Employee Working During this Time?
             for (Entity_Schedule schedule : employee.getSchedules()) {
 
-                if (br.getStartDate().compareTo(schedule.getStartDateTime()) >= 0 &&
-                    br.getEndDate().compareTo(schedule.getEndDateTime()) <= 0) {
+                if (br.getStartDate().compareTo(schedule.getStartDateTime()) < 0 && // Does booking start before the schedule's start date?
+                    br.getEndDate().compareTo(schedule.getEndDateTime()) > 0) {     // Does booking end after the schedule's end date?
+                        canAttend = false;
+                }
+            }
+
+            // Are Employee's Already Booked During These Times?
+            for (Entity_Booking bk : employee.getBookings()) {
+
+                    // Does first booking start before the second?       // Does first booking end before the second or when it starts?                                            
+                if (br.getStartDate().isBefore(bk.getStartDateTime()) && br.getEndDate().compareTo(bk.getStartDateTime()) <= 0 ||
+
+                    // Does first booking end after the second?          // Does first booking start after the second or when it ends?    
+                   (br.getEndDate()  .isAfter (bk.getEndDateTime()  ) && br.getStartDate().compareTo(bk.getEndDateTime()) >= 0  )) {
                         canAttend = true;
                 }
+                else {  canAttend = false; }
             }
 
             // Booking Can't Be Assigned to This Employee
@@ -136,6 +155,38 @@ public class Booking_Controller {
             Response response = new Response(true, "booking created!", null, booking1);
             return new ResponseEntity<Response>(response, HttpStatus.CREATED);
         }
+    }
+
+    /**
+     * Get Employee Unavailable Timeslots Based on Their Bookings 
+     * GET ENDPOINT: http://localhost:8080/api/booking/getBookedTimeslots
+     * INPUT JSON {"date":"uuuu-MM-dd, (Format)
+     *             "username": "Dessler"
+     */
+    @GetMapping("getBookedTimeslots")
+    public ResponseEntity<Response> getBookedTimeSlots(@Valid @RequestBody Timeslot_Request tr, BindingResult result) {
+
+        // Was a Valid Employee Passed In?
+        Optional<Entity_User> passedInEmployee = userService.findByUsername(tr.getUsername());
+        if(!passedInEmployee.isPresent() || !passedInEmployee.get().getType().getId().equals(UserTypeID.EMPLOYEE.id)){
+             Response response = new Response(false, "ERROR!", "No valid employee provided.", null);
+             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Cement Employee
+        Entity_User employee = passedInEmployee.get();
+        Response_Timeslots tsResponse = null;
+        try {
+            Iterable<Entity_Booking> bookings = userService.findBookingsByDate(employee, tr.getDate());
+            tsResponse = new Response_Timeslots(bookings);
+        }
+        catch (Exception e) {
+            Response response = new Response(false, "ERROR!", e.getMessage(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        Response response = new Response(true, "Booked times found!", null, tsResponse);
+        return new ResponseEntity<Response>(response, HttpStatus.FOUND);
     }
 
     /**
