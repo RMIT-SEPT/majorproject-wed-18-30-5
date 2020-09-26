@@ -161,19 +161,19 @@ public class Booking_Controller {
      * Get Employee Unavailable Timeslots Based on Their Bookings 
      * GET ENDPOINT: http://localhost:8080/api/booking/getBookedTimeslots
      * INPUT JSON {"date":"uuuu-MM-dd, (Format)
-     *             "username": "Dessler"
+     *             "employee_id": "5"
      */
     @GetMapping("getBookedTimeslots")
     public ResponseEntity<Response> getBookedTimeSlots(@Valid @RequestBody Timeslot_Request tr, BindingResult result) {
 
         // Was a Valid Employee Passed In?
-        Optional<Entity_User> passedInEmployee = userService.findByUsername(tr.getUsername());
+        Optional<Entity_User> passedInEmployee = userService.findById(tr.getUserID());
         if(!passedInEmployee.isPresent() || !passedInEmployee.get().getType().getId().equals(UserTypeID.EMPLOYEE.id)){
              Response response = new Response(false, "ERROR!", "No valid employee provided.", null);
              return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
-        // Cement Employee
+        // Retrieve Employee's Booked Times
         Entity_User employee = passedInEmployee.get();
         Response_Timeslots tsResponse = null;
         try {

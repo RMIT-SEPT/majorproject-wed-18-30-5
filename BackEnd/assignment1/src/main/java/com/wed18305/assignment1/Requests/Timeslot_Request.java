@@ -12,21 +12,21 @@ public class Timeslot_Request{
 
     @NotNull(message = "date is required")
     protected LocalDate date;
-    @NotBlank(message = "username is required")
-    protected String username;
+    @NotNull(message = "id is required")
+    protected Long userID;
 
     //Constructors
     public Timeslot_Request(String date,
-                            String username) {
+                            Long userID) {
         this.date = LocalDate.parse(date, DateTimeFormatter.ofPattern("uuuu-MM-dd"));
-        this.username = username;
+        this.userID = userID;
     }
 
     //Getters
     public LocalDate getDate() {
         return this.date;
     }
-    public String getUsername() {
-        return this.username;
+    public Long getUserID() {
+        return this.userID;
     }
 }

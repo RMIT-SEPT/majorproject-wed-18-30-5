@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.Entity;
-
 import com.wed18305.assignment1.model.Entity_Service;
 import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.model.Entity_Schedule;
@@ -278,10 +276,14 @@ public class User_Service {
         Set<Entity_Booking> userBookings = new HashSet<Entity_Booking>();
         for (Entity_Booking booking :user.getBookings()) {
 
-            // Does Current Booking Occur on the Passed in Date?
-            LocalDate meep = booking.getStartDateTime().toLocalDate();
-            if(meep.equals(date)) {
-                userBookings.add(booking);
+            // Validate What Bookings we can Retrieve
+            if (user.isEmployee() && booking.isApproved() || !user.isEmployee()) {
+            
+                // Does Current Booking Occur on the Passed in Date?
+                LocalDate curBookingsDate = booking.getStartDateTime().toLocalDate();
+                if(curBookingsDate.equals(date)) {
+                    userBookings.add(booking);
+                }
             }
         }
         return userBookings;

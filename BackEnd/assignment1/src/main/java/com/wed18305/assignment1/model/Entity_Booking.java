@@ -158,6 +158,11 @@ public class Entity_Booking {
     public void approveBooking()    { status = Status.APPROVED;     }
     public void denyBooking()       { status = Status.DENIED;       }
     public void completeBooking()   { status = Status.COMPLETED;    }
+    // What's the Booking's Status?
+    public boolean isPending()      { return status == Status.PENDING;   }
+    public boolean isApproved()     { return status == Status.APPROVED;  }
+    public boolean isDenied()       { return status == Status.DENIED;    }
+    public boolean isCompleted()    { return status == Status.COMPLETED; }
 
     /// Comparisons
     @Override
