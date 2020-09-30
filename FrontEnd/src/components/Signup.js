@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ApiService from "../api/ApiService";
+import HomeNav from "./HomeNav";
 
 class Signup extends Component {
   constructor() {
@@ -51,81 +52,93 @@ class Signup extends Component {
 
   render() {
     return (
-      <div className="Person">
+      <>
+        <header>
+          <HomeNav />
+        </header>
         <div className="container">
+          <div className="col-md-6 mx-auto text-center">
+            <div className="header-title">
+              <h1 className="wv-heading--title">Check out — it’s free!</h1>
+            </div>
+          </div>
           <div className="row">
-            <div className="col-md-8 m-auto">
-              <h5 className="display-4 text-center">SignUp</h5>
-              <hr />
-              <div>{this.state.message}</div>
-              <form onSubmit={this.onSubmit}>
-                <h6>Full Name</h6>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className="form-control form-control-lg "
-                    placeholder="Full Name"
-                    name="name"
-                    value={this.state.name}
-                    onChange={this.onChange}
-                  />
-                </div>
-                <h6>Username</h6>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    placeholder="UserName"
-                    name="username"
-                    value={this.state.username}
-                    onChange={this.onChange}
-                  />
-                </div>
-                <h6>Password</h6>
-                <div className="form-group">
-                  <input
-                    type="password"
-                    className="form-control form-control-lg"
-                    placeholder="Password"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.onChange}
-                  />
-                </div>
-                <h6>Contact Number</h6>
-                <div className="form-group">
-                  <input
-                    type="number"
-                    className="form-control form-control-lg"
-                    name="contactNumber"
-                    placeholder="Contact Number"
-                    value={this.state.contactNumber}
-                    onChange={this.onChange}
-                  />
-                </div>
-                <h6>Address</h6>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    name="Address"
-                    placeholder="Address"
-                    value={this.state.Address}
-                    onChange={this.onChange}
-                  />
-                </div>
+            <div className="col-md-4 mx-auto">
+              <div className="myform form ">
+                <form action="" method="post" name="signup">
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      name="name"
+                      className="form-control my-input"
+                      id="name"
+                      placeholder="Name"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      name="username"
+                      className="form-control my-input"
+                      id="username"
+                      placeholder="Username"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <input
+                      type="password"
+                      min="0"
+                      name="password"
+                      id="password"
+                      className="form-control my-input"
+                      placeholder="Password"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <input
+                      type="number"
+                      min="0"
+                      name="contactnumber"
+                      id="contactnumber"
+                      className="form-control my-input"
+                      placeholder="Contact Number"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      min="0"
+                      name="address"
+                      id="address"
+                      className="form-control my-input"
+                      placeholder="Address"
+                    />
+                  </div>
+                  <div className="text-center ">
+                    <button type="submit" className=" btn btn-block g-button">
+                      Create Your Free Account
+                    </button>
+                  </div>
+                  <div className="col-md-12 ">
+                    <div className="login-or">
+                      <hr className="hr-or" />
+                    </div>
+                  </div>
 
-                <input
-                  type="submit"
-                  className="btn btn-primary btn-block mt-4"
-                  onClick={this.addUser}
-                />
-                <a href="/login">Back</a>
-              </form>
+                  <p className="small mt-3">
+                    By signing up, you are indicating that you have read and
+                    agree to the{" "}
+                    <a href="#" className="ps-hero__content__link">
+                      Terms of Use
+                    </a>{" "}
+                    and <a href="#">Privacy Policy</a>.
+                  </p>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }
