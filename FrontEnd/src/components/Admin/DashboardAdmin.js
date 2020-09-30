@@ -42,7 +42,7 @@ class DashboardAdmin extends Component {
           <AdminNav />
         </header>
         <div className="active-booking-wrapper">
-          <CardDeck>
+          <CardDeck className="booking-card">
             {this.state.bookings.map((booking) => (
               <BookingCard
                 key={booking.bookingID}
