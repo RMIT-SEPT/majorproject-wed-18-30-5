@@ -35,6 +35,7 @@ public class Entity_User {
     @JsonIgnore
     protected String password;
     protected String contactNumber;
+    protected String address;
     @OneToOne
     @JoinColumn(name = "type_id", referencedColumnName = "id")
     protected Entity_UserType userType;
@@ -81,11 +82,13 @@ public class Entity_User {
                     String username,
                     String password,
                     String contactNumber,
+                    String address,
                     Entity_UserType type) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.contactNumber = contactNumber;
+        this.address = address;
         this.userType = type;
     }
 
@@ -116,6 +119,12 @@ public class Entity_User {
     }
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
+    }
+    public String getAddressNumber() {
+        return this.address;
+    }
+    public void setAddressNumber(String address) {
+        this.address = address;
     }
     public Entity_UserType getType() {
         return this.userType;

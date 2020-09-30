@@ -11,6 +11,7 @@ import com.wed18305.assignment1.Responses.Response;
 import com.wed18305.assignment1.Requests.Delete_Request;
 import com.wed18305.assignment1.Requests.Schedule_Request;
 import com.wed18305.assignment1.model.Entity_Schedule;
+import com.wed18305.assignment1.services.Booking_Service;
 import com.wed18305.assignment1.services.Schedule_Service;
 import com.wed18305.assignment1.services.User_Service;
 
@@ -34,6 +35,8 @@ public class Schedule_Controller {
     private Schedule_Service schService;
     @Autowired
     private User_Service userService;
+    // @Autowired
+    // private Booking_Service bkngService;
 
     /**
      * Create new schedule
@@ -131,6 +134,8 @@ public class Schedule_Controller {
             Response response = new Response(false, "ERROR!", "No schedules found in the database", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
+        //TODO check if the schedule has booking.
+
         //Now delete the actual schedules
         try {      
             schService.deleteAll(schedules_db);
@@ -153,7 +158,20 @@ public class Schedule_Controller {
     @GetMapping("getSchedule")
     public ResponseEntity<Response> getSchedule(@Valid @RequestBody Delete_Request dr, BindingResult result){
         //TODO implement
-        //Success TODO only tempt
+        //Success TODO only temp
+        Response response = new Response(true, "schedule(s) found!", null, null);
+        return new ResponseEntity<Response>(response, HttpStatus.OK);
+    }
+    /**
+     * 
+     * @param dr
+     * @param result
+     * @return
+     */
+    @GetMapping("updateSchedule")
+    public ResponseEntity<Response> updateSchedule(@Valid @RequestBody Delete_Request dr, BindingResult result){
+        //TODO implement
+        //Success TODO only temp
         Response response = new Response(true, "schedule(s) found!", null, null);
         return new ResponseEntity<Response>(response, HttpStatus.OK);
     }

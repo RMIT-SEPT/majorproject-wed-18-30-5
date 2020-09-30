@@ -50,8 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
-				.usersByUsernameQuery("SELECT username, password, 'true' AS enabled FROM ENTITY_USER WHERE username=?")
-				.authoritiesByUsernameQuery("SELECT username, type_id AS authority FROM ENTITY_USER WHERE username=?");
+				.usersByUsernameQuery("SELECT username, password, 'true' AS enabled FROM entity_user WHERE username=?")
+				.authoritiesByUsernameQuery("SELECT username, type_id AS authority FROM entity_user WHERE username=?");
 	}
 
 	@Bean
@@ -74,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		authenticationFilter.setAuthenticationFailureHandler(new AuthenticationFailure());
 		authenticationFilter.setAuthenticationManager(authenticationManagerBean());
         return authenticationFilter;
-    }
+	}
 
 	/**
 	 * When using mySQL comment this out
@@ -99,6 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/user/deleteCustomer").hasAuthority(UserTypeID.getCustomer())
 			.antMatchers("/api/user/getEmployees").hasAnyAuthority(UserTypeID.getAdmin(),UserTypeID.getCustomer())
 			.antMatchers("/api/user/getEmployeesByService").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/user/updateEmployee").hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/booking/createBooking").hasAnyAuthority(UserTypeID.getAdmin(), UserTypeID.getCustomer())
 			.antMatchers("/api/booking/approveBooking").hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/booking/getAdminBookings").hasAuthority(UserTypeID.getAdmin())
