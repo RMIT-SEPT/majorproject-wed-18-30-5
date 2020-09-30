@@ -59,7 +59,7 @@ class ApiService {
 
   fetchBookings(component) {
     return axios
-      .get("http://localhost:8080/api/booking/getUpcomingCustomerBookings", {
+      .get("http://localhost:8080/api/booking/getUpcomingBookings", {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));
@@ -67,7 +67,7 @@ class ApiService {
 
   fetchPastBookings(component) {
     return axios
-      .get("http://localhost:8080/api/booking/getCompletedCustomerBookings", {
+      .get("http://localhost:8080/api/booking/getCompletedBookings", {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));
