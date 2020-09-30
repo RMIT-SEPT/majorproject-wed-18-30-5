@@ -29,7 +29,7 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class);
 	}
 
-	// Comment out CommandLineRunner when not using it for testing OR when using mySQL
+	//Comment out CommandLineRunner when not using it for testing OR when using mySQL
 	@Bean
 	public CommandLineRunner demo(User_Repository UserRepository, 
 								  UserType_Repository TypeRepository, 
@@ -49,19 +49,19 @@ public class DemoApplication {
 			TypeRepository.save(customer);//3
 			
 			// Create admn/employee/customer(s)
-			Entity_User jack = new Entity_User("Jack", "Jacky", passwordEncoder.encode("1234"), "0000000000", customer);
-			Entity_User chloe = new Entity_User("Chloe", "O'Brian", passwordEncoder.encode("1234"), "0000000000", customer);
-			Entity_User kim = new Entity_User("Kim", "Bauer", passwordEncoder.encode("1234"), "0000000000", customer);
-			Entity_User david = new Entity_User("David", "Palmer", passwordEncoder.encode("1234"), "0000000000", admin);
-			Entity_User michelle = new Entity_User("Michelle", "Dessler", passwordEncoder.encode("1234"), "0000000000", employee);
-			Entity_User leslie = new Entity_User("Leslie", "Messler", passwordEncoder.encode("1234"), "0000000000", employee);		
-			Entity_User karin = new Entity_User("Karin", "Kalamari", passwordEncoder.encode("1234"), "0000000000", employee);		
-			Entity_User lammy = new Entity_User("Lammy", "Lam", passwordEncoder.encode("1234"), "0000000000", employee);		
-			Entity_User rammy = new Entity_User("Rammy", "Ram", passwordEncoder.encode("1234"), "0000000000", employee);		
+			Entity_User jack = new Entity_User("Jack", "Jacky", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", customer);
+			Entity_User chloe = new Entity_User("Chloe", "O'Brian", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", customer);
+			Entity_User kim = new Entity_User("Kim", "Bauer", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", customer);
+			Entity_User david = new Entity_User("David", "Palmer", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", admin);
+			Entity_User michelle = new Entity_User("Michelle", "Dessler", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", employee);
+			Entity_User leslie = new Entity_User("Leslie", "Messler", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", employee);
+			Entity_User karin = new Entity_User("Karin", "Kalamari", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", employee);
+			Entity_User lammy = new Entity_User("Lammy", "Lam", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", employee);
+			Entity_User rammy = new Entity_User("Rammy", "Ram", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", employee);		
 			//Delete users - JUST used for JUnit test so that I can delete them
-			Entity_User delete1 = new Entity_User("Joe","delete1",passwordEncoder.encode("1234"),"0000000000", customer);	
-			Entity_User delete2 = new Entity_User("Joe","delete2",passwordEncoder.encode("1234"),"0000000000", employee);
-			Entity_User delete3 = new Entity_User("Joe","delete3",passwordEncoder.encode("1234"),"0000000000", admin);		
+			Entity_User delete1 = new Entity_User("Joe","delete1",passwordEncoder.encode("1234"),"0000000000","42 somewhere street", customer);	
+			Entity_User delete2 = new Entity_User("Joe","delete2",passwordEncoder.encode("1234"),"0000000000","42 somewhere street", employee);
+			Entity_User delete3 = new Entity_User("Joe","delete3",passwordEncoder.encode("1234"),"0000000000","42 somewhere street", admin);		
 
 			//Save the users
 			UserRepository.save(jack);
