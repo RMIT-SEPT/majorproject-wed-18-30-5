@@ -28,6 +28,9 @@
   color: #61dafb;
 }
 
+.row {
+  margin-left: 10% !important;
+}
 body {
   background-color: #25274d;
 }
@@ -65,7 +68,7 @@ body {
   font-weight: 600;
 }
 .contact-form button {
-  background: #25274d;
+  background: rgb(212, 12, 96);
   color: #fff;
   font-weight: 600;
   width: 25%;
@@ -128,6 +131,7 @@ body {
 }
 .gray-bg {
   background: #f1f1f1 !important;
+  height: 100vh;
 }
 .about-title {
 }

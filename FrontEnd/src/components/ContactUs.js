@@ -11,7 +11,7 @@ export default class ContactUs extends Component {
           <HomeNav />
         </header>
         <Map />
-        <ContactForm className="ml-auto mr-auto" />
+        <ContactForm className="ml-auto mr-auto contact-form-wr" />
       </>
     );
   }

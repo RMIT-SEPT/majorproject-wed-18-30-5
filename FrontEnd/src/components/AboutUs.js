@@ -71,7 +71,7 @@ export default class AboutUs extends Component {
               <div className="col-md-5 col-sm-6">
                 <div className="about-img">
                   <img
-                    src="https://devitems.com/preview/appmom/img/mobile/2.png"
+                    src="https://cdn.iconscout.com/icon/free/png-512/best-employee-23-1117676.png"
                     alt=""
                   />
                 </div>

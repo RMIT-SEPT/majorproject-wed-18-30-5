@@ -5,7 +5,7 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 const ContactForm = () => {
   return (
-    <div class="container contact">
+    <div class="container contact ml-auto mr-auto">
       <div class="row">
         <div class="col-md-3">
           <div class="contact-info">
