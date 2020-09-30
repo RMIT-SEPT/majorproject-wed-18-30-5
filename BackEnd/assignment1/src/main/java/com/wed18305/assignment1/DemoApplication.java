@@ -72,11 +72,11 @@ public class DemoApplication {
 			UserRepository.save(delete3);
 
 			// Save Services
-			Entity_Service falafel = new Entity_Service("Freddie's Falafels");
-			Entity_Service hotDogs = new Entity_Service("Joe's HotDogs");
-			Entity_Service service3 = new Entity_Service("Service3");
-			Entity_Service service4 = new Entity_Service("Service4");
-			Entity_Service service5 = new Entity_Service("Service5");
+			Entity_Service falafel = new Entity_Service("Haircut");
+			Entity_Service hotDogs = new Entity_Service("Painter");
+			Entity_Service service3 = new Entity_Service("Web Designer");
+			Entity_Service service4 = new Entity_Service("Photographer");
+			Entity_Service service5 = new Entity_Service("Gardner");
 			ServiceRepository.save(falafel);
 			ServiceRepository.save(hotDogs);
 			ServiceRepository.save(service3);
