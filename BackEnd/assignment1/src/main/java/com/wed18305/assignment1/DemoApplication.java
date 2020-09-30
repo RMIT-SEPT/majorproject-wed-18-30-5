@@ -55,6 +55,9 @@ public class DemoApplication {
 			Entity_User david = new Entity_User("David", "Palmer", passwordEncoder.encode("1234"), "0000000000", admin);
 			Entity_User michelle = new Entity_User("Michelle", "Dessler", passwordEncoder.encode("1234"), "0000000000", employee);
 			Entity_User leslie = new Entity_User("Leslie", "Messler", passwordEncoder.encode("1234"), "0000000000", employee);		
+			Entity_User karin = new Entity_User("Karin", "Kalamari", passwordEncoder.encode("1234"), "0000000000", employee);		
+			Entity_User lammy = new Entity_User("Lammy", "Lam", passwordEncoder.encode("1234"), "0000000000", employee);		
+			Entity_User rammy = new Entity_User("Rammy", "Ram", passwordEncoder.encode("1234"), "0000000000", employee);		
 			//Delete users - JUST used for JUnit test so that I can delete them
 			Entity_User delete1 = new Entity_User("Joe","delete1",passwordEncoder.encode("1234"),"0000000000", customer);	
 			Entity_User delete2 = new Entity_User("Joe","delete2",passwordEncoder.encode("1234"),"0000000000", employee);
@@ -67,6 +70,9 @@ public class DemoApplication {
 			UserRepository.save(david);
 			UserRepository.save(michelle);
 			UserRepository.save(leslie);
+			UserRepository.save(karin);
+			UserRepository.save(lammy);
+			UserRepository.save(rammy);
 			UserRepository.save(delete1);
 			UserRepository.save(delete2);
 			UserRepository.save(delete3);
@@ -87,6 +93,9 @@ public class DemoApplication {
 			david.getServices().add(hotDogs);
 			michelle.getServices().add(falafel);
 			leslie.getServices().add(service3);
+			karin.getServices().add(hotDogs);
+			lammy.getServices().add(falafel);
+			rammy.getServices().add(falafel);
 			delete1.getServices().add(service5);
 			delete2.getServices().add(service5);
 			delete3.getServices().add(service5);
@@ -113,17 +122,26 @@ public class DemoApplication {
 			Entity_Schedule scheduleMichelleLong = new Entity_Schedule(mlong_ts, mlong_te);
 			Entity_Schedule scheduleLeslie = new Entity_Schedule(l_ts, l_te);
 			Entity_Schedule scheduleLeslieLong = new Entity_Schedule(llong_ts, llong_te);
+			Entity_Schedule scheduleKarin = new Entity_Schedule(m_ts, m_te);
+			Entity_Schedule scheduleLammy = new Entity_Schedule(m_ts, m_te);
+			Entity_Schedule scheduleRammy = new Entity_Schedule(m_ts, m_te);
 			ScheduleRepository.save(scheduleDavid);
 			ScheduleRepository.save(scheduleDavidLong);
 			ScheduleRepository.save(scheduleMichelle);
 			ScheduleRepository.save(scheduleMichelleLong);
 			ScheduleRepository.save(scheduleLeslie);
 			ScheduleRepository.save(scheduleLeslieLong);
+			ScheduleRepository.save(scheduleKarin);
+			ScheduleRepository.save(scheduleLammy);
+			ScheduleRepository.save(scheduleRammy);
 
 			//Add Schedules to employees
 			david.getSchedules().add(scheduleDavid);
 			michelle.getSchedules().add(scheduleMichelleLong);
 			leslie.getSchedules().add(scheduleLeslie);
+			karin.getSchedules().add(scheduleKarin);
+			lammy.getSchedules().add(scheduleLammy);
+			rammy.getSchedules().add(scheduleRammy);
 			delete1.getSchedules().add(scheduleLeslie);
 			delete2.getSchedules().add(scheduleLeslie);
 			delete3.getSchedules().add(scheduleLeslie);
@@ -149,6 +167,9 @@ public class DemoApplication {
 			UserRepository.save(david);
 			UserRepository.save(michelle);
 			UserRepository.save(leslie);
+			UserRepository.save(karin);
+			UserRepository.save(lammy);
+			UserRepository.save(rammy);
 			UserRepository.save(delete1);
 			UserRepository.save(delete2);
 			UserRepository.save(delete3);
