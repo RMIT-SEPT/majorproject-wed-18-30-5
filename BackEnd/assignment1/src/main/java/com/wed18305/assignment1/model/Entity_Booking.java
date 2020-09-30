@@ -27,7 +27,8 @@ public class Entity_Booking {
         PENDING((long) 1),
         APPROVED((long) 2),
         DENIED((long) 3),
-        COMPLETED((long) 4);
+        COMPLETED((long) 4),
+        CANCELLED((long) 5);
 
         public final Long id;
         Status(Long id) {
@@ -38,6 +39,7 @@ public class Entity_Booking {
         public static Long getApproved()    { return APPROVED.id;   }
         public static Long getDenied()      { return DENIED.id;     }
         public static Long getCompleted()   { return COMPLETED.id;  }
+        public static Long getCancelled()   { return CANCELLED.id;  }
     }
 
     /// Variables
@@ -158,11 +160,13 @@ public class Entity_Booking {
     public void approveBooking()    { status = Status.APPROVED;     }
     public void denyBooking()       { status = Status.DENIED;       }
     public void completeBooking()   { status = Status.COMPLETED;    }
+    public void cancelBooking()     { status = Status.CANCELLED;    }
     // What's the Booking's Status?
     public boolean isPending()      { return status == Status.PENDING;   }
     public boolean isApproved()     { return status == Status.APPROVED;  }
     public boolean isDenied()       { return status == Status.DENIED;    }
     public boolean isCompleted()    { return status == Status.COMPLETED; }
+    public boolean isCancelled()    { return status == Status.CANCELLED; }
 
     /// Comparisons
     @Override

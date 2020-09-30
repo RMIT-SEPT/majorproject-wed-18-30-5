@@ -269,7 +269,7 @@ public class Booking_Controller {
 
     /**
      * Complete Existing Booking 
-     * PATCH ENDPOINT: http://localhost:8080/api/booking/denyBooking
+     * PATCH ENDPOINT: http://localhost:8080/api/booking/completeBooking
      * INPUT JSON {"id":1 }
      */
     @PatchMapping("completeBooking")
@@ -303,6 +303,45 @@ public class Booking_Controller {
          }
 
         Response response = new Response(true, "Booking labelled as completed!", null, bkgResponse);
+        return new ResponseEntity<Response>(response, HttpStatus.ACCEPTED);
+    }
+
+    /**
+     * Cancel Existing Booking 
+     * PATCH ENDPOINT: http://localhost:8080/api/booking/cancelBooking
+     * INPUT JSON {"id":1 }
+     */
+    @PatchMapping("cancelBooking")
+    public ResponseEntity<Response> cancelBooking(@Valid @RequestBody Get_Request gr, BindingResult result) {
+
+        // Binding validation checks
+        if (result.hasErrors()) {
+            
+            Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Attempt to Find Booking by ID
+        Optional<Entity_Booking> book = bookingService.findById(gr.getId());
+        if (book == null) {
+            Response response = new Response(false, "ERROR!", "Booking doesn't exist!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Attempt to Complete Booking
+        Response_Booking bkgResponse = null;
+        try {
+            Entity_Booking currentBooking = book.get();
+            currentBooking.cancelBooking();
+            bookingService.saveOrUpdateBooking(currentBooking);
+            bkgResponse = new Response_Booking(currentBooking);
+        }
+        catch (Exception e) {
+            Response response = new Response(false, "ERROR!", "Booking couldn't be labelled as cancelled!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+         }
+
+        Response response = new Response(true, "Booking labelled as cancelled!", null, bkgResponse);
         return new ResponseEntity<Response>(response, HttpStatus.ACCEPTED);
     }
 
