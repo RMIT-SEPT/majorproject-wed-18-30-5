@@ -84,16 +84,9 @@ public class DemoApplication {
 			ServiceRepository.save(service5);
 
 			//Add services to employees, david, michelle, leslie
-			david.getServices().add(falafel);
 			david.getServices().add(hotDogs);
 			michelle.getServices().add(falafel);
-			michelle.getServices().add(hotDogs);
-			michelle.getServices().add(service5);
-			leslie.getServices().add(falafel);
-			leslie.getServices().add(hotDogs);
 			leslie.getServices().add(service3);
-			leslie.getServices().add(service4);
-			leslie.getServices().add(service5);
 			delete1.getServices().add(service5);
 			delete2.getServices().add(service5);
 			delete3.getServices().add(service5);
@@ -129,11 +122,8 @@ public class DemoApplication {
 
 			//Add Schedules to employees
 			david.getSchedules().add(scheduleDavid);
-			david.getSchedules().add(scheduleDavidLong);
-			michelle.getSchedules().add(scheduleMichelle);
 			michelle.getSchedules().add(scheduleMichelleLong);
 			leslie.getSchedules().add(scheduleLeslie);
-			leslie.getSchedules().add(scheduleLeslieLong);
 			delete1.getSchedules().add(scheduleLeslie);
 			delete2.getSchedules().add(scheduleLeslie);
 			delete3.getSchedules().add(scheduleLeslie);
@@ -148,13 +138,9 @@ public class DemoApplication {
 
 			//Add bookings to users
 			jack.getBookings().add(Booking1);
-			//chloe.getBookings().add(Booking);
 			michelle.getBookings().add(Booking1);
 			jack.getBookings().add(Booking2);
 			michelle.getBookings().add(Booking2);
-			//delete1.getBookings().add(completedBooking);
-			//delete2.getBookings().add(completedBooking);
-			//delete3.getBookings().add(completedBooking);
 
 			//Update the users
 			UserRepository.save(jack);

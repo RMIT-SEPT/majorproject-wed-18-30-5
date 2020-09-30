@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import com.wed18305.assignment1.Responses.Response;
 import com.wed18305.assignment1.Responses.Response_Booking;
+import com.wed18305.assignment1.Responses.Response_CreateBooking;
 import com.wed18305.assignment1.Responses.Response_Timeslots;
 import com.jayway.jsonpath.Option;
 import com.wed18305.assignment1.Requests.Booking_Request;
@@ -136,12 +137,14 @@ public class Booking_Controller {
 
         // Save new Booking
         Entity_Booking booking1 = null;
+        Response_CreateBooking bkgResponse = null;
         try {
             // Save Booking
             booking1 = bookingService.saveOrUpdateBooking(booking);
             Set<Entity_Booking> bookings = new HashSet<Entity_Booking>();
             bookings.add(booking1);
             userService.addBookingsToUsers(users.getUsers(), bookings);
+            bkgResponse = new Response_CreateBooking(booking1);
         } catch (Exception e) {
             Response response = new Response(false, "ERROR!", e.getMessage(), null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
@@ -152,7 +155,7 @@ public class Booking_Controller {
             Response response = new Response(false, "ERROR!", "booking returned NULL", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         } else {
-            Response response = new Response(true, "booking created!", null, booking1);
+            Response response = new Response(true, "booking created!", null, bkgResponse);
             return new ResponseEntity<Response>(response, HttpStatus.CREATED);
         }
     }
