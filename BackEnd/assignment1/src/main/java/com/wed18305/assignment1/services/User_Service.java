@@ -1,5 +1,6 @@
 package com.wed18305.assignment1.services;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,7 +12,7 @@ import com.wed18305.assignment1.model.Entity_Service;
 import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.model.Entity_Schedule;
 import com.wed18305.assignment1.model.Entity_User;
-import com.wed18305.assignment1.model.Entity_Booking.ApprovalStatus;
+import com.wed18305.assignment1.model.Entity_Booking.Status;
 import com.wed18305.assignment1.repositories.User_Repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,11 +83,11 @@ public class User_Service {
     }
 
     public Iterable<Entity_Booking> findUpcomingUserBookings(Long id) {
-        return returnUpcoming(id, ApprovalStatus.getAny());
+        return returnUpcoming(id, Status.getAny());
     }
 
     public Iterable<Entity_Booking> findCompletedUserBookings(Long id) {
-        return returnCompleted(id, ApprovalStatus.getAny());
+        return returnCompleted(id, Status.getAny());
     }
 
     // What Approved Bookings does an Employee Have?
@@ -97,7 +98,7 @@ public class User_Service {
         }
         Set<Entity_Booking> userBookings = new HashSet<Entity_Booking>();
         for (Entity_Booking booking :user.getBookings()) {
-            if(booking.getApprovalStatus() == ApprovalStatus.getApproved()){
+            if(booking.getStatus() == Status.getApproved()){
                 userBookings.add(booking);
             }
         }
@@ -105,16 +106,16 @@ public class User_Service {
     }
 
     public Iterable<Entity_Booking> findApprovedUpcomingBookings(Long id) {
-        return returnUpcoming(id, ApprovalStatus.getApproved());
+        return returnUpcoming(id, Status.getApproved());
     }
 
     public Iterable<Entity_Booking> findApprovedCompletedBookings(Long id) {
-        return returnCompleted(id, ApprovalStatus.getApproved());
+        return returnCompleted(id, Status.getApproved());
     }
 
     // Which Bookings Have Been Denied?
     public Iterable<Entity_Booking> findDeniedUserBookings(Long id) {
-        return returnBookings(id, ApprovalStatus.getDenied());
+        return returnBookings(id, Status.getDenied());
     }
 
     //// Helper Methods
@@ -134,7 +135,7 @@ public class User_Service {
         // Find Appropriate Bookings Based on Input Parameters
         Set<Entity_Booking> userBookings = new HashSet<Entity_Booking>();
         for (Entity_Booking booking :user.getBookings()) {
-            if(booking.getApprovalStatus() == approvalStatus || approvalStatus == ApprovalStatus.getAny()){ // Return every booking if applicable.
+            if(booking.getStatus() == approvalStatus || approvalStatus == Status.getAny()){ // Return every booking if applicable.
                 userBookings.add(booking);
             }
         }
@@ -189,8 +190,8 @@ public class User_Service {
 
     // Helper Method
     private boolean approvalCheck(Entity_Booking booking, Long approvalStatus) {
-        if(approvalStatus == ApprovalStatus.getApproved() && booking.getApprovalStatus() == ApprovalStatus.getApproved()
-        || approvalStatus != ApprovalStatus.getApproved()) {
+        if(approvalStatus == Status.getApproved() && booking.getStatus() == Status.getApproved()
+        || approvalStatus != Status.getApproved()) {
             return true;
         }
         return false;
@@ -246,6 +247,46 @@ public class User_Service {
         }
         //save the users
         return userRepository.saveAll(users);
+    }
+
+    public Iterable<Entity_Schedule> findSchedulesByDate(Entity_User user,
+                                              LocalDate date) {
+        if(user.getSchedules() == null){
+            return null;
+        }
+        // Find Schedules By Date
+        Set<Entity_Schedule> userSchedules = new HashSet<Entity_Schedule>();
+        for (Entity_Schedule schedule :user.getSchedules()) {
+
+            // Does Current Schedule Occur on the Passed in Date?
+            LocalDate meep = schedule.getStartDateTime().toLocalDate();
+            if(meep.equals(date)) {
+                userSchedules.add(schedule);
+            }
+        }
+        return userSchedules;
+    }
+
+    public Iterable<Entity_Booking> findBookingsByDate(Entity_User user,
+                                                        LocalDate date) {
+        if(user.getSchedules() == null){
+            return null;
+        }
+        // Find Schedules By Date
+        Set<Entity_Booking> userBookings = new HashSet<Entity_Booking>();
+        for (Entity_Booking booking :user.getBookings()) {
+
+            // Validate What Bookings we can Retrieve
+            if (user.isEmployee() && booking.isApproved() || !user.isEmployee()) {
+            
+                // Does Current Booking Occur on the Passed in Date?
+                LocalDate curBookingsDate = booking.getStartDateTime().toLocalDate();
+                if(curBookingsDate.equals(date)) {
+                    userBookings.add(booking);
+                }
+            }
+        }
+        return userBookings;
     }
 
     public Entity_User addBookingsToUser(Entity_User user,
