@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Navbar, NavDropdown, Nav } from "react-bootstrap";
-import DashboardAdmin from "./DashboardAdmin";
-import Employee from "../Emp/Employee";
 
 class AdminNav extends Component {
   render() {
@@ -17,9 +15,9 @@ class AdminNav extends Component {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="/PastBookings"> Home </Nav.Link>
-              <Nav.Link href="/DashboardAdmin">Past Bookings</Nav.Link>
-              <Nav.Link href="/Employee">Employee</Nav.Link>
+              <Nav.Link href="/dasboardadmin"> Home </Nav.Link>
+              <Nav.Link href="/pastbookingsadmin">Past Bookings</Nav.Link>
+              <Nav.Link href="/employeeinfo">Employee</Nav.Link>
             </Nav>
             <Nav>
               <NavDropdown title="Profile" id="collasible-nav-dropdown">

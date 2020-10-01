@@ -19,6 +19,7 @@ import ActiveBooking from "./components/ActiveBookings";
 import DashboardAdmin from "./components/Admin/DashboardAdmin";
 import ContactUs from "./components/ContactUs";
 import AboutUs from "./components/AboutUs";
+import EmployeeInfo from "./components/Admin/EmployeeInfo";
 // import Employee from "./components/Employee";
 // import DashEmployee from "./components/DashEmployee";
 
@@ -37,6 +38,8 @@ function App() {
         <Route exact path="/dashboardadmin" component={DashboardAdmin} />
         <Route exact path="/contactus" component={ContactUs} />
         <Route exact path="/aboutus" component={AboutUs} />
+        <Route exact path="/employeeinfo" component={EmployeeInfo} />
+        <Route exact path="/pastbookingsadmin" component={EmployeeInfo} />
         {/* <Route exact path="/employee" component={Employee} /> */}
         {/* <Route exact path="/dashemployee" component={DashEmployee} /> */}
         <Route exact path="*" component={NoMatch} />
