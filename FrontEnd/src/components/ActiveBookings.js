@@ -24,6 +24,13 @@ export default class ActiveBookings extends Component {
     });
   };
 
+  cancelBooking = (id) => {
+    ApiService.cancelBooking(this, { id }).then((res) => {
+      this.setState({ message: res.data });
+      this.reloadBookingList();
+    });
+  };
+
   render() {
     return (
       <>
@@ -33,7 +40,20 @@ export default class ActiveBookings extends Component {
         <div className="active-booking-wrapper">
           <CardDeck>
             {this.state.bookings.map((booking) => (
-              <BookingCard key={booking.id} booking={booking}></BookingCard>
+              <BookingCard
+                key={booking.bookingID}
+                booking={booking}
+                cancelButton={
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => this.cancelBooking(booking.bookingID)}
+                    style={{ float: "right", margin: "5px" }}
+                  >
+                    Cancel Booking
+                  </button>
+                }
+              ></BookingCard>
             ))}
           </CardDeck>
         </div>

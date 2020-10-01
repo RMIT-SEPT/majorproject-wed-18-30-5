@@ -34,6 +34,7 @@ function App() {
         <Route exact path="/edituser" component={EditUser} />
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/activebookings" component={ActiveBooking} />
+        <Route exact path="/dashboardadmin" component={DashboardAdmin} />
         <Route exact path="/contactus" component={ContactUs} />
         <Route exact path="/aboutus" component={AboutUs} />
         {/* <Route exact path="/employee" component={Employee} /> */}

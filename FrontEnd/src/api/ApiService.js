@@ -110,7 +110,7 @@ class ApiService {
 
   fetchAdminBookings(component) {
     return axios
-      .get("http://localhost:8080/api/booking/getAdminBookings", {
+      .get("http://localhost:8080/api/booking/getAllBookings", {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));
@@ -119,6 +119,13 @@ class ApiService {
   approveBookingStatus(component, id) {
     return axios
       .patch("http://localhost:8080/api/booking/approveBooking", id, {
+        withCredentials: true,
+      })
+      .then(handleLoginRedirect(component));
+  }
+  cancelBooking(component, id) {
+    return axios
+      .patch("http://localhost:8080/api/booking/cancelBooking", id, {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));
