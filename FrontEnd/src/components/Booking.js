@@ -4,12 +4,6 @@ import { withRouter } from "react-router-dom";
 
 const formatPad = (num) => String(num).padStart("2", "0");
 
-// function TimeSlots({ timeslots, Slot }) {
-//   return <div>{timeslots.map(timeslot => (
-//     <Slot timeslot
-//   ))}</div>;
-// }
-
 class Booking extends Component {
   constructor() {
     super();
@@ -130,6 +124,7 @@ class Booking extends Component {
 
   render() {
     const { schemas, employees, availableTimes } = this.state;
+
     return (
       <>
         <div>
@@ -163,7 +158,7 @@ class Booking extends Component {
                         ))}
                     </select>
                   </div>
-                  <div className="form-group col-md-2">
+                  <div className="form-group col-md-3">
                     <label>Employees :</label>
                     <select
                       name="employee"
@@ -196,7 +191,7 @@ class Booking extends Component {
                       onChange={this.onChange}
                     />
                   </div>
-                  <div className="form-group col-md-2">
+                  <div className="form-group col-md-3">
                     <label>Time :</label>
                     <select
                       name="time"
@@ -208,49 +203,14 @@ class Booking extends Component {
                         <option value=""></option>
                       ) : availableTimes && availableTimes.length > 0 ? (
                         availableTimes.map((time) => (
-                          <option key={time.start}></option>
+                          <option key={time.start} value={time.start}>
+                            {time.start} to {time.end}
+                          </option>
                         ))
                       ) : (
                         <option disabled>No Time Slots</option>
                       )}
                     </select>
-                  </div>
-
-                  {/* <div className="form-group col-md-2">
-                    <label>Start Time :</label>
-                    <input
-                      type="time"
-                      className="form-control"
-                      name="starttime"
-                      value={this.state.starttime}
-                      onChange={this.onChange}
-                    />
-                  </div>
-                  <div className="form-group col-md-2">
-                    <label>End Time :</label>
-                    <input
-                      type="time"
-                      className="form-control"
-                      name="endtime"
-                      value={this.state.endtime}
-                      onChange={this.onChange}
-                    />
-                  </div> */}
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      maxHeight: 150,
-                      overflow: this.state.availableTimes.length
-                        ? "scroll"
-                        : "hidden",
-                    }}
-                  >
-                    {this.state.availableTimes.map((timeslot) => (
-                      <button onClick={() => this.setTimeslot(timeslot)}>
-                        {timeslot.start}
-                      </button>
-                    ))}
                   </div>
                 </div>
                 <div className="form-row">
