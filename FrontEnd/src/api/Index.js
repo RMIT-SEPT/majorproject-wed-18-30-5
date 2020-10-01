@@ -23,7 +23,7 @@ export const makeUseFetch = (url, options) => (callback = undefined) => {
       try {
         const res = await axios({ ...options, url });
         const json = res.data;
-        if (res.status != 200) {
+        if (res.status !== 200) {
           throw json;
         }
         if (!signal.aborted) {
