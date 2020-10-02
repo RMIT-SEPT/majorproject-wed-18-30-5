@@ -130,6 +130,14 @@ class ApiService {
       })
       .then(handleLoginRedirect(component));
   }
+
+  getBookedTimeslots(component, employee) {
+    return axios
+      .post(" http://localhost:8080/api/booking/getBookedTimeslots", employee, {
+        withCredentials: true,
+      })
+      .then(handleLoginRedirect(component));
+  }
 }
 
 export default new ApiService();

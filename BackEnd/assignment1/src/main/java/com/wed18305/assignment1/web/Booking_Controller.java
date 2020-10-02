@@ -162,11 +162,11 @@ public class Booking_Controller {
 
     /**
      * Get Employee Unavailable Timeslots Based on Their Bookings 
-     * GET ENDPOINT: http://localhost:8080/api/booking/getBookedTimeslots
-     * INPUT JSON {"date":"uuuu-MM-dd, (Format)
-     *             "employee_id": "5"
+     * POST ENDPOINT: http://localhost:8080/api/booking/getBookedTimeslots
+     * INPUT JSON {"date":"uuuu-MM-dd" (Format),
+     *             "userID": <String<number>> (Format)}
      */
-    @GetMapping("getBookedTimeslots")
+    @PostMapping("getBookedTimeslots")
     public ResponseEntity<Response> getBookedTimeSlots(@Valid @RequestBody Timeslot_Request tr, BindingResult result) {
 
         // Was a Valid Employee Passed In?
@@ -189,7 +189,7 @@ public class Booking_Controller {
         }
 
         Response response = new Response(true, "Booked times found!", null, tsResponse);
-        return new ResponseEntity<Response>(response, HttpStatus.FOUND);
+        return new ResponseEntity<Response>(response, HttpStatus.ACCEPTED);
     }
 
     /**

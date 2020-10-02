@@ -10,12 +10,12 @@ class Booking extends Component {
     this.state = {
       service: "",
       employee: "",
+      date: "",
+      time: "",
       schemas: [],
       employees: [],
-      startdate: "",
       starttime: "",
       endtime: "",
-      date: "",
       message: "",
       maxDate: "",
       minDate: "",
@@ -30,8 +30,9 @@ class Booking extends Component {
         d.getDate()
       )}`;
     const now = new Date();
+    now.setDate(now.getDate() + 1);
     const in7 = new Date(now);
-    in7.setDate(now.getDate() + 7);
+    in7.setDate(now.getDate() + 6);
     this.setState({ maxDate: formatDate(in7), minDate: formatDate(now) });
   };
 
@@ -52,17 +53,45 @@ class Booking extends Component {
       ApiService.fetchEmployeeByService(this, {
         service_id: Number(this.state.service),
       }).then((res) => {
-        this.setState({ employees: Array.from(res.data.body) });
+        this.setState({
+          employees: Array.from(res.data.body),
+          employee: "",
+          date: "",
+          time: "",
+        });
       });
+    }
+  };
+
+  getBookedTimeslots = () => {
+    if (this.state.employee) {
+      const employee = {
+        userID: this.state.employee,
+        date: this.state.date,
+      };
+      ApiService.getBookedT &&
+        this.state.dateslots(this, employee).then((res) => {
+          const timeslots = Array.from(res.data.body.bookedTimes);
+          this.generateAvailableTimes(timeslots);
+        });
+        });
     }
   };
 
   onChange = (e) => {
     const { name, value } = e.target;
+    if (name === "employee" && !this.state.service) return;
+    if (name === "date" && !this.state.employee) return;
+    if (name === "time" && !this.state.date) return;
     this.setState({ [name]: value }, () => {
       if (name === "service") {
         this.reloadEmployeeList();
-        this.generateAvailableTimes();
+      }
+      if (name === "date") {
+        this.getBookedTimeslots();
+      }
+      if (name === "time") {
+        this.setTimeslot(value);
       }
     });
   };
@@ -80,7 +109,7 @@ class Booking extends Component {
     return `${year}-${month}-${day}T${hour}:${minute}+00:00`;
   };
 
-  generateAvailableTimes = () => {
+  generateAvailableTimes = (excludedTimeslots) => {
     const formatTime = (time) => `${time.getHours()}:${time.getMinutes()}`;
     const availableTimes = [];
     const service = this.state.schemas[this.state.service];
@@ -97,7 +126,9 @@ class Booking extends Component {
     this.setState({ availableTimes });
   };
 
-  setTimeslot = (timeslot) => {
+  setTimeslot = (index) => {
+    debugger;
+    const timeslot = this.state.availableTimes[index];
     this.setState({ starttime: timeslot.start, endtime: timeslot.end });
   };
 
@@ -108,12 +139,12 @@ class Booking extends Component {
     const end_time = this.state.endtime.split(":").map(Number);
     const start_date = new Date(...date, ...start_time);
     const end_date = new Date(...date, ...end_time);
-
     const booking = {
       startDateTime: this.formatDate(start_date),
       endDateTime: this.formatDate(end_date),
-      user_ids: [Number(5)],
+      user_ids: [Number(this.state.employee)],
     };
+    debugger;
     ApiService.createBooking(this, booking).then((res) => {
       console.log(booking);
       this.setState({ message: "Booking Created!" });
@@ -147,7 +178,7 @@ class Booking extends Component {
                       className="form-control"
                     >
                       {this.state.service === "" && (
-                        <option value="">Select A Service</option>
+                        <option value="">select service</option>
                       )}
                       {schemas &&
                         schemas.length > 0 &&
@@ -168,14 +199,19 @@ class Booking extends Component {
                     >
                       {this.state.service === "" ? (
                         <option value=""></option>
-                      ) : employees && employees.length > 0 ? (
+                      ) : (
+                        this.state.employee === "" && (
+                          <option value="">select employee</option>
+                        )
+                      )}
+                      {employees && employees.length > 0 ? (
                         employees.map((employee) => (
                           <option key={employee.id} value={employee.id}>
                             {employee.name}
                           </option>
                         ))
                       ) : (
-                        <option disabled>No Employees</option>
+                        <option disabled>no employees</option>
                       )}
                     </select>
                   </div>
@@ -199,16 +235,23 @@ class Booking extends Component {
                       onChange={this.onChange}
                       className="form-control"
                     >
-                      {this.state.time === "" ? (
+                      {this.state.date === "" ? (
                         <option value=""></option>
-                      ) : availableTimes && availableTimes.length > 0 ? (
-                        availableTimes.map((time) => (
-                          <option key={time.start} value={time.start}>
+                      ) : (
+                        this.state.time === "" && (
+                          <option value="">select time</option>
+                        )
+                      )}
+                      {availableTimes && availableTimes.length > 0 ? (
+                        availableTimes.map((time, i) => (
+                          <option key={time.start} value={i}>
                             {time.start} to {time.end}
                           </option>
                         ))
                       ) : (
-                        <option disabled>No Time Slots</option>
+                        <option disabled>
+                          no time slots on {this.state.date}
+                        </option>
                       )}
                     </select>
                   </div>
