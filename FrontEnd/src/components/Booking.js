@@ -64,17 +64,15 @@ class Booking extends Component {
   };
 
   getBookedTimeslots = () => {
-    if (this.state.employee) {
+    if (this.state.employee && this.state.date) {
       const employee = {
         userID: this.state.employee,
         date: this.state.date,
       };
-      ApiService.getBookedT &&
-        this.state.dateslots(this, employee).then((res) => {
-          const timeslots = Array.from(res.data.body.bookedTimes);
-          this.generateAvailableTimes(timeslots);
-        });
-        });
+      ApiService.getBookedTimeslots(this, employee).then((res) => {
+        const timeslots = Array.from(res.data.body.bookedTimes);
+        this.generateAvailableTimes(timeslots);
+      });
     }
   };
 
