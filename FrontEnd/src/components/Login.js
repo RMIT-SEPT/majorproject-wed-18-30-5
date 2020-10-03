@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Api } from "../api/Index";
 import { useHistory } from "react-router-dom";
+import HomeNavBar from "./HomeNav";
 
 function Copyright() {
   return (
@@ -90,80 +91,85 @@ export default function SignIn() {
   }, [loginResult, setSubmit, history]);
 
   return (
-    <Container component="main" maxWidth="xs">
-      {/* <div>{JSON.stringify(loginResult)}</div> */}
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}></Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Username"
-            name="email"
-            autoComplete="username"
-            autoFocus
-            onChange={(e) => setUsername(e.target.value)}
-            value={username}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          {submit ? (
-            <SendLoginData
-              setResult={setLoginResult}
-              username={username}
-              password={password}
-            />
-          ) : (
-            <Button
-              type="submit"
+    <>
+      <header>
+        <HomeNavBar />
+      </header>
+      <Container component="main" maxWidth="xs">
+        {/* <div>{JSON.stringify(loginResult)}</div> */}
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}></Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <form className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
               fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={() => setSubmit(true)}
-            >
-              Sign In
-            </Button>
-          )}
-          <Grid container>
-            <Grid item xs>
-              <Link href="forgetpassword" variant="body2">
-                Forgot password?
-              </Link>
+              id="email"
+              label="Username"
+              name="email"
+              autoComplete="username"
+              autoFocus
+              onChange={(e) => setUsername(e.target.value)}
+              value={username}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            {submit ? (
+              <SendLoginData
+                setResult={setLoginResult}
+                username={username}
+                password={password}
+              />
+            ) : (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={() => setSubmit(true)}
+              >
+                Sign In
+              </Button>
+            )}
+            <Grid container>
+              <Grid item xs>
+                <Link href="forgetpassword" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="/Signup" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link href="/Signup" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+          </form>
+        </div>
+        <Box mt={8}>
+          <Copyright />
+        </Box>
+      </Container>
+    </>
   );
 }

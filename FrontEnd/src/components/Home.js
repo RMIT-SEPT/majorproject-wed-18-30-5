@@ -3,6 +3,7 @@ import ApiService from "../api/ApiService";
 import NavBar from "./NavBar";
 import Booking from "./Booking";
 import background from "../images/background.jpg";
+import "../App.css";
 
 class Home extends Component {
   render() {
@@ -11,14 +12,13 @@ class Home extends Component {
         <header>
           <NavBar />
         </header>
-        <section>
-          <div className="order-1 order-lg-2">
-            <img src={background} className="img-fluid home-bq" />
-            <div className="booking-wrapper">
-              <Booking />
-            </div>
-          </div>
-        </section>
+
+        <div className="order-1 order-lg-2 ">
+          <img src={background} className="img-fluid home-bq" />
+        </div>
+        <div className="booking-wrapper">
+          <Booking />
+        </div>
       </>
     );
   }

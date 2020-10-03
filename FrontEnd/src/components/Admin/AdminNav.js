@@ -18,8 +18,8 @@ class AdminNav extends Component {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="/PastBookings"> Home </Nav.Link>
-              <Nav.Link href="/DashboardAdmin">Past Bookings</Nav.Link>
+              <Nav.Link href="/DashboardAdmin"> Home </Nav.Link>
+              <Nav.Link href="/PastBookings">Past Bookings</Nav.Link>
               <Nav.Link href="/Employee">Employee</Nav.Link>
             </Nav>
             <Nav>

@@ -32,6 +32,14 @@ class BookingCard extends Component {
               {this.props.booking.endTime}{" "}
             </ListGroup.Item>
           </ListGroup>
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={() => this.approveBooking()}
+            style={{ float: "right", margin: "5px" }}
+          >
+            Cancel Booking
+          </button>
           {/* <ul>
             {customers &&
               customers.map(({ name }) => <li key={name}>Name: {name}</li>)}
