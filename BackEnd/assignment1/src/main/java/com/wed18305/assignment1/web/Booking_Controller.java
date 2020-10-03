@@ -1,6 +1,9 @@
 package com.wed18305.assignment1.web;
 
 import java.security.Principal;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Optional;
@@ -163,7 +166,7 @@ public class Booking_Controller {
     /**
      * Get Employee Unavailable Timeslots Based on Their Bookings 
      * GET ENDPOINT: http://localhost:8080/api/booking/getBookedTimeslots
-     * INPUT JSON {"date":"uuuu-MM-dd, (Format)
+     * INPUT JSON {"date":"uuuu-MM-dd'T'HH:mmXXXXX", (Format)
      *             "employee_id": "5"
      */
     @GetMapping("getBookedTimeslots")
@@ -180,7 +183,7 @@ public class Booking_Controller {
         Entity_User employee = passedInEmployee.get();
         Response_Timeslots tsResponse = null;
         try {
-            Iterable<Entity_Booking> bookings = userService.findBookingsByDate(employee, tr.getDate());
+            Iterable<Entity_Booking> bookings = userService.findBookingsByDate(employee, tr.getDateTime());
             tsResponse = new Response_Timeslots(bookings);
         }
         catch (Exception e) {
@@ -331,10 +334,17 @@ public class Booking_Controller {
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
+        // Is the Booking Going to Run Within 48 Hours?
+        Entity_Booking currentBooking = book.get();
+        // Duration d = Duration.between(OffsetDateTime.now(), currentBooking.getStartDateTime());
+        // if (Hours.hoursBetween(OffsetDateTime.now(), currentBooking.getStartDateTime())) {
+
+        // }
+
         // Attempt to Complete Booking
         Response_Booking bkgResponse = null;
         try {
-            Entity_Booking currentBooking = book.get();
+            
             currentBooking.cancelBooking();
             bookingService.saveOrUpdateBooking(currentBooking);
             bkgResponse = new Response_Booking(currentBooking);

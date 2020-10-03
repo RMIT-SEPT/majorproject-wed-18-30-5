@@ -268,7 +268,7 @@ public class User_Service {
     }
 
     public Iterable<Entity_Booking> findBookingsByDate(Entity_User user,
-                                                        LocalDate date) {
+                                                        OffsetDateTime dateTime) {
         if(user.getSchedules() == null){
             return null;
         }
@@ -280,8 +280,8 @@ public class User_Service {
             if (user.isEmployee() && booking.isApproved() || !user.isEmployee()) {
             
                 // Does Current Booking Occur on the Passed in Date?
-                LocalDate curBookingsDate = booking.getStartDateTime().toLocalDate();
-                if(curBookingsDate.equals(date)) {
+                OffsetDateTime curBookingDateTime = booking.getStartDateTime();
+                if(curBookingDateTime.equals(dateTime)) {
                     userBookings.add(booking);
                 }
             }

@@ -1,6 +1,7 @@
 package com.wed18305.assignment1.Requests;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.validation.constraints.NotBlank;
@@ -11,20 +12,20 @@ import com.wed18305.assignment1.config.DateTimeStatic;
 public class Timeslot_Request{
 
     @NotNull(message = "date is required")
-    protected LocalDate date;
+    protected OffsetDateTime dateTime;
     @NotNull(message = "id is required")
     protected Long userID;
 
     //Constructors
-    public Timeslot_Request(String date,
+    public Timeslot_Request(String dateTime,
                             Long userID) {
-        this.date = LocalDate.parse(date, DateTimeFormatter.ofPattern("uuuu-MM-dd"));
+        this.dateTime = OffsetDateTime.parse(dateTime, DateTimeStatic.getFormatter());
         this.userID = userID;
     }
 
     //Getters
-    public LocalDate getDate() {
-        return this.date;
+    public OffsetDateTime getDateTime() {
+        return this.dateTime;
     }
     public Long getUserID() {
         return this.userID;
