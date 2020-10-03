@@ -166,7 +166,7 @@ public class Booking_Controller {
     /**
      * Get Employee Unavailable Timeslots Based on Their Bookings 
      * GET ENDPOINT: http://localhost:8080/api/booking/getBookedTimeslots
-     * INPUT JSON {"date":"uuuu-MM-dd'T'HH:mmXXXXX", (Format)
+     * INPUT JSON {"date":"uuuu-MM-dd, (Format)
      *             "employee_id": "5"
      */
     @GetMapping("getBookedTimeslots")
@@ -183,7 +183,13 @@ public class Booking_Controller {
         Entity_User employee = passedInEmployee.get();
         Response_Timeslots tsResponse = null;
         try {
-            Iterable<Entity_Booking> bookings = userService.findBookingsByDate(employee, tr.getDateTime());
+            Iterable<Entity_Booking> bookings = userService.findBookingsByDate(employee, tr.getDate());
+
+            // Did we Retrieve Any Approved Bookings?
+            if (!bookings.iterator().hasNext()) { // No.
+                Response response = new Response(false, "WARNING: No approved bookings were found for this employee.", null, null);
+                return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+            }
             tsResponse = new Response_Timeslots(bookings);
         }
         catch (Exception e) {
@@ -336,10 +342,12 @@ public class Booking_Controller {
 
         // Is the Booking Going to Run Within 48 Hours?
         Entity_Booking currentBooking = book.get();
-        // Duration d = Duration.between(OffsetDateTime.now(), currentBooking.getStartDateTime());
-        // if (Hours.hoursBetween(OffsetDateTime.now(), currentBooking.getStartDateTime())) {
+        /*
+        Duration d = Duration.between(OffsetDateTime.now(), currentBooking.getStartDateTime());
+        if (Hours.hoursBetween(OffsetDateTime.now(), currentBooking.getStartDateTime())) {
 
-        // }
+        }
+        */
 
         // Attempt to Complete Booking
         Response_Booking bkgResponse = null;
