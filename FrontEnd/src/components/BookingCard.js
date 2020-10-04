@@ -1,11 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import { Card, ListGroup } from "react-bootstrap";
 
 function BookingCard({ cancelButton, booking, render }) {
   return (
     <Card>
-      {/* <pre>{JSON.stringify(booking, null, "    ")}</pre> */}
-      {/* <Card.Img variant="top" src="holder.js/100px160" /> */}
       <Card.Body>
         <Card.Title>{booking.service} </Card.Title>
         {/* <Card.Title>Customers</Card.Title> */}
@@ -27,23 +25,9 @@ function BookingCard({ cancelButton, booking, render }) {
             {booking.endTime}{" "}
           </ListGroup.Item>
         </ListGroup>
-        {cancelButton !== undefined && cancelButton}
-        {/* <ul>
-            {customers &&
-              customers.map(({ name }) => <li key={name}>Name: {name}</li>)}
-          </ul>
-          <Card.Title>Employees</Card.Title>
-
-          <ul>
-            {employees &&
-              employees.map(({ name }) => <li key={name}>Name: {name} </li>)}
-          </ul> */}
-        {/* <Card.Text>Start-Date : {booking.startDateTime}</Card.Text> */}
-        {/* <Card.Text>End-Date : {booking.endDateTime}</Card.Text> */}
       </Card.Body>
-      {render && render()}
       <Card.Footer>
-        <span className="mr-2">
+        <span>
           {(() => {
             switch (booking.status) {
               case "PENDING":
@@ -57,11 +41,11 @@ function BookingCard({ cancelButton, booking, render }) {
             }
           })()}
         </span>
-
-        <small className="text-muted float-right">
-          Last updated 3 mins ago
-        </small>
+        {cancelButton !== undefined &&
+          booking.status != "CANCELLED" &&
+          cancelButton}
       </Card.Footer>
+      {render && render()}
     </Card>
   );
 }

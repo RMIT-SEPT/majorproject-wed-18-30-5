@@ -20,8 +20,10 @@ class Booking extends Component {
       maxDate: "",
       minDate: "",
       availableTimes: [],
+      excludedTimes: {},
       startHour: 8,
       endHour: 18,
+      timeslots: [],
     };
   }
   calculateDateRange = () => {
@@ -104,24 +106,37 @@ class Booking extends Component {
     const day = formatPad(date.getUTCDate());
     const hour = formatPad(date.getUTCHours());
     const minute = formatPad(date.getUTCMinutes());
+    debugger;
     return `${year}-${month}-${day}T${hour}:${minute}+00:00`;
   };
 
   generateAvailableTimes = (excludedTimeslots) => {
+    const excludedTimes = {};
+    for (let booking of excludedTimeslots) {
+      const slot = booking.startTime;
+      const timeAMPM = slot.split(" ");
+      const time = timeAMPM[0].split(":").map(Number);
+      time[0] = timeAMPM[1] === "pm" ? time[0] + 12 : time[0];
+      const key = time[0] + ":" + time[1];
+      console.log(key);
+      excludedTimes[key] = "bongbing";
+    }
     const formatTime = (time) => `${time.getHours()}:${time.getMinutes()}`;
     const availableTimes = [];
     const service = this.state.schemas[this.state.service];
     for (
-      let time = new Date(1111, 11, 11, this.state.startHour);
+      let time = new Date(0, 0, 0, this.state.startHour, 0, 0, 0);
       time.getHours() < this.state.endHour;
 
     ) {
+      const key = time.getHours() + ":" + time.getMinutes();
+      console.log(key);
       const start = formatTime(time);
       time.setMinutes(time.getMinutes() + service.length);
       const end = formatTime(time);
       availableTimes.push({ start, end });
     }
-    this.setState({ availableTimes });
+    this.setState({ availableTimes, excludedTimes });
   };
 
   setTimeslot = (index) => {
@@ -242,7 +257,13 @@ class Booking extends Component {
                       )}
                       {availableTimes && availableTimes.length > 0 ? (
                         availableTimes.map((time, i) => (
-                          <option key={time.start} value={i}>
+                          <option
+                            key={time.start}
+                            value={i}
+                            disabled={
+                              this.state.excludedTimes[time.start] !== undefined
+                            }
+                          >
                             {time.start} to {time.end}
                           </option>
                         ))
