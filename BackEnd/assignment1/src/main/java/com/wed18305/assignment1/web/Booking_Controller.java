@@ -356,8 +356,8 @@ public class Booking_Controller {
 
         // Is the Booking Going to Run Within 48 Hours?
         Entity_Booking currentBooking = book.get();
-        OffsetDateTime meep = OffsetDateTime.now().plusDays(2);
-        if (meep.compareTo(currentBooking.getStartDateTime()) >= 0) {
+        OffsetDateTime twoDaysFromNow = OffsetDateTime.now().plusDays(2);
+        if (twoDaysFromNow.compareTo(currentBooking.getStartDateTime()) >= 0) {
             Response response = new Response(false, "ERROR!", "Booking will be run within 48 hours. Cannot be cancelled.", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
