@@ -18,6 +18,7 @@ import EditUser from "./components/Users/EditUser";
 import ActiveBooking from "./components/ActiveBookings";
 import DashboardAdmin from "./components/Admin/DashboardAdmin";
 import Schedule from './components/Emp/Schedule';
+import Workingdays from './components/Emp/Workingdays';
   // import Upcoming from './components/Emp/upcoming/Upcoming';
 // import Employee from "./components/Employee";
 // import DashEmployee from "./components/DashEmployee";
@@ -36,6 +37,7 @@ function App() {
         <Route exact path="/activebookings" component={ActiveBooking} />
         <Route exact path="/dashboardadmin" component={DashboardAdmin} />
         <Route exact path="/schedule" component={Schedule} />
+        <Route exact path="/workingdays" component={Workingdays} />
         {/* <Route exact path="/upcoming" component={Upcoming} /> */}
         {/* <Route exact path="/employee" component={Employee} /> */}
         {/* <Route exact path="/dashemployee" component={DashEmployee} /> */}

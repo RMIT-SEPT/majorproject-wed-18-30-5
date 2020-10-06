@@ -4,16 +4,18 @@ import ReactDom from 'react-dom';
 import "./schedule.css";
 import EmployeeNav from "./EmployeeNav";
 
+
 class Schedule extends React.Component {
     constructor() {
         super(...arguments);
-        this.data= [{
-            Id: 2,
-            Subject: 'Melbourne',
-            StartTime: new Date(20202, 10, 11, 10, 0),
-            EndTime: new Date(2020, 10, 11, 12, 0),
-        }];
+        this.state = {
+            pastbookings: [],
+            message: null,
+          };
     }
+    // componentDidMount() {
+    //     this.reloadBookingList();
+    // };
     render() {
         return (
         <>
