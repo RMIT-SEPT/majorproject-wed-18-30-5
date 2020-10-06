@@ -68,8 +68,14 @@ public class Entity_Schedule {
     public OffsetDateTime getStartDateTime() {
         return this.startDateTime;
     }
+    public void setStartDateTime(OffsetDateTime time) {
+        this.startDateTime = time;
+    }
     public OffsetDateTime getEndDateTime() {
         return this.endDateTime;
+    }
+    public void setEndDateTime(OffsetDateTime time) {
+        this.endDateTime = time;
     }
     public Set<Entity_User> getEmployees() {
         return this.employees;
