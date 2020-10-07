@@ -1,8 +1,4 @@
 version: 2
-general:
-  branches:
-    only:
-     - master
      
 jobs:
   # Back End
@@ -72,10 +68,19 @@ workflows:
 
   build-then-test:
     jobs:
-      - BackBuild
+      - BackBuild:
+          filters:
+            branches:
+              only: master
       - BackTest:
           requires:
             - BackBuild
+          filters:
+            branches:
+              only: master
       - FrontTest:
           requires:
             - BackBuild
+          filters:
+            branches:
+              only: master
