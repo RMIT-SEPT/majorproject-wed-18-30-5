@@ -1,6 +1,10 @@
 package com.wed18305.assignment1.web;
 
 import java.security.Principal;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Optional;
@@ -27,6 +31,7 @@ import com.wed18305.assignment1.model.Entity_UserType.UserTypeID;
 import com.wed18305.assignment1.services.User_Service;
 import com.wed18305.assignment1.tools.Container_Users;
 
+import org.assertj.core.data.Offset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.http.HttpStatus;
@@ -52,6 +57,9 @@ public class Booking_Controller {
      * INPUT JSON {"startDateTime":"uuuu-MM-dd'T'HH:mmXXXXX", (Format)
      *             "endDateTime"  :"2020-09-07T17:00+10:00",
      *             "user_ids" : ["1", "2"], // Input an Array of Values
+     * 
+     * Convert Start/EndDateTime to a zero hour UTC format, then save to the server/database.
+     * 
      */
     @PostMapping("createBooking")
     public ResponseEntity<Response> createNewBooking(@Valid @RequestBody Booking_Request br, BindingResult result, Principal p) { 
@@ -61,13 +69,16 @@ public class Booking_Controller {
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
+        // Adjust the time back to UTC zero hour
+        OffsetDateTime sdUTC = br.getStartDate().withOffsetSameInstant(ZoneOffset.UTC);
+        OffsetDateTime edUTC = br.getEndDate().withOffsetSameInstant(ZoneOffset.UTC);
+
         // Create a Booking entity using the Booking_Request
-        Entity_Booking booking = new Entity_Booking(br.getStartDate(),
-                                                    br.getEndDate());
+        Entity_Booking booking = new Entity_Booking(sdUTC, edUTC);
 
         // Is a Customer Logged In?
         Optional<Entity_User> loggedInUser = userService.findByUsername(p.getName());
-        if(!loggedInUser.isPresent() || !loggedInUser.get().getType().getId().equals(UserTypeID.CUSTOMER.id)){
+        if (!loggedInUser.isPresent() || !loggedInUser.get().getType().getId().equals(UserTypeID.CUSTOMER.id)) {
              Response response = new Response(false, "ERROR!", "No customer ids provided", null);
              return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
@@ -165,6 +176,12 @@ public class Booking_Controller {
      * GET ENDPOINT: http://localhost:8080/api/booking/getBookedTimeslots
      * INPUT JSON {"date":"uuuu-MM-dd, (Format)
      *             "employee_id": "5"
+     * 
+     * Springboot may auto-convert Zero End UTC Start/EndDateTime to a local format.
+     * We don't want that, as we want the FrontEnd to perform these calculations based on the timezone they're
+     * run on.
+     * Ensure that the FrontEnd ONLY receives the Zero UTC format. Possibly with a LocalDateTime instead of Offset. 
+     * 
      */
     @GetMapping("getBookedTimeslots")
     public ResponseEntity<Response> getBookedTimeSlots(@Valid @RequestBody Timeslot_Request tr, BindingResult result) {
@@ -181,6 +198,12 @@ public class Booking_Controller {
         Response_Timeslots tsResponse = null;
         try {
             Iterable<Entity_Booking> bookings = userService.findBookingsByDate(employee, tr.getDate());
+
+            // Did we Retrieve Any Approved Bookings?
+            if (!bookings.iterator().hasNext()) { // No.
+                Response response = new Response(false, "WARNING: No approved bookings were found for this employee.", null, null);
+                return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+            }
             tsResponse = new Response_Timeslots(bookings);
         }
         catch (Exception e) {
@@ -331,10 +354,18 @@ public class Booking_Controller {
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
+        // Is the Booking Going to Run Within 48 Hours?
+        Entity_Booking currentBooking = book.get();
+        OffsetDateTime twoDaysFromNow = OffsetDateTime.now().plusDays(2);
+        if (twoDaysFromNow.compareTo(currentBooking.getStartDateTime()) >= 0) {
+            Response response = new Response(false, "ERROR!", "Booking will be run within 48 hours. Cannot be cancelled.", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
         // Attempt to Complete Booking
         Response_Booking bkgResponse = null;
         try {
-            Entity_Booking currentBooking = book.get();
+            
             currentBooking.cancelBooking();
             bookingService.saveOrUpdateBooking(currentBooking);
             bkgResponse = new Response_Booking(currentBooking);

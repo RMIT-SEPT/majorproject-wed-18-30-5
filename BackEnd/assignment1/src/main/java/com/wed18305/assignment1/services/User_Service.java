@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.wed18305.assignment1.model.Entity_Service;
+import com.fasterxml.jackson.datatype.jsr310.ser.OffsetDateTimeSerializer;
 import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.model.Entity_Schedule;
 import com.wed18305.assignment1.model.Entity_User;
@@ -99,7 +100,9 @@ public class User_Service {
         Set<Entity_Booking> userBookings = new HashSet<Entity_Booking>();
         for (Entity_Booking booking :user.getBookings()) {
             if(booking.getStatus() == Status.getApproved()){
-                userBookings.add(booking);
+
+                // Is Booking to be Run in Less than 7 Days?
+                if (bookingWillRunInSevenDays(booking)) { userBookings.add(booking); }
             }
         }
         return userBookings;
@@ -156,14 +159,21 @@ public class User_Service {
             // Make Sure Only Bookings Matching Input Criteria Are Returned
             if(approvalCheck(booking, approvalStatus)){
 
-                // Make Sure Booking Hasn't Already Finished
-                if(OffsetDateTime.now().compareTo(booking.getStartDateTime()) < 0){
-                    userBookings.add(booking);
-                }
+                // Is Booking to be Run in Less than 7 Days?
+                if (bookingWillRunInSevenDays(booking)) { userBookings.add(booking); }
             }
         }
         return userBookings;
-    } 
+    }
+    
+    private boolean bookingWillRunInSevenDays(Entity_Booking booking) {
+
+        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime sevenDaysFromNow = now.plusWeeks(1);
+        OffsetDateTime start = booking.getStartDateTime();
+        //  now -> start                  start -> sevenDays
+        return start.compareTo(now) >= 0 && start.compareTo(sevenDaysFromNow) <= 0;
+    }
 
     private Iterable<Entity_Booking> returnCompleted(Long id, Long approvalStatus) {
         Entity_User user = userRepository.findById(id).get();
@@ -179,8 +189,12 @@ public class User_Service {
             // Make Sure Only Bookings Matching Input Criteria Are Returned
             if(approvalCheck(booking, approvalStatus)){
 
-                // Make Sure Booking Has Already Finished/Occurred
-                if(OffsetDateTime.now().compareTo(booking.getEndDateTime()) > 0){
+                // Did Booking Finish Less Than 7 Days Ago?
+                OffsetDateTime now = OffsetDateTime.now();
+                OffsetDateTime sevenDaysAgo = now.minusWeeks(1);
+                OffsetDateTime end = booking.getEndDateTime();
+                //  sevenDaysAgo -> end                 end -> now
+                if (end.compareTo(sevenDaysAgo) >= 0 && end.compareTo(now) <= 0) {
                     userBookings.add(booking);
                 }
             }
