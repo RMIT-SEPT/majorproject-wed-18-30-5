@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ApiService from "../api/ApiService";
 import { withRouter } from "react-router-dom";
+import "../App.css";
 
 const formatPad = (num) => String(num).padStart("2", "0");
 

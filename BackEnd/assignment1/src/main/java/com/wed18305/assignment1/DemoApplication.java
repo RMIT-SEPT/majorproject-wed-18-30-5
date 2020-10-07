@@ -9,6 +9,9 @@ import com.wed18305.assignment1.repositories.UserType_Repository;
 import com.wed18305.assignment1.repositories.User_Repository;
 
 import java.time.OffsetDateTime;
+import java.util.TimeZone;
+
+import javax.annotation.PostConstruct;
 
 import com.wed18305.assignment1.services.User_Service;
 
@@ -28,6 +31,12 @@ public class DemoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class);
 	}
+
+	@PostConstruct
+    public void init(){
+      // Setting Spring Boot SetTimeZone
+      TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
 
 	//Comment out CommandLineRunner when not using it for testing OR when using mySQL
 	@Bean
@@ -78,11 +87,11 @@ public class DemoApplication {
 			UserRepository.save(delete3);
 
 			// Save Services
-			Entity_Service falafel = new Entity_Service("Freddie's Falafels");
-			Entity_Service hotDogs = new Entity_Service("Joe's HotDogs");
-			Entity_Service service3 = new Entity_Service("Service3");
-			Entity_Service service4 = new Entity_Service("Service4");
-			Entity_Service service5 = new Entity_Service("Service5");
+			Entity_Service falafel = new Entity_Service("Haircut");
+			Entity_Service hotDogs = new Entity_Service("Painter");
+			Entity_Service service3 = new Entity_Service("Web Designer");
+			Entity_Service service4 = new Entity_Service("Photographer");
+			Entity_Service service5 = new Entity_Service("Gardner");
 			ServiceRepository.save(falafel);
 			ServiceRepository.save(hotDogs);
 			ServiceRepository.save(service3);
