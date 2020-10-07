@@ -190,7 +190,7 @@ public class User_Service {
         OffsetDateTime sevenDaysAgo = now.minusWeeks(1);
         OffsetDateTime end = booking.getEndDateTime();
         //  sevenDaysAgo -> end                 end -> now
-        return end.compareTo(sevenDaysAgo) >= 0 && end.compareTo(now) <= 0);
+        return end.compareTo(sevenDaysAgo) >= 0 && end.compareTo(now) <= 0;
     }
 
     private Iterable<Entity_Booking> returnCompleted(Long id, Long approvalStatus) {
