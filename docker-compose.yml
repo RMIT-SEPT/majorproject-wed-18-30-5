@@ -1,20 +1,47 @@
 version: '3'
 services:
+  back-end-db-container:
+    image: 386724395914.dkr.ecr.us-east-1.amazonaws.com/mysql:latest
+    build: 
+      context: ./BackEnd/assignment1/src/main/resources/sql/
+      dockerfile: Dockerfile
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+    ports:
+      - 3306:3306
+  back-end-adminer-container:
+    image: 386724395914.dkr.ecr.us-east-1.amazonaws.com/adminer:latest
+    build: 
+      context: ./BackEnd/assignment1/src/main/resources/sql/adminer/
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 3001:8080
   back-end-app-container:
     image: 386724395914.dkr.ecr.us-east-1.amazonaws.com/backend-app:latest
     build:
       context: ./BackEnd/assignment1/
       dockerfile: Dockerfile
+    links:
+      - back-end-db-container
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://back-end-db-container/WED18305Test?useSSL=false&allowPublicKeyRetrieval=true
     volumes:
       - /data/backend-app
     ports:
       - "8080:8080"
+    depends_on:
+      - back-end-db-container
   front-end-app-container:
     image: 386724395914.dkr.ecr.us-east-1.amazonaws.com/frontend-app:latest
     stdin_open: true
     build:
       context: ./FrontEnd/
       dockerfile: Dockerfile
+    links:
+      - back-end-app-container
     volumes:
       - /data/frontend-app
     ports:

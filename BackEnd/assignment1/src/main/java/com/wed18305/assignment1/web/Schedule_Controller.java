@@ -9,8 +9,10 @@ import javax.validation.Valid;
 import com.wed18305.assignment1.model.Entity_User;
 import com.wed18305.assignment1.Responses.Response;
 import com.wed18305.assignment1.Requests.Delete_Request;
+import com.wed18305.assignment1.Requests.Get_Request;
 import com.wed18305.assignment1.Requests.Schedule_Request;
 import com.wed18305.assignment1.model.Entity_Schedule;
+import com.wed18305.assignment1.services.Booking_Service;
 import com.wed18305.assignment1.services.Schedule_Service;
 import com.wed18305.assignment1.services.User_Service;
 
@@ -34,7 +36,9 @@ public class Schedule_Controller {
     private Schedule_Service schService;
     @Autowired
     private User_Service userService;
-
+    // @Autowired
+    // private Booking_Service bkngService;
+    //TODO schedules will need to handle and array of start and end times
     /**
      * Create new schedule
      * <p>
@@ -131,6 +135,8 @@ public class Schedule_Controller {
             Response response = new Response(false, "ERROR!", "No schedules found in the database", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
+        //TODO check if the schedule has booking.
+
         //Now delete the actual schedules
         try {      
             schService.deleteAll(schedules_db);
@@ -144,16 +150,65 @@ public class Schedule_Controller {
     }
 
     /**
-     * TODO need a new request that has the users name, this will be used for returning that persons schedule
-     * TODO this needs to return all the schedules for the next month(from today)
+     * Get user schedule(s)
+     * <p>
+     * GET ENDPOINT: http://localhost:8080/api/schedule/getSchedule
+     * <p>
+     * INPUT JSON {"id":"1"}  -id is the userID
      * @param dr
      * @param result
      * @return
      */
     @GetMapping("getSchedule")
-    public ResponseEntity<Response> getSchedule(@Valid @RequestBody Delete_Request dr, BindingResult result){
+    public ResponseEntity<Response> getSchedule(@Valid @RequestBody Get_Request gr, BindingResult result){
+        // Binding validation checks
+        if (result.hasErrors()) {
+            Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+        //Check that the employee id provided are employees
+        Long id[] = {gr.getId()};  
+        ArrayList<Entity_User> employees = (ArrayList<Entity_User>) userService.findEmployeesById(id);
+        if (employees.size() == 0) {
+            Response response = new Response(false, "ERROR!", "No employees passed in", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+        //Get a users schedule from now -> month from now
+        OffsetDateTime ODT_Now = OffsetDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime ODT_Month = ODT_Now.plusMonths(1);
+        ArrayList<Entity_Schedule> schedules = new ArrayList<Entity_Schedule>();
+        for (Entity_User employee : employees) {
+            for(Entity_Schedule schedule: employee.getSchedules()){
+                if(schedule.getStartDateTime().isAfter(ODT_Now)){
+                    if(schedule.getStartDateTime().isBefore(ODT_Month)){
+                        //Java OffsetDateTime automatically converts the time to machine local... revert that
+                        schedule.setStartDateTime(schedule.getStartDateTime().withOffsetSameInstant(ZoneOffset.UTC));
+                        schedule.setEndDateTime(schedule.getEndDateTime().withOffsetSameInstant(ZoneOffset.UTC));
+                        schedules.add(schedule);
+                    }
+                }
+            }
+        }
+        //Are there any schedules
+        if(schedules.isEmpty()){
+            //ERROR
+            Response response = new Response(false, "No schedule(s) found!", null, null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+        //Success
+        Response response = new Response(true, "schedule(s) found!", null, schedules);
+        return new ResponseEntity<Response>(response, HttpStatus.OK);
+    }
+    /**
+     * 
+     * @param dr
+     * @param result
+     * @return
+     */
+    @GetMapping("updateSchedule")
+    public ResponseEntity<Response> updateSchedule(@Valid @RequestBody Delete_Request dr, BindingResult result){
         //TODO implement
-        //Success TODO only tempt
+        //Success TODO only temp
         Response response = new Response(true, "schedule(s) found!", null, null);
         return new ResponseEntity<Response>(response, HttpStatus.OK);
     }

@@ -9,6 +9,9 @@ import com.wed18305.assignment1.repositories.UserType_Repository;
 import com.wed18305.assignment1.repositories.User_Repository;
 
 import java.time.OffsetDateTime;
+import java.util.TimeZone;
+
+import javax.annotation.PostConstruct;
 
 import com.wed18305.assignment1.services.User_Service;
 
@@ -29,7 +32,13 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class);
 	}
 
-	// Comment out CommandLineRunner when not using it for testing OR when using mySQL
+	@PostConstruct
+    public void init(){
+      // Setting Spring Boot SetTimeZone
+      TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
+
+	//Comment out CommandLineRunner when not using it for testing OR when using mySQL
 	@Bean
 	public CommandLineRunner demo(User_Repository UserRepository, 
 								  UserType_Repository TypeRepository, 
@@ -49,16 +58,19 @@ public class DemoApplication {
 			TypeRepository.save(customer);//3
 			
 			// Create admn/employee/customer(s)
-			Entity_User jack = new Entity_User("Jack", "Jacky", passwordEncoder.encode("1234"), "0000000000", customer);
-			Entity_User chloe = new Entity_User("Chloe", "O'Brian", passwordEncoder.encode("1234"), "0000000000", customer);
-			Entity_User kim = new Entity_User("Kim", "Bauer", passwordEncoder.encode("1234"), "0000000000", customer);
-			Entity_User david = new Entity_User("David", "Palmer", passwordEncoder.encode("1234"), "0000000000", admin);
-			Entity_User michelle = new Entity_User("Michelle", "Dessler", passwordEncoder.encode("1234"), "0000000000", employee);
-			Entity_User leslie = new Entity_User("Leslie", "Messler", passwordEncoder.encode("1234"), "0000000000", employee);		
+			Entity_User jack = new Entity_User("Jack", "Jacky", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", customer);
+			Entity_User chloe = new Entity_User("Chloe", "O'Brian", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", customer);
+			Entity_User kim = new Entity_User("Kim", "Bauer", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", customer);
+			Entity_User david = new Entity_User("David", "Palmer", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", admin);
+			Entity_User michelle = new Entity_User("Michelle", "Dessler", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", employee);
+			Entity_User leslie = new Entity_User("Leslie", "Messler", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", employee);
+			Entity_User karin = new Entity_User("Karin", "Kalamari", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", employee);
+			Entity_User lammy = new Entity_User("Lammy", "Lam", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", employee);
+			Entity_User rammy = new Entity_User("Rammy", "Ram", passwordEncoder.encode("1234"), "0000000000", "42 somewhere street", employee);		
 			//Delete users - JUST used for JUnit test so that I can delete them
-			Entity_User delete1 = new Entity_User("Joe","delete1",passwordEncoder.encode("1234"),"0000000000", customer);	
-			Entity_User delete2 = new Entity_User("Joe","delete2",passwordEncoder.encode("1234"),"0000000000", employee);
-			Entity_User delete3 = new Entity_User("Joe","delete3",passwordEncoder.encode("1234"),"0000000000", admin);		
+			Entity_User delete1 = new Entity_User("Joe","delete1",passwordEncoder.encode("1234"),"0000000000","42 somewhere street", customer);	
+			Entity_User delete2 = new Entity_User("Joe","delete2",passwordEncoder.encode("1234"),"0000000000","42 somewhere street", employee);
+			Entity_User delete3 = new Entity_User("Joe","delete3",passwordEncoder.encode("1234"),"0000000000","42 somewhere street", admin);		
 
 			//Save the users
 			UserRepository.save(jack);
@@ -67,16 +79,19 @@ public class DemoApplication {
 			UserRepository.save(david);
 			UserRepository.save(michelle);
 			UserRepository.save(leslie);
+			UserRepository.save(karin);
+			UserRepository.save(lammy);
+			UserRepository.save(rammy);
 			UserRepository.save(delete1);
 			UserRepository.save(delete2);
 			UserRepository.save(delete3);
 
 			// Save Services
-			Entity_Service falafel = new Entity_Service("Freddie's Falafels");
-			Entity_Service hotDogs = new Entity_Service("Joe's HotDogs");
-			Entity_Service service3 = new Entity_Service("Service3");
-			Entity_Service service4 = new Entity_Service("Service4");
-			Entity_Service service5 = new Entity_Service("Service5");
+			Entity_Service falafel = new Entity_Service("Haircut");
+			Entity_Service hotDogs = new Entity_Service("Painter");
+			Entity_Service service3 = new Entity_Service("Web Designer");
+			Entity_Service service4 = new Entity_Service("Photographer");
+			Entity_Service service5 = new Entity_Service("Gardner");
 			ServiceRepository.save(falafel);
 			ServiceRepository.save(hotDogs);
 			ServiceRepository.save(service3);
@@ -84,16 +99,12 @@ public class DemoApplication {
 			ServiceRepository.save(service5);
 
 			//Add services to employees, david, michelle, leslie
-			david.getServices().add(falafel);
 			david.getServices().add(hotDogs);
 			michelle.getServices().add(falafel);
-			michelle.getServices().add(hotDogs);
-			michelle.getServices().add(service5);
-			leslie.getServices().add(falafel);
-			leslie.getServices().add(hotDogs);
 			leslie.getServices().add(service3);
-			leslie.getServices().add(service4);
-			leslie.getServices().add(service5);
+			karin.getServices().add(hotDogs);
+			lammy.getServices().add(falafel);
+			rammy.getServices().add(falafel);
 			delete1.getServices().add(service5);
 			delete2.getServices().add(service5);
 			delete3.getServices().add(service5);
@@ -120,20 +131,26 @@ public class DemoApplication {
 			Entity_Schedule scheduleMichelleLong = new Entity_Schedule(mlong_ts, mlong_te);
 			Entity_Schedule scheduleLeslie = new Entity_Schedule(l_ts, l_te);
 			Entity_Schedule scheduleLeslieLong = new Entity_Schedule(llong_ts, llong_te);
+			Entity_Schedule scheduleKarin = new Entity_Schedule(m_ts, m_te);
+			Entity_Schedule scheduleLammy = new Entity_Schedule(m_ts, m_te);
+			Entity_Schedule scheduleRammy = new Entity_Schedule(m_ts, m_te);
 			ScheduleRepository.save(scheduleDavid);
 			ScheduleRepository.save(scheduleDavidLong);
 			ScheduleRepository.save(scheduleMichelle);
 			ScheduleRepository.save(scheduleMichelleLong);
 			ScheduleRepository.save(scheduleLeslie);
 			ScheduleRepository.save(scheduleLeslieLong);
+			ScheduleRepository.save(scheduleKarin);
+			ScheduleRepository.save(scheduleLammy);
+			ScheduleRepository.save(scheduleRammy);
 
 			//Add Schedules to employees
 			david.getSchedules().add(scheduleDavid);
-			david.getSchedules().add(scheduleDavidLong);
-			michelle.getSchedules().add(scheduleMichelle);
 			michelle.getSchedules().add(scheduleMichelleLong);
 			leslie.getSchedules().add(scheduleLeslie);
-			leslie.getSchedules().add(scheduleLeslieLong);
+			karin.getSchedules().add(scheduleKarin);
+			lammy.getSchedules().add(scheduleLammy);
+			rammy.getSchedules().add(scheduleRammy);
 			delete1.getSchedules().add(scheduleLeslie);
 			delete2.getSchedules().add(scheduleLeslie);
 			delete3.getSchedules().add(scheduleLeslie);
@@ -148,13 +165,9 @@ public class DemoApplication {
 
 			//Add bookings to users
 			jack.getBookings().add(Booking1);
-			//chloe.getBookings().add(Booking);
 			michelle.getBookings().add(Booking1);
 			jack.getBookings().add(Booking2);
 			michelle.getBookings().add(Booking2);
-			//delete1.getBookings().add(completedBooking);
-			//delete2.getBookings().add(completedBooking);
-			//delete3.getBookings().add(completedBooking);
 
 			//Update the users
 			UserRepository.save(jack);
@@ -163,6 +176,9 @@ public class DemoApplication {
 			UserRepository.save(david);
 			UserRepository.save(michelle);
 			UserRepository.save(leslie);
+			UserRepository.save(karin);
+			UserRepository.save(lammy);
+			UserRepository.save(rammy);
 			UserRepository.save(delete1);
 			UserRepository.save(delete2);
 			UserRepository.save(delete3);

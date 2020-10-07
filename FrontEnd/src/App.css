@@ -28,6 +28,55 @@
   color: #61dafb;
 }
 
+.row-fix {
+  margin-left: 10% !important;
+}
+body {
+  background-color: #25274d;
+}
+.contact {
+  padding: 4%;
+  height: 400px;
+}
+.col-md-3 {
+  background: rgb(212, 12, 96);
+  padding: 4%;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+.contact-info {
+  margin-top: 10%;
+}
+.contact-info img {
+  margin-bottom: 15%;
+}
+.contact-info h2 {
+  margin-bottom: 10%;
+  color: white;
+}
+
+.contact-info h4 {
+  color: white;
+}
+.col-md-9 {
+  background: #fff;
+  padding: 3%;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+.contact-form label {
+  font-weight: 600;
+}
+.contact-form button {
+  background: rgb(212, 12, 96);
+  color: #fff;
+  font-weight: 600;
+  width: 25%;
+}
+.contact-form button:focus {
+  box-shadow: none;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -54,6 +103,10 @@
   margin-right: 5%;
 }
 
+.booking-wrapper {
+  margin-top: 15%;
+}
+
 .pending-booking-wrapper {
   margin-top: 10%;
   margin-left: 5%;
@@ -65,12 +118,159 @@
   font-weight: 700;
 }
 
+.btn-icon {
+  margin-left: 5px;
+}
+
 .booking-form {
   margin: 10px;
 }
 
 .admin-buttons {
   margin-left: 10px;
+}
+
+.paddingTB60 {
+  padding: 60px 0px 60px 0px;
+}
+.gray-bg {
+  background: #f1f1f1 !important;
+  height: 100vh;
+}
+.about-title {
+}
+.about-title h1 {
+  color: #535353;
+  font-size: 45px;
+  font-weight: 600;
+}
+.about-title span {
+  color: #af0808;
+  font-size: 45px;
+  font-weight: 700;
+}
+.about-title h3 {
+  color: #535353;
+  font-size: 23px;
+  margin-bottom: 24px;
+}
+.about-title p {
+  color: #7a7a7a;
+  line-height: 1.8;
+  margin: 0 0 15px;
+}
+.about-paddingB {
+  padding-bottom: 12px;
+}
+.about-img {
+  padding-left: 57px;
+}
+
+/* Social Icons */
+.about-icons {
+  margin: 48px 0px 48px 0px;
+}
+.about-icons i {
+  margin-right: 10px;
+  padding: 0px;
+  font-size: 35px;
+  color: #323232;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}
+.about-icons li {
+  margin: 0px;
+  padding: 0;
+  display: inline-block;
+}
+#social-fb:hover {
+  color: #3b5998;
+  transition: all 0.001s;
+}
+#social-tw:hover {
+  color: #4099ff;
+  transition: all 0.001s;
+}
+#social-gp:hover {
+  color: #d34836;
+  transition: all 0.001s;
+}
+#social-em:hover {
+  color: #f39c12;
+  transition: all 0.001s;
+}
+
+.send-button {
+  background: #54c7c3;
+  width: 100%;
+  font-weight: 600;
+  color: #fff;
+  padding: 8px 25px;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.g-button {
+  color: #fff !important;
+  border: 1px solid rgb(212, 12, 96);
+  background: rgb(212, 12, 96) !important;
+  width: 100%;
+  font-weight: 600;
+  color: #fff;
+  padding: 8px 25px;
+}
+.my-input {
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  cursor: text;
+  padding: 8px 10px;
+  transition: border 0.1s linear;
+}
+.header-title {
+  margin: 5rem 0;
+}
+h1 {
+  font-size: 31px;
+  line-height: 40px;
+  font-weight: 600;
+  color: #4c5357;
+}
+h2 {
+  color: #5e8396;
+  font-size: 21px;
+  line-height: 32px;
+  font-weight: 400;
+}
+.login-or {
+  position: relative;
+  color: #aaa;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.span-or {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  margin-left: -25px;
+  background-color: #fff;
+  width: 50px;
+  text-align: center;
+}
+.hr-or {
+  height: 1px;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 26px;
+  }
+  h2 {
+    font-size: 20px;
+  }
 }
 
 @media (max-width: 414px) {
