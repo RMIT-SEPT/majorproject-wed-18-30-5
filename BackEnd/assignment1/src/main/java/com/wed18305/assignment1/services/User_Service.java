@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.wed18305.assignment1.model.Entity_Service;
-import com.fasterxml.jackson.datatype.jsr310.ser.OffsetDateTimeSerializer;
 import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.model.Entity_Schedule;
 import com.wed18305.assignment1.model.Entity_User;
@@ -190,7 +189,7 @@ public class User_Service {
         OffsetDateTime sevenDaysAgo = now.minusWeeks(1);
         OffsetDateTime end = booking.getEndDateTime();
         //  sevenDaysAgo -> end                 end -> now
-        return end.compareTo(sevenDaysAgo) >= 0 && end.compareTo(now) <= 0);
+        return end.compareTo(sevenDaysAgo) >= 0 && end.compareTo(now) <= 0;
     }
 
     private Iterable<Entity_Booking> returnCompleted(Long id, Long approvalStatus) {
