@@ -38,9 +38,12 @@ body {
   padding: 4%;
   height: 400px;
 }
-.col-md-3 {
+
+.col-edit {
   background: rgb(212, 12, 96);
   padding: 4%;
+}
+.col-md-3 {
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
 }

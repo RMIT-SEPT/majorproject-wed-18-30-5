@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import AdminNav from "./AdminNav";
-import { Table, Card, CardDeck } from "react-bootstrap";
+import { Table, Card, CardDeck, CardColumns } from "react-bootstrap";
 import ApiService from "../../api/ApiService";
 import BookingCard from "../BookingCard";
 
@@ -42,7 +42,7 @@ class DashboardAdmin extends Component {
           <AdminNav />
         </header>
         <div className="active-booking-wrapper">
-          <CardDeck className="booking-card">
+          <CardColumns>
             {this.state.bookings.map((booking) => (
               <BookingCard
                 key={booking.bookingID}
@@ -69,7 +69,7 @@ class DashboardAdmin extends Component {
                 )}
               />
             ))}
-          </CardDeck>
+          </CardColumns>
         </div>
       </>
     );

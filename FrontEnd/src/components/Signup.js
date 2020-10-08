@@ -59,7 +59,7 @@ class Signup extends Component {
         <div className="container">
           <div className="col-md-6 mx-auto text-center">
             <div className="header-title">
-              <h1 className="wv-heading--title">Check out — it’s free!</h1>
+              <h1 className="wv-heading--title">Sign Up — it’s free!</h1>
             </div>
           </div>
           <div className="row">

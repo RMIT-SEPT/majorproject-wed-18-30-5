@@ -7,7 +7,7 @@ const ContactForm = () => {
   return (
     <div class="container contact ml-auto mr-auto">
       <div class="row row-fix">
-        <div class="col-md-3">
+        <div class="col-md-3 col-edit">
           <div class="contact-info">
             <img
               src="https://image.ibb.co/kUASdV/contact-image.png"
