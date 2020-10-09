@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Navbar, NavDropdown, Nav } from "react-bootstrap";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Schedule from "./Schedule"
+import EmpBookings from "./Schedule"
 
 
 class EmployeeNav extends Component {
@@ -13,7 +13,7 @@ class EmployeeNav extends Component {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-            <Nav.Link href="/Schedule"> My bookings</Nav.Link>
+            <Nav.Link href="/EmpBookings"> My bookings</Nav.Link>
             </Nav>
             <Nav>
               <NavDropdown title="Profile" id="collasible-nav-dropdown">

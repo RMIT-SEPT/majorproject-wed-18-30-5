@@ -116,6 +116,14 @@ class ApiService {
       .then(handleLoginRedirect(component));
   }
 
+  fetchEmployeeBookings(component) {
+    return axios
+      .get("http://localhost:8080/api/booking/getUpcomingBookings", {
+        withCredentials: true,
+      })
+      .then(handleLoginRedirect(component));
+  }
+
   approveBookingStatus(component, id) {
     return axios
       .patch("http://localhost:8080/api/booking/approveBooking", id, {
