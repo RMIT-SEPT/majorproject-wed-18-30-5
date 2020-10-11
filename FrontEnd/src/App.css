@@ -268,8 +268,12 @@ h2 {
   margin-bottom: 0px !important;
 }
 
-.calender-emp {
-  margin: 5%;
+.calender-cmp {
+  margin-left: 10%;
+}
+
+.time-cmp {
+  margin-top: 10%;
 }
 @media screen and (max-width: 480px) {
   h1 {
