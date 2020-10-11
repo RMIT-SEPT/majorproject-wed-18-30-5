@@ -11,6 +11,8 @@ public class User_Request{
     protected String username;
     @NotBlank(message = "password is required")
     protected String password;
+    @NotNull(message = "address is required")
+    protected String address;
     @NotNull(message = "contact number is required")
     protected Integer contactNumber;
 
@@ -20,10 +22,12 @@ public class User_Request{
     public User_Request(String name,
                             String username,
                             String password,
+                            String address,
                             Integer contactNumber) {
         this.name = name;
         this.username = username;
         this.password = password;
+        this.address = address;
         this.contactNumber = contactNumber;
     }
 
@@ -36,6 +40,9 @@ public class User_Request{
     }
     public String getPassword() {
         return this.password;
+    }
+    public String getAddress() {
+        return this.address;
     }
     public Integer getContactNumber() {
         return this.contactNumber;

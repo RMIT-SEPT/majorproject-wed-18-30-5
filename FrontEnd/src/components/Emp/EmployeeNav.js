@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Navbar, NavDropdown, Nav } from "react-bootstrap";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import EmpBookings from "./Schedule"
+import EmpBookings from "./EmpBookings";
+import Schedule from "./Schedule";
 
 
 class EmployeeNav extends Component {
@@ -14,6 +15,7 @@ class EmployeeNav extends Component {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
             <Nav.Link href="/EmpBookings"> My bookings</Nav.Link>
+            <Nav.Link href="/Schedule"> My schedule</Nav.Link>
             </Nav>
             <Nav>
               <NavDropdown title="Profile" id="collasible-nav-dropdown">

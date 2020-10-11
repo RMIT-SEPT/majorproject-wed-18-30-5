@@ -66,6 +66,7 @@ public class User_Controller {
                                             ur.getUsername(),
                                             passwordEncoder.encode(ur.getPassword()),
                                             ur.getContactNumber().toString(),
+                                            ur.getAddress(),
                                             userTypeService.findById((long)3).get());
             //Save user
             user1 = userService.saveOrUpdateUser(user);
@@ -114,6 +115,7 @@ public class User_Controller {
                                             ur.getUsername(),
                                             passwordEncoder.encode(ur.getPassword()),
                                             ur.getContactNumber().toString(),
+                                            ur.getAddress(),
                                             userTypeService.findById((long)2).get());
             //Save user
             user1 = userService.saveOrUpdateUser(user);
@@ -162,6 +164,7 @@ public class User_Controller {
                                                 ur.getUsername(),
                                                 passwordEncoder.encode(ur.getPassword()),
                                                 ur.getContactNumber().toString(),
+                                                ur.getAddress(),
                                                 userTypeService.findById((long)1).get());
             //Save user
             user1 = userService.saveOrUpdateUser(user);
@@ -260,7 +263,6 @@ public class User_Controller {
         // }
     }
 
-
     /**
      * Update user details
      * <p>
@@ -281,6 +283,55 @@ public class User_Controller {
 
         // Make sure the logged in user exists
         Optional<Entity_User> user = userService.findByUsername(p.getName());
+        if(user.isPresent() == false){
+            //shouldn't be able to get here but just incase
+            Response response = new Response(false, "ERROR!", "No user to update!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        //Update the user
+        Entity_User user1 = null;
+        Entity_User currentUser = user.get();
+        currentUser.setName(udr.getName());
+        currentUser.setUsername(udr.getUsername());
+        currentUser.setContactNumber(udr.getContactNumber().toString());
+        try {
+            user1 = userService.saveOrUpdateUser(currentUser);
+        } catch (Exception e) {
+           Response response = new Response(false, "ERROR!", "Username already in use", null);
+           return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Check employees result
+        if (user1 == null) {
+            Response response = new Response(false, "ERROR!", "Update failed!", null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        } else {
+            Response response = new Response(true, "User details updated!", null, user1);
+            return new ResponseEntity<Response>(response, HttpStatus.OK);
+        }
+    }
+
+    /**
+     * Update employee details - admin only endpoint
+     * <p>
+     * POST ENDPOINT: http://localhost:8080/api/user/updateEmployee
+     * <p>
+     * @param ur
+     * @param result
+     * @return Response object, if successfull the updated user is returned in the body
+     * otherwise the error object will contain either a single string or array of field errors 
+     */
+    @PostMapping("updateEmployee")
+    public ResponseEntity<Response> updateEmployeeDetails(@Valid @RequestBody UpdateDetails_Request udr, BindingResult result) {
+        // Binding validation checks
+        if (result.hasErrors()) {
+            Response response = new Response(false, "ERROR!", result.getFieldErrors(), null);
+            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        // Make sure the logged in user exists
+        Optional<Entity_User> user = userService.findById(udr.getEmployeeID());
         if(user.isPresent() == false){
             //shouldn't be able to get here but just incase
             Response response = new Response(false, "ERROR!", "No user to update!", null);
@@ -342,7 +393,6 @@ public class User_Controller {
            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
-        //TODO response should be a redirect to logut function.
         Response response = new Response(true, "User has been deleted!", null, null);
         return new ResponseEntity<Response>(response, HttpStatus.OK);
     }

@@ -50,8 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
-				.usersByUsernameQuery("SELECT username, password, 'true' AS enabled FROM ENTITY_USER WHERE username=?")
-				.authoritiesByUsernameQuery("SELECT username, type_id AS authority FROM ENTITY_USER WHERE username=?");
+				.usersByUsernameQuery("SELECT username, password, 'true' AS enabled FROM entity_user WHERE username=?")
+				.authoritiesByUsernameQuery("SELECT username, type_id AS authority FROM entity_user WHERE username=?");
 	}
 
 	@Bean
@@ -74,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		authenticationFilter.setAuthenticationFailureHandler(new AuthenticationFailure());
 		authenticationFilter.setAuthenticationManager(authenticationManagerBean());
         return authenticationFilter;
-    }
+	}
 
 	/**
 	 * When using mySQL comment this out
@@ -99,21 +99,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/user/deleteCustomer").hasAuthority(UserTypeID.getCustomer())
 			.antMatchers("/api/user/getEmployees").hasAnyAuthority(UserTypeID.getAdmin(),UserTypeID.getCustomer())
 			.antMatchers("/api/user/getEmployeesByService").hasAuthority(UserTypeID.getCustomer())
-			.antMatchers("/api/booking/createBooking").hasAnyAuthority(UserTypeID.getAdmin(), UserTypeID.getCustomer())
+			.antMatchers("/api/user/updateEmployee").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/createBooking").hasAuthority(UserTypeID.getCustomer())
 			.antMatchers("/api/booking/approveBooking").hasAuthority(UserTypeID.getAdmin())
-			.antMatchers("/api/booking/getAdminBookings").hasAuthority(UserTypeID.getAdmin())
-			.antMatchers("/api/booking/getUpcomingAdminBookings").hasAuthority(UserTypeID.getAdmin())
-			.antMatchers("/api/booking/getCompletedAdminBookings").hasAuthority(UserTypeID.getAdmin())
-			.antMatchers("/api/booking/getEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
-			.antMatchers("/api/booking/getUpcomingEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
-			.antMatchers("/api/booking/getCompletedEmployeeBookings").hasAuthority(UserTypeID.getEmployee())
-			.antMatchers("/api/booking/getCustomerBookings").hasAuthority(UserTypeID.getCustomer())
-			.antMatchers("/api/booking/getUpcomingCustomerBookings").hasAuthority(UserTypeID.getCustomer())
-			.antMatchers("/api/booking/getCompletedCustomerBookings").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers("/api/booking/denyBooking").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/completeBooking").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getAllBookings").hasAuthority(UserTypeID.getAdmin())
+			.antMatchers("/api/booking/getUserBookings").hasAnyAuthority(UserTypeID.getEmployee(), UserTypeID.getCustomer())
+			.antMatchers("/api/booking/getUpcomingBookings").permitAll()
+			.antMatchers("/api/booking/getCompletedBookings").permitAll()
 			.antMatchers("/api/booking/deleteBooking").hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/service/createService").hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/schedule/createSchedule").hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/schedule/deleteSchedule").hasAuthority(UserTypeID.getAdmin())
+				.antMatchers( "api/booking/getBookedTimeslots").hasAuthority(UserTypeID.getCustomer())
 			.anyRequest().authenticated()
             .and()
 			.logout().permitAll()

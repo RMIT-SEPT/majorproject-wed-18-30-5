@@ -179,6 +179,7 @@ public class User_ControllerTests{
 		customer.put("username", "s3561388@customer");
 		customer.put("password", "1234");
 		customer.put("contactNumber", "0425000000");
+		customer.put("address", "15 insert rd");
 
 		String contentSTRING = customer.toString();
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
@@ -201,6 +202,7 @@ public class User_ControllerTests{
 		customer.put("username", "s3561388@customer");
 		customer.put("password", "1234");
 		customer.put("contactNumber", "0425000000");
+		customer.put("address", "15 insert rd");
 
 		String contentSTRING = customer.toString();
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
@@ -223,6 +225,7 @@ public class User_ControllerTests{
 		customer.put("username", "");
 		customer.put("password", "1234");
 		customer.put("contactNumber", "0425000000");
+		customer.put("address", "15 insert rd");
 		
 		String contentSTRING = customer.toString();
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
@@ -246,6 +249,7 @@ public class User_ControllerTests{
 		customer.put("username", "s3561388@customer");
 		customer.put("password", "");
 		customer.put("contactNumber", "0425000000");
+		customer.put("address", "15 insert rd");
 		
 		String contentSTRING = customer.toString();
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
@@ -269,6 +273,7 @@ public class User_ControllerTests{
 		customer.put("username", "s3561388@customer");
 		customer.put("password", "1234");
 		customer.put("contactNumber", "");
+		customer.put("address", "15 insert rd");
 
 		String contentSTRING = customer.toString();
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
@@ -291,6 +296,7 @@ public class User_ControllerTests{
 		employee.put("username", "s3561388@employee");
 		employee.put("password", "1234");
 		employee.put("contactNumber", "0425000000");
+		employee.put("address", "15 insert rd");
 
 		String contentSTRING = employee.toString();
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createEmployee")
@@ -311,6 +317,7 @@ public class User_ControllerTests{
 		employee.put("username", "s3561388@employee");
 		employee.put("password", "1234");
 		employee.put("contactNumber", "0425000000");
+		employee.put("address", "15 insert rd");
 
 		//Create Session
 		if(startAdminSession()){
@@ -341,6 +348,7 @@ public class User_ControllerTests{
 		employee.put("username", "s3561388@employee");
 		employee.put("password", "1234");
 		employee.put("contactNumber", "0425000000");
+		employee.put("address", "15 insert rd");
 
 		//Create Session
 		if(startCustomerSession()){
@@ -368,6 +376,7 @@ public class User_ControllerTests{
 		employee.put("username", "s3561388@employee");
 		employee.put("password", "1234");
 		employee.put("contactNumber", "0425000000");
+		employee.put("address", "15 insert rd");
 
 		//Create Session
 		if(startEmployeeSession()){
@@ -395,6 +404,7 @@ public class User_ControllerTests{
 		customer.put("username", "s3561388@employee");
 		customer.put("password", "1234");
 		customer.put("contactNumber", "0425000000");
+		customer.put("address", "15 insert rd");
 
 		//Create Session
 		if(startAdminSession()){
@@ -425,6 +435,7 @@ public class User_ControllerTests{
 		customer.put("username", "");
 		customer.put("password", "1234");
 		customer.put("contactNumber", "0425000000");
+		customer.put("address", "15 insert rd");
 		
 		//Create Session
 		if(startAdminSession()){
@@ -455,6 +466,7 @@ public class User_ControllerTests{
 		customer.put("username", "s3561388@employee");
 		customer.put("password", "");
 		customer.put("contactNumber", "0425000000");
+		customer.put("address", "15 insert rd");
 		
 		//Create Session
 		if(startAdminSession()){
@@ -485,6 +497,7 @@ public class User_ControllerTests{
 		customer.put("username", "s3561388@employee");
 		customer.put("password", "1234");
 		customer.put("contactNumber", "");
+		customer.put("address", "15 insert rd");
 
 		//Create Session
 		if(startAdminSession()){
@@ -515,6 +528,7 @@ public class User_ControllerTests{
 		employee.put("username", "s3561388@admin");
 		employee.put("password", "1234");
 		employee.put("contactNumber", "0425000000");
+		employee.put("address", "15 insert rd");
 
 		String contentSTRING = employee.toString();
 		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createAdmin")
@@ -535,6 +549,7 @@ public class User_ControllerTests{
 		employee.put("username", "s3561388@admin");
 		employee.put("password", "1234");
 		employee.put("contactNumber", "0425000000");
+		employee.put("address", "15 insert rd");
 
 		//Create Session
 		if(startAdminSession()){
@@ -565,6 +580,7 @@ public class User_ControllerTests{
 		employee.put("username", "s3561388@admin");
 		employee.put("password", "1234");
 		employee.put("contactNumber", "0425000000");
+		employee.put("address", "15 insert rd");
 
 		//Create Session
 		if(startCustomerSession()){
@@ -592,6 +608,7 @@ public class User_ControllerTests{
 		employee.put("username", "s3561388@admin");
 		employee.put("password", "1234");
 		employee.put("contactNumber", "0425000000");
+		employee.put("address", "15 insert rd");
 
 		//Create Session
 		if(startEmployeeSession()){
@@ -619,6 +636,7 @@ public class User_ControllerTests{
 		customer.put("username", "s3561388@admin");
 		customer.put("password", "1234");
 		customer.put("contactNumber", "0425000000");
+		customer.put("address", "15 insert rd");
 
 		//Create Session
 		if(startAdminSession()){
@@ -649,6 +667,7 @@ public class User_ControllerTests{
 		customer.put("username", "");
 		customer.put("password", "1234");
 		customer.put("contactNumber", "0425000000");
+		customer.put("address", "15 insert rd");
 		
 		//Create Session
 		if(startAdminSession()){
@@ -679,6 +698,7 @@ public class User_ControllerTests{
 		customer.put("username", "s3561388@admin");
 		customer.put("password", "");
 		customer.put("contactNumber", "0425000000");
+		customer.put("address", "15 insert rd");
 		
 		//Create Session
 		if(startAdminSession()){
@@ -709,6 +729,7 @@ public class User_ControllerTests{
 		customer.put("username", "s3561388@admin");
 		customer.put("password", "1234");
 		customer.put("contactNumber", "");
+		customer.put("address", "15 insert rd");
 
 		//Create Session
 		if(startAdminSession()){

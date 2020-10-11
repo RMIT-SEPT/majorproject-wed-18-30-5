@@ -11,16 +11,19 @@ public class UpdateDetails_Request{
     protected String username;
     @NotNull(message = "contact number is required")
     protected Integer contactNumber;
+    protected Long employeeID;
 
     //Constructors
     public UpdateDetails_Request() {
     }
     public UpdateDetails_Request(String name,
                             String username,
-                            Integer contactNumber) {
+                            Integer contactNumber,
+                            Long employeeID) {
         this.name = name;
         this.username = username;
         this.contactNumber = contactNumber;
+        this.employeeID = employeeID;
     }
 
     //Getters
@@ -32,5 +35,8 @@ public class UpdateDetails_Request{
     }
     public Integer getContactNumber() {
         return this.contactNumber;
+    }
+    public Long getEmployeeID() {
+        return this.employeeID;
     }
 }

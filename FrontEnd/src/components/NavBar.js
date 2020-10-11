@@ -1,9 +1,5 @@
 import React, { Component } from "react";
 import { Navbar, NavDropdown, Nav } from "react-bootstrap";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Booking from "./Booking";
-import Home from "./Home";
-import History from "./History";
 
 class NavBar extends Component {
   render() {

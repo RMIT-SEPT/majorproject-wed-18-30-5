@@ -19,6 +19,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.wed18305.assignment1.model.Entity_UserType.UserTypeID;
 
 //Relation example: https://www.baeldung.com/jpa-one-to-one
 
@@ -35,6 +36,7 @@ public class Entity_User {
     @JsonIgnore
     protected String password;
     protected String contactNumber;
+    protected String address;
     @OneToOne
     @JoinColumn(name = "type_id", referencedColumnName = "id")
     protected Entity_UserType userType;
@@ -81,11 +83,13 @@ public class Entity_User {
                     String username,
                     String password,
                     String contactNumber,
+                    String address,
                     Entity_UserType type) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.contactNumber = contactNumber;
+        this.address = address;
         this.userType = type;
     }
 
@@ -117,9 +121,21 @@ public class Entity_User {
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
     }
+    public String getAddress() {
+        return this.address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    // What Type is the User?
     public Entity_UserType getType() {
         return this.userType;
     }
+
+    public boolean isAdmin()    { return this.getType().getId() == UserTypeID.ADMIN.id;    }
+    public boolean isEmployee() { return this.getType().getId() == UserTypeID.EMPLOYEE.id; }
+    public boolean isCustomer() { return this.getType().getId() == UserTypeID.CUSTOMER.id; }
+
 
     /**
      * Only call this from User_service, standard procedure below

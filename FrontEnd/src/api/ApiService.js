@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const USER_API_BASE_URL = "http://localhost:8080/user";
+const USER_API_BASE_URL = "http://localhost:8080";
 
 const handleLoginRedirect = (component) => {
   return (res) => {
-    if (res.request.responseURL === "http://localhost:8080/login") {
+    if (res.request.responseURL === USER_API_BASE_URL + "/login") {
       component.props.history.push("/login");
       return Promise.reject({});
     }
@@ -15,7 +15,7 @@ const handleLoginRedirect = (component) => {
 class ApiService {
   fetchUsers(component) {
     return axios
-      .get("http://localhost:8080/api/user/getEmployees", {
+      .get(USER_API_BASE_URL + "/api/user/getEmployees", {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));
@@ -39,7 +39,7 @@ class ApiService {
 
   addUser(component, user) {
     return axios
-      .post("http://localhost:8080/api/user/createCustomer", user, {
+      .post(USER_API_BASE_URL + "/api/user/createCustomer", user, {
         headers: {
           // Overwrite Axios's automatically set Content-Type
           "Content-Type": "application/json",
@@ -59,7 +59,7 @@ class ApiService {
 
   fetchBookings(component) {
     return axios
-      .get("http://localhost:8080/api/booking/getUpcomingCustomerBookings", {
+      .get(USER_API_BASE_URL + "/api/booking/getUpcomingBookings", {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));
@@ -67,7 +67,7 @@ class ApiService {
 
   fetchPastBookings(component) {
     return axios
-      .get("http://localhost:8080/api/booking/getCompletedCustomerBookings", {
+      .get(USER_API_BASE_URL + "/api/booking/getCompletedBookings", {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));
@@ -75,7 +75,7 @@ class ApiService {
 
   fetchServices(component) {
     return axios
-      .get(" http://localhost:8080/api/service/getServices", {
+      .get(USER_API_BASE_URL + "/api/service/getServices", {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));
@@ -86,7 +86,7 @@ class ApiService {
    */
   fetchEmployeeByService(component, service) {
     return axios
-      .post(" http://localhost:8080/api/user/getEmployeesByService", service, {
+      .post(USER_API_BASE_URL + "/api/user/getEmployeesByService", service, {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));
@@ -94,7 +94,7 @@ class ApiService {
 
   createBooking(component, booking) {
     return axios
-      .post("http://localhost:8080/api/booking/createBooking", booking, {
+      .post(USER_API_BASE_URL + "/api/booking/createBooking", booking, {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));
@@ -102,7 +102,7 @@ class ApiService {
 
   fetchEmployees(component) {
     return axios
-      .get(" http://localhost:8080/api/user/getEmployees", {
+      .get(USER_API_BASE_URL + "/api/user/getEmployees", {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));
@@ -110,7 +110,7 @@ class ApiService {
 
   fetchAdminBookings(component) {
     return axios
-      .get("http://localhost:8080/api/booking/getAdminBookings", {
+      .get(USER_API_BASE_URL + "/api/booking/getAllBookings", {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));
@@ -126,7 +126,22 @@ class ApiService {
 
   approveBookingStatus(component, id) {
     return axios
-      .patch("http://localhost:8080/api/booking/approveBooking", id, {
+      .patch(USER_API_BASE_URL + "/api/booking/approveBooking", id, {
+        withCredentials: true,
+      })
+      .then(handleLoginRedirect(component));
+  }
+  cancelBooking(component, id) {
+    return axios
+      .patch(USER_API_BASE_URL + "/api/booking/cancelBooking", id, {
+        withCredentials: true,
+      })
+      .then(handleLoginRedirect(component));
+  }
+
+  getBookedTimeslots(component, employee) {
+    return axios
+      .post(USER_API_BASE_URL + "/api/booking/getBookedTimeslots", employee, {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));

@@ -29,8 +29,12 @@ public class Booking_Service {
 
         for (Entity_Booking booking : bookingRepository.findAll()) {
 
-            // Booking hasn't Occurred, or Finished Yet
-            if (OffsetDateTime.now().compareTo(booking.getEndDateTime()) < 0) {
+            // Is Booking to be Run in Less than 7 Days?
+            OffsetDateTime now = OffsetDateTime.now();
+            OffsetDateTime sevenDaysFromNow = now.plusWeeks(1);
+            OffsetDateTime start = booking.getStartDateTime();
+            //  now -> start                  start -> sevenDays
+            if (start.compareTo(now) >= 0 && start.compareTo(sevenDaysFromNow) <= 0) {
                 bookings.add(booking);
             }
         }
@@ -44,8 +48,12 @@ public class Booking_Service {
 
         for (Entity_Booking booking : bookingRepository.findAll()) {
 
-            // Booking has Occured
-            if (OffsetDateTime.now().compareTo(booking.getEndDateTime()) > 0) {
+            // Did Booking Finish Less Than 7 Days Ago?
+            OffsetDateTime now = OffsetDateTime.now();
+            OffsetDateTime sevenDaysAgo = now.minusWeeks(1);
+            OffsetDateTime end = booking.getEndDateTime();
+            //  sevenDaysAgo -> end                 end -> now
+            if (end.compareTo(sevenDaysAgo) >= 0 && end.compareTo(now) <= 0) {
                 bookings.add(booking);
             }
         }
