@@ -121,8 +121,8 @@ public class Entity_Booking {
     public Long getId() { return id; }
     public OffsetDateTime getStartDateTime()    { return startDateTime; }
     public OffsetDateTime getEndDateTime()      { return endDateTime;   }
-    // public List<Entity_User> getCustomers()    { return customers;     }
-    // public List<Entity_User> getEmployees()    { return employees;     }
+    // public List<Entity_User> getCustomers()     { return customers;     }
+    // public List<Entity_User> getEmployees()     { return employees;     }
     public Set<Entity_User> getUsers()          { return users;         }
     @JsonIgnore
     /**
