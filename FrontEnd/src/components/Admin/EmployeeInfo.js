@@ -15,7 +15,7 @@ function ActionsCell({ column, i }) {
       {Object.keys(column.actions).map((key) => (
         <button
           key={key}
-          className="btn badge badge-success"
+          className="btn badge-danger"
           onClick={() => column.actions[key](i)}
           style={{ margin: "5px" }}
         >
@@ -45,11 +45,11 @@ class EmployeeInfo extends Component {
     this.columns = [
       {
         id: "actions",
-        label: "actions",
+        label: "",
         minWidth: 170,
         actions: {
-          "add schedule": this.addSchedule,
-          "edit info": this.editInfo,
+          "Add Schedule": this.addSchedule,
+          "Edit Info": this.editInfo,
         },
       },
       {
@@ -89,7 +89,7 @@ class EmployeeInfo extends Component {
 
   addSchedule = (i) => {
     this.props.history.push({
-      pathname: "/addschedule",
+      pathname: "/empschedule",
       search:
         "?" +
         new URLSearchParams({ empId: this.state.employees[i].id }).toString(),
@@ -98,7 +98,7 @@ class EmployeeInfo extends Component {
 
   editInfo = (i) => {
     this.props.history.push({
-      pathname: "/empedit",
+      pathname: "/editemp",
       search:
         "?" +
         new URLSearchParams({ empId: this.state.employees[i].id }).toString(),

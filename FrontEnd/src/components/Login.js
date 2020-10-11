@@ -87,7 +87,7 @@ export default function SignIn() {
       } else if (loginResult.message === "customer") {
         history.push("/home");
       } else if (loginResult.message === "employee") {
-        history.push("/empbookings");
+        history.push("/dashemployee");
       }
     }
   }, [loginResult, setSubmit, history]);

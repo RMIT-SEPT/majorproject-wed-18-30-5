@@ -21,8 +21,8 @@ import ContactUs from "./components/ContactUs";
 import AboutUs from "./components/AboutUs";
 import EmployeeInfo from "./components/Admin/EmployeeInfo";
 import EmpSchedule from "./components/Admin/EmpSchedule";
-// import Employee from "./components/Employee";
-// import DashEmployee from "./components/DashEmployee";
+import DashEmployee from "./components/Emp/DashEmployee";
+import EditEmp from "./components/Admin/EditEmp";
 
 function App() {
   return (
@@ -42,8 +42,8 @@ function App() {
         <Route exact path="/employeeinfo" component={EmployeeInfo} />
         <Route exact path="/pastbookingsadmin" component={EmployeeInfo} />
         <Route exact path="/empschedule" component={EmpSchedule} />
-        {/* <Route exact path="/employee" component={Employee} /> */}
-        {/* <Route exact path="/dashemployee" component={DashEmployee} /> */}
+        <Route exact path="/dashemployee" component={DashEmployee} />
+        <Route exact path="/editemp" component={EditEmp} />
         <Route exact path="*" component={NoMatch} />
       </Switch>
     </Router>

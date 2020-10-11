@@ -267,6 +267,10 @@ h2 {
   margin-top: 0px !important;
   margin-bottom: 0px !important;
 }
+
+.calender-emp {
+  margin: 5%;
+}
 @media screen and (max-width: 480px) {
   h1 {
     font-size: 26px;
