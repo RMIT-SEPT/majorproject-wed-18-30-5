@@ -289,8 +289,8 @@ public class DemoApplication {
 			// Save Bookings
 			// Michelle bookings(standard consult 15min) -Mon(19th)->Thurs(22nd) 9am to 6pm
 			// Monday bookings
-			Entity_Booking m_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T17:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-19T17:15+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking m_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-12T17:00+10:00", DateTimeStatic.getFormatter()),
+														  OffsetDateTime.parse("2020-10-12T17:15+10:00", DateTimeStatic.getFormatter()));
 			Entity_Booking m_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T17:45+10:00", DateTimeStatic.getFormatter()), 
 														  OffsetDateTime.parse("2020-10-19T18:00+10:00", DateTimeStatic.getFormatter()));
 			Entity_Booking m_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T13:30+10:00", DateTimeStatic.getFormatter()), 

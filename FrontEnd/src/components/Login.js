@@ -86,6 +86,8 @@ export default function SignIn() {
         history.push("/dasboardadmin");
       } else if (loginResult.message === "customer") {
         history.push("/home");
+      } else if (loginResult.message === "employee") {
+        history.push("/empbookings");
       }
     }
   }, [loginResult, setSubmit, history]);
