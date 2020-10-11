@@ -121,10 +121,10 @@ public class Entity_User {
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
     }
-    public String getAddressNumber() {
+    public String getAddress() {
         return this.address;
     }
-    public void setAddressNumber(String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
     // What Type is the User?

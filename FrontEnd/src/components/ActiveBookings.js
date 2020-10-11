@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Card, CardDeck } from "react-bootstrap";
+import { CardColumns } from "react-bootstrap";
 import NavBar from "./NavBar";
 import BookingCard from "./BookingCard";
 import ApiService from "../api/ApiService";
@@ -24,6 +24,13 @@ export default class ActiveBookings extends Component {
     });
   };
 
+  cancelBooking = (id) => {
+    ApiService.cancelBooking(this, { id }).then((res) => {
+      this.setState({ message: res.data });
+      this.reloadBookingList();
+    });
+  };
+
   render() {
     return (
       <>
@@ -31,11 +38,24 @@ export default class ActiveBookings extends Component {
           <NavBar />
         </header>
         <div className="active-booking-wrapper">
-          <CardDeck>
+          <CardColumns>
             {this.state.bookings.map((booking) => (
-              <BookingCard key={booking.id} booking={booking}></BookingCard>
+              <BookingCard
+                key={booking.bookingID}
+                booking={booking}
+                cancelButton={
+                  <button
+                    type="button"
+                    className="btn btn-danger float-right m-1"
+                    onClick={() => this.cancelBooking(booking.bookingID)}
+                    // style={{ float: "right", margin: "5px" }}
+                  >
+                    Cancel Booking
+                  </button>
+                }
+              ></BookingCard>
             ))}
-          </CardDeck>
+          </CardColumns>
         </div>
       </>
     );

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Card, CardDeck } from "react-bootstrap";
+import { CardDeck } from "react-bootstrap";
 import NavBar from "./NavBar";
 import ApiService from "../api/ApiService";
 import BookingCard from "./BookingCard";

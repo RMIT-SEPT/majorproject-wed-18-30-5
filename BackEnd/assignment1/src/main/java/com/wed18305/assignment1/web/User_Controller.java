@@ -393,7 +393,6 @@ public class User_Controller {
            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
 
-        //TODO response should be a redirect to logut function.
         Response response = new Response(true, "User has been deleted!", null, null);
         return new ResponseEntity<Response>(response, HttpStatus.OK);
     }

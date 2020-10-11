@@ -112,6 +112,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/service/createService").hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/schedule/createSchedule").hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/schedule/deleteSchedule").hasAuthority(UserTypeID.getAdmin())
+				.antMatchers( "api/booking/getBookedTimeslots").hasAuthority(UserTypeID.getCustomer())
 			.anyRequest().authenticated()
             .and()
 			.logout().permitAll()
