@@ -160,7 +160,7 @@ public class Schedule_Controller {
      * @return
      */
     @CrossOrigin("http://localhost:3000")
-    @GetMapping("getSchedule")
+    @PostMapping("getSchedule")
     public ResponseEntity<Response> getSchedule(@Valid @RequestBody Get_Request gr, BindingResult result){
         // Binding validation checks
         if (result.hasErrors()) {

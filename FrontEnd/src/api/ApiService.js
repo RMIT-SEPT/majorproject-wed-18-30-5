@@ -149,7 +149,7 @@ class ApiService {
 
   getSchedule(component, data) {
     return axios
-      .get(USER_API_BASE_URL + "/api/schedule/getSchedule", data, {
+      .post(USER_API_BASE_URL + "/api/schedule/getSchedule", data, {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));

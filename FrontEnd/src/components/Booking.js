@@ -26,6 +26,7 @@ class Booking extends Component {
       startHour: 8,
       endHour: 18,
       timeslots: [],
+      loading: false,
     };
   }
   calculateDateRange = () => {
@@ -52,18 +53,14 @@ class Booking extends Component {
     });
   };
 
-  getEmpSchedule = () => {
+  getEmpSchedule = async () => {
     if (this.state.employee && this.state.date) {
-      ApiService.getSchedule(this, {
-        emp_id: Number(this.state.employee),
-      }).then((res) => {
-        debugger;
-        this.setState({
-          startHour: Array.from(res.data.body),
-          endHour: "",
-        });
+      const res = await ApiService.getSchedule(this, {
+        id: Number(this.state.employee),
       });
+      return Array.from(res.data.body);
     }
+    return Promise.resolve([]);
   };
 
   reloadEmployeeList = () => {
@@ -81,17 +78,21 @@ class Booking extends Component {
     }
   };
 
-  getBookedTimeslots = () => {
+  getBookedTimeslots = async () => {
     if (this.state.employee && this.state.date) {
       const employee = {
         userID: this.state.employee,
         date: this.state.date,
       };
-      ApiService.getBookedTimeslots(this, employee).then((res) => {
-        const timeslots = Array.from(res.data.body.bookedTimes);
-        this.generateAvailableTimes(timeslots);
-      });
+      try {
+        const res = await ApiService.getBookedTimeslots(this, employee);
+        return Array.from(res.data.body.bookedTimes);
+      } catch (e) {
+        console.log(e.response.data.message);
+        return [];
+      }
     }
+    return [];
   };
 
   onChange = (e) => {
@@ -104,8 +105,14 @@ class Booking extends Component {
         this.reloadEmployeeList();
       }
       if (name === "date") {
-        this.getBookedTimeslots();
-        this.getEmpSchedule();
+        this.getBookedTimeslots().then((bookedTimeslots) => {
+          this.getEmpSchedule().then((scheduleData) => {
+            this.generateAvailableTimes(
+              bookedTimeslots,
+              this.filterSchedule(scheduleData)
+            );
+          });
+        });
       }
       if (name === "time") {
         this.setTimeslot(value);
@@ -113,9 +120,32 @@ class Booking extends Component {
     });
   };
 
-  generateAvailableTimes = (excludedTimeslots) => {
+  parseScheduleDatetime = (scheduleDateTime) => {
+    return scheduleDateTime.split("@");
+  };
+
+  filterSchedule = (scheduleData) => {
+    for (let schedule of scheduleData) {
+      const [date, startTime] = this.parseScheduleDatetime(
+        schedule.startDateTime
+      );
+      const [_, endTime] = this.parseScheduleDatetime(schedule.endDateTime);
+      if (date === this.state.date) {
+        const [startHour, startMinute] = startTime.split(":").map(Number);
+        const [endHour, endMinute] = endTime.split(":").map(Number);
+        return { startHour, startMinute, endHour, endMinute };
+      }
+    }
+    // get todays schedule
+    return null;
+  };
+
+  generateAvailableTimes = (bookedTimeslots, schedule) => {
+    // no schedule for current employee, return
+    if (!schedule) return;
+
     const excludedTimes = {};
-    for (let booking of excludedTimeslots) {
+    for (let booking of bookedTimeslots) {
       const slot = booking.startTime;
       const timeAMPM = slot.split(" ");
       const time = timeAMPM[0].split(":").map(Number);
@@ -127,9 +157,18 @@ class Booking extends Component {
     const formatTime = (time) => `${time.getHours()}:${time.getMinutes()}`;
     const availableTimes = [];
     const service = this.state.schemas[this.state.service];
+    debugger;
     for (
-      let time = new Date(0, 0, 0, this.state.startHour, 0, 0, 0);
-      time.getHours() < this.state.endHour;
+      let time = new Date(
+        0,
+        0,
+        0,
+        schedule.startHour,
+        schedule.startMinute,
+        0,
+        0
+      );
+      time.getHours() < schedule.endHour;
 
     ) {
       const key = time.getHours() + ":" + time.getMinutes();
