@@ -24,6 +24,7 @@ import PastBookingAdmin from "./components/Admin/PastBookingsAdmin";
 import EmpSchedule from "./components/Admin/EmpSchedule";
 import DashEmployee from "./components/Emp/DashEmployee";
 import EditEmp from "./components/Admin/EditEmp";
+import MyEmpSchedule from "./components/Emp/MyEmpSchedule";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route exact path="/empschedule" component={EmpSchedule} />
         <Route exact path="/dashemployee" component={DashEmployee} />
         <Route exact path="/editemp" component={EditEmp} />
+        <Route exact path="/myempschedule" component={MyEmpSchedule} />
         <Route exact path="*" component={NoMatch} />
       </Switch>
     </Router>

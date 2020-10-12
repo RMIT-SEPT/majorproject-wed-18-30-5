@@ -16,7 +16,7 @@ class AdminNav extends Component {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
               <Nav.Link href="/dashemployee"> Home </Nav.Link>
-              <Nav.Link href="/empschedule">My Schedule </Nav.Link>
+              <Nav.Link href="/myempschedule">My Schedule </Nav.Link>
             </Nav>
             <Nav>
               <NavDropdown title="Profile" id="collasible-nav-dropdown">
