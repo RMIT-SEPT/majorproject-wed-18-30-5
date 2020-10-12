@@ -118,7 +118,7 @@ class ApiService {
 
   fetchEmployeeBookings(component) {
     return axios
-      .get("http://localhost:8080/api/booking/getUpcomingBookings", {
+      .get(USER_API_BASE_URL + "/api/booking/getUpcomingBookings", {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));
