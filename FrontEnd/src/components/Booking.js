@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { formatDate as formatFullDate } from "../utils";
 import ApiService from "../api/ApiService";
 import { withRouter } from "react-router-dom";
 import "../App.css";
@@ -51,6 +52,20 @@ class Booking extends Component {
     });
   };
 
+  getEmpSchedule = () => {
+    if (this.state.employee && this.state.date) {
+      ApiService.getSchedule(this, {
+        emp_id: Number(this.state.employee),
+      }).then((res) => {
+        debugger;
+        this.setState({
+          startHour: Array.from(res.data.body),
+          endHour: "",
+        });
+      });
+    }
+  };
+
   reloadEmployeeList = () => {
     if (this.state.service) {
       ApiService.fetchEmployeeByService(this, {
@@ -90,25 +105,12 @@ class Booking extends Component {
       }
       if (name === "date") {
         this.getBookedTimeslots();
+        this.getEmpSchedule();
       }
       if (name === "time") {
         this.setTimeslot(value);
       }
     });
-  };
-
-  /**
-   * @param {Date} date object to format
-   * @return {string} with format like this '2020-09-07T17:00+10:00'
-   */
-  formatDate = (date) => {
-    const year = date.getUTCFullYear();
-    const month = formatPad(date.getUTCMonth());
-    const day = formatPad(date.getUTCDate());
-    const hour = formatPad(date.getUTCHours());
-    const minute = formatPad(date.getUTCMinutes());
-    debugger;
-    return `${year}-${month}-${day}T${hour}:${minute}+00:00`;
   };
 
   generateAvailableTimes = (excludedTimeslots) => {
@@ -141,7 +143,6 @@ class Booking extends Component {
   };
 
   setTimeslot = (index) => {
-    debugger;
     const timeslot = this.state.availableTimes[index];
     this.setState({ starttime: timeslot.start, endtime: timeslot.end });
   };
@@ -149,16 +150,17 @@ class Booking extends Component {
   onsubmit = (e) => {
     e.preventDefault();
     const date = this.state.date.split("-").map(Number);
+    date.setMonth(date.getMonth - 1);
+    date.setDay(date.getDay - 1);
     const start_time = this.state.starttime.split(":").map(Number);
     const end_time = this.state.endtime.split(":").map(Number);
     const start_date = new Date(...date, ...start_time);
     const end_date = new Date(...date, ...end_time);
     const booking = {
-      startDateTime: this.formatDate(start_date),
-      endDateTime: this.formatDate(end_date),
+      startDateTime: formatFullDate(start_date),
+      endDateTime: formatFullDate(end_date),
       user_ids: [Number(this.state.employee)],
     };
-    debugger;
     ApiService.createBooking(this, booking).then((res) => {
       console.log(booking);
       this.setState({ message: "Booking Created!" });

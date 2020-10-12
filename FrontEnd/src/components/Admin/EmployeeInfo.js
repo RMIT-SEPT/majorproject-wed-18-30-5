@@ -9,18 +9,18 @@ import TableRow from "@material-ui/core/TableRow";
 import NavBarAdmin from "./AdminNav";
 import ApiService from "../../api/ApiService";
 
-function ActionsCell({ column, i }) {
+function ActionsCell({ column, index, key }) {
   return (
-    <TableCell>
-      {Object.keys(column.actions).map((key) => (
-        <button
-          key={key}
+    <TableCell key={key}>
+      {column.actions.map(({ fn, label }) => (
+        <a
+          key={label}
           className="btn badge-danger"
-          onClick={() => column.actions[key](i)}
+          href={fn(index)}
           style={{ margin: "5px" }}
         >
-          {key}
-        </button>
+          {label}
+        </a>
       ))}
     </TableCell>
   );
@@ -47,10 +47,16 @@ class EmployeeInfo extends Component {
         id: "actions",
         label: "",
         minWidth: 170,
-        actions: {
-          "Add Schedule": this.addSchedule,
-          "Edit Info": this.editInfo,
-        },
+        actions: [
+          {
+            fn: this.addSchedule,
+            label: "Add Schedule",
+          },
+          {
+            fn: this.editInfo,
+            label: "Edit Info",
+          },
+        ],
       },
       {
         id: "name",
@@ -88,21 +94,17 @@ class EmployeeInfo extends Component {
   }
 
   addSchedule = (i) => {
-    this.props.history.push({
-      pathname: "/empschedule",
-      search:
-        "?" +
-        new URLSearchParams({ empId: this.state.employees[i].id }).toString(),
-    });
+    return (
+      "/empschedule?" +
+      new URLSearchParams({ empId: this.state.employees[i].id }).toString()
+    );
   };
 
   editInfo = (i) => {
-    this.props.history.push({
-      pathname: "/editemp",
-      search:
-        "?" +
-        new URLSearchParams({ empId: this.state.employees[i].id }).toString(),
-    });
+    return (
+      "/editemp?" +
+      new URLSearchParams({ empId: this.state.employees[i].id }).toString()
+    );
   };
 
   reloadEmpList = () => {
@@ -144,7 +146,7 @@ class EmployeeInfo extends Component {
               <TableBody>
                 {employees
                   // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
+                  .map((row, i) => {
                     return (
                       <TableRow
                         hover
@@ -152,12 +154,12 @@ class EmployeeInfo extends Component {
                         tabIndex={-1}
                         key={row.id}
                       >
-                        {this.columns.map((column, i) =>
+                        {this.columns.map((column) =>
                           column.id == "actions" ? (
                             <ActionsCell
                               key={column.id}
                               column={column}
-                              i={i}
+                              index={i}
                             />
                           ) : (
                             <DataCell

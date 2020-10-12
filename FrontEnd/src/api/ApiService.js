@@ -138,6 +138,22 @@ class ApiService {
       })
       .then(handleLoginRedirect(component));
   }
+
+  createSchedule(component, data) {
+    return axios
+      .post(USER_API_BASE_URL + "/api/schedule/createSchedule", data, {
+        withCredentials: true,
+      })
+      .then(handleLoginRedirect(component));
+  }
+
+  getSchedule(component, data) {
+    return axios
+      .get(USER_API_BASE_URL + "/api/schedule/getSchedule", data, {
+        withCredentials: true,
+      })
+      .then(handleLoginRedirect(component));
+  }
 }
 
 export default new ApiService();
