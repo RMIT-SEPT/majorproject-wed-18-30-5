@@ -159,6 +159,7 @@ public class Schedule_Controller {
      * @param result
      * @return
      */
+    @CrossOrigin("http://localhost:3000")
     @GetMapping("getSchedule")
     public ResponseEntity<Response> getSchedule(@Valid @RequestBody Get_Request gr, BindingResult result){
         // Binding validation checks

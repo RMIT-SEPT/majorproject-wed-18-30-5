@@ -40,17 +40,17 @@ public class DemoApplication {
       TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 	}
 	
-	@Bean
-	public CookieSerializer cookieSerializer() {
-		DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-		serializer.setCookieName("JSESSIONID"); 
-		serializer.setCookiePath("/"); 
-		serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
-		serializer.setSameSite("None");
-		serializer.setUseHttpOnlyCookie(true);
-		serializer.setUseSecureCookie(false);
-		return serializer;
-	}
+//	@Bean
+//	public CookieSerializer cookieSerializer() {
+//		DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+//		serializer.setCookieName("JSESSIONID");
+//		serializer.setCookiePath("/");
+//		serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
+//		serializer.setSameSite("None");
+//		serializer.setUseHttpOnlyCookie(true);
+//		serializer.setUseSecureCookie(false);
+//		return serializer;
+//	}
 
 	//Comment out CommandLineRunner when not using it for testing OR when using mySQL
 	@Bean
@@ -133,7 +133,7 @@ public class DemoApplication {
 
 			// Save Schedules -UTC melbourne +10
 			// Michelle Schedule(standard consult) -Mon(19th)->Thurs(22nd) 9am to 6pm
-			OffsetDateTime m_timeStart1 = OffsetDateTime.parse("2020-10-19T09:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime m_timeStart1 = OffsetDateTime.parse("2020-10-16T09:00+10:00", DateTimeStatic.getFormatter());
 			OffsetDateTime m_timeEnd1 = OffsetDateTime.parse("2020-10-19T18:00+10:00", DateTimeStatic.getFormatter());
 			OffsetDateTime m_timeStart2 = OffsetDateTime.parse("2020-10-20T09:00+10:00", DateTimeStatic.getFormatter());
 			OffsetDateTime m_timeEnd2 = OffsetDateTime.parse("2020-10-20T18:00+10:00", DateTimeStatic.getFormatter());
