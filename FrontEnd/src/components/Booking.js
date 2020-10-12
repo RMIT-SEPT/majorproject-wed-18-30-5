@@ -129,7 +129,7 @@ class Booking extends Component {
       const [date, startTime] = this.parseScheduleDatetime(
         schedule.startDateTime
       );
-      const [_, endTime] = this.parseScheduleDatetime(schedule.endDateTime);
+      const [endTime] = this.parseScheduleDatetime(schedule.endDateTime);
       if (date === this.state.date) {
         const [startHour, startMinute] = startTime.split(":").map(Number);
         const [endHour, endMinute] = endTime.split(":").map(Number);
@@ -157,7 +157,6 @@ class Booking extends Component {
     const formatTime = (time) => `${time.getHours()}:${time.getMinutes()}`;
     const availableTimes = [];
     const service = this.state.schemas[this.state.service];
-    debugger;
     for (
       let time = new Date(
         0,
