@@ -22,6 +22,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 
 @SpringBootApplication
 public class DemoApplication {
@@ -36,7 +38,19 @@ public class DemoApplication {
     public void init(){
       // Setting Spring Boot SetTimeZone
       TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-    }
+	}
+	
+	@Bean
+	public CookieSerializer cookieSerializer() {
+		DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+		serializer.setCookieName("JSESSIONID"); 
+		serializer.setCookiePath("/"); 
+		serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
+		serializer.setSameSite("None");
+		serializer.setUseHttpOnlyCookie(true);
+		serializer.setUseSecureCookie(false);
+		return serializer;
+	}
 
 	//Comment out CommandLineRunner when not using it for testing OR when using mySQL
 	@Bean
@@ -463,6 +477,16 @@ public class DemoApplication {
 															 OffsetDateTime.parse("2020-10-24T15:00+10:00", DateTimeStatic.getFormatter()));
 			Entity_Booking joel_bookng9 = new Entity_Booking(OffsetDateTime.parse("2020-10-24T15:00+10:00", DateTimeStatic.getFormatter()), 
 															 OffsetDateTime.parse("2020-10-24T16:00+10:00", DateTimeStatic.getFormatter()));
+
+			// Testing data OLD bookings
+			Entity_Booking test_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-09T15:00+10:00", DateTimeStatic.getFormatter()), 
+															OffsetDateTime.parse("2020-10-09T16:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking test_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-07T14:00+10:00", DateTimeStatic.getFormatter()), 
+															OffsetDateTime.parse("2020-10-07T15:00+10:00", DateTimeStatic.getFormatter()));
+			// Testing data upcoming bookings
+			Entity_Booking test_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-15T12:00+10:00", DateTimeStatic.getFormatter()), 
+															OffsetDateTime.parse("2020-10-15T12:30+10:00", DateTimeStatic.getFormatter()));
+
 			// Save the bookings
 			BookingRepository.save(m_bookng1);
 			BookingRepository.save(m_bookng2);
@@ -533,9 +557,12 @@ public class DemoApplication {
 			BookingRepository.save(joel_bookng7);
 			BookingRepository.save(joel_bookng8);
 			BookingRepository.save(joel_bookng9);
+			BookingRepository.save(test_bookng1);
+			BookingRepository.save(test_bookng2);
+			BookingRepository.save(test_bookng3);
 
-
-			//Add bookings to users
+			//Add bookings to Employees
+			michelleEmployee.getBookings().add(test_bookng1);
 			michelleEmployee.getBookings().add(m_bookng1);
 			michelleEmployee.getBookings().add(m_bookng2);
 			michelleEmployee.getBookings().add(m_bookng3);
@@ -586,6 +613,7 @@ public class DemoApplication {
 			jamesEmployee.getBookings().add(j_bookng12);
 			jamesEmployee.getBookings().add(j_bookng13);
 			jamesEmployee.getBookings().add(j_bookng14);
+			jamesEmployee.getBookings().add(test_bookng3);
 			fredEmployee.getBookings().add(f_bookng1);
 			fredEmployee.getBookings().add(f_bookng2);
 			fredEmployee.getBookings().add(f_bookng3);
@@ -605,6 +633,80 @@ public class DemoApplication {
 			JoelEmployee.getBookings().add(joel_bookng7);
 			JoelEmployee.getBookings().add(joel_bookng8);
 			JoelEmployee.getBookings().add(joel_bookng9);
+			JoelEmployee.getBookings().add(test_bookng2);
+			//Add bookings to customers
+			jackCustomer.getBookings().add(test_bookng1);
+			jackCustomer.getBookings().add(test_bookng2);
+			jackCustomer.getBookings().add(test_bookng3);
+			jackCustomer.getBookings().add(m_bookng1);
+			jackCustomer.getBookings().add(m_bookng4);
+			jackCustomer.getBookings().add(m_bookng7);
+			jackCustomer.getBookings().add(m_bookng10);
+			jackCustomer.getBookings().add(l_bookng3);
+			jackCustomer.getBookings().add(l_bookng6);
+			jackCustomer.getBookings().add(k_bookng2);
+			jackCustomer.getBookings().add(k_bookng5);
+			jackCustomer.getBookings().add(k_bookng8);
+			jackCustomer.getBookings().add(lam_bookng1);
+			jackCustomer.getBookings().add(lam_bookng4);
+			jackCustomer.getBookings().add(Ram_bookng3);
+			jackCustomer.getBookings().add(j_bookng1);
+			jackCustomer.getBookings().add(j_bookng4);
+			jackCustomer.getBookings().add(j_bookng7);
+			jackCustomer.getBookings().add(j_bookng10);
+			jackCustomer.getBookings().add(j_bookng13);
+			jackCustomer.getBookings().add(f_bookng2);
+			jackCustomer.getBookings().add(f_bookng5);
+			jackCustomer.getBookings().add(f_bookng8);
+			jackCustomer.getBookings().add(joel_bookng1);
+			jackCustomer.getBookings().add(joel_bookng4);
+			jackCustomer.getBookings().add(joel_bookng7);
+			chloeCustomer.getBookings().add(m_bookng2);
+			chloeCustomer.getBookings().add(m_bookng5);
+			chloeCustomer.getBookings().add(m_bookng8);
+			chloeCustomer.getBookings().add(l_bookng1);
+			chloeCustomer.getBookings().add(l_bookng4);
+			chloeCustomer.getBookings().add(l_bookng7);
+			chloeCustomer.getBookings().add(k_bookng3);
+			chloeCustomer.getBookings().add(k_bookng6);
+			chloeCustomer.getBookings().add(k_bookng9);
+			chloeCustomer.getBookings().add(lam_bookng2);
+			chloeCustomer.getBookings().add(Ram_bookng1);
+			chloeCustomer.getBookings().add(Ram_bookng4);
+			chloeCustomer.getBookings().add(j_bookng2);
+			chloeCustomer.getBookings().add(j_bookng5);
+			chloeCustomer.getBookings().add(j_bookng8);
+			chloeCustomer.getBookings().add(j_bookng11);
+			chloeCustomer.getBookings().add(j_bookng14);
+			chloeCustomer.getBookings().add(f_bookng3);
+			chloeCustomer.getBookings().add(f_bookng6);
+			chloeCustomer.getBookings().add(f_bookng9);
+			chloeCustomer.getBookings().add(joel_bookng2);
+			chloeCustomer.getBookings().add(joel_bookng5);
+			chloeCustomer.getBookings().add(joel_bookng8);
+			kimCustomer.getBookings().add(m_bookng3);
+			kimCustomer.getBookings().add(m_bookng6);
+			kimCustomer.getBookings().add(m_bookng9);
+			kimCustomer.getBookings().add(l_bookng2);
+			kimCustomer.getBookings().add(l_bookng5);
+			kimCustomer.getBookings().add(k_bookng1);
+			kimCustomer.getBookings().add(k_bookng4);
+			kimCustomer.getBookings().add(k_bookng7);
+			kimCustomer.getBookings().add(k_bookng10);
+			kimCustomer.getBookings().add(lam_bookng3);
+			kimCustomer.getBookings().add(Ram_bookng2);
+			kimCustomer.getBookings().add(Ram_bookng5);
+			kimCustomer.getBookings().add(j_bookng3);
+			kimCustomer.getBookings().add(j_bookng6);
+			kimCustomer.getBookings().add(j_bookng9);
+			kimCustomer.getBookings().add(j_bookng12);
+			kimCustomer.getBookings().add(f_bookng1);
+			kimCustomer.getBookings().add(f_bookng4);
+			kimCustomer.getBookings().add(f_bookng7);
+			kimCustomer.getBookings().add(f_bookng10);
+			kimCustomer.getBookings().add(joel_bookng3);
+			kimCustomer.getBookings().add(joel_bookng6);
+			kimCustomer.getBookings().add(joel_bookng9);
 
 			//Update the users
 			UserRepository.save(jackCustomer);
