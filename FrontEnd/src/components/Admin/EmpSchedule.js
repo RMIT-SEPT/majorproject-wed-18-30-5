@@ -72,7 +72,7 @@ class EmpSchedule extends Component {
         <div className="col-md-6 mx-auto text-center">
           <div className="header-title">
             <h1 className="wv-heading--title">
-              Editing Schedule for Employee:
+              Editing Schedule for Employee ID: {this.getEmpId()}
             </h1>
           </div>
         </div>
