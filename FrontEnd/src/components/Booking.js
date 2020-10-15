@@ -107,6 +107,7 @@ class Booking extends Component {
       if (name === "date") {
         this.getBookedTimeslots().then((bookedTimeslots) => {
           this.getEmpSchedule().then((scheduleData) => {
+            debugger;
             this.generateAvailableTimes(
               bookedTimeslots,
               this.filterSchedule(scheduleData)
@@ -121,7 +122,22 @@ class Booking extends Component {
   };
 
   parseScheduleDatetime = (scheduleDateTime) => {
-    return scheduleDateTime.split("@");
+    const [date, startTime] = scheduleDateTime.split("@");
+    const [year, month, day] = date.split("-");
+    const [hour, minute] = startTime.split(":").map(Number);
+    const datetime = new Date();
+    datetime.setUTCFullYear(year);
+    datetime.setUTCMonth(month - 1);
+    datetime.setUTCDate(day - 1);
+    datetime.setUTCHours(hour);
+    datetime.setUTCMinutes(minute);
+    const dateTZ = [
+      datetime.getFullYear(),
+      datetime.getMonth() + 1,
+      datetime.getDate() + 1,
+    ].join("-");
+    const timeTZ = [datetime.getHours(), datetime.getMinutes()].join(":");
+    return [dateTZ, timeTZ];
   };
 
   filterSchedule = (scheduleData) => {
@@ -129,11 +145,13 @@ class Booking extends Component {
       const [date, startTime] = this.parseScheduleDatetime(
         schedule.startDateTime
       );
-      const [endTime] = this.parseScheduleDatetime(schedule.endDateTime);
+      const [endDate, endTime] = this.parseScheduleDatetime(
+        schedule.endDateTime
+      );
       if (date === this.state.date) {
         const [startHour, startMinute] = startTime.split(":").map(Number);
         const [endHour, endMinute] = endTime.split(":").map(Number);
-        return { startHour, startMinute, endHour, endMinute };
+        return { startHour, startMinute, endDate, endHour, endMinute };
       }
     }
     // get todays schedule
@@ -156,7 +174,7 @@ class Booking extends Component {
     }
     const formatTime = (time) => `${time.getHours()}:${time.getMinutes()}`;
     const availableTimes = [];
-    const service = this.state.schemas[this.state.service];
+    const service = this.state.schemas[this.state.service - 1];
     for (
       let time = new Date(
         0,
@@ -188,8 +206,8 @@ class Booking extends Component {
   onsubmit = (e) => {
     e.preventDefault();
     const date = this.state.date.split("-").map(Number);
-    date.setMonth(date.getMonth - 1);
-    date.setDay(date.getDay - 1);
+    date[1] = date[1] - 1;
+    date[2] = date[2] - 1;
     const start_time = this.state.starttime.split(":").map(Number);
     const end_time = this.state.endtime.split(":").map(Number);
     const start_date = new Date(...date, ...start_time);

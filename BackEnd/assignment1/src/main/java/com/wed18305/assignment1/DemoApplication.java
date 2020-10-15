@@ -131,100 +131,100 @@ public class DemoApplication {
 			delete2.getServices().add(travelVac);
 			delete3.getServices().add(travelVac);
 
-			// Save Schedules -UTC melbourne +10
+			// Save Schedules -UTC melbourne +11
 			// Michelle Schedule(standard consult) -Mon(19th)->Thurs(22nd) 9am to 6pm
-			OffsetDateTime m_timeStart1 = OffsetDateTime.parse("2020-10-16T09:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime m_timeEnd1 = OffsetDateTime.parse("2020-10-19T18:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime m_timeStart2 = OffsetDateTime.parse("2020-10-20T09:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime m_timeEnd2 = OffsetDateTime.parse("2020-10-20T18:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime m_timeStart3 = OffsetDateTime.parse("2020-10-21T09:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime m_timeEnd3 = OffsetDateTime.parse("2020-10-21T18:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime m_timeStart4 = OffsetDateTime.parse("2020-10-22T09:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime m_timeEnd4 = OffsetDateTime.parse("2020-10-22T18:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime m_timeStart1 = OffsetDateTime.parse("2020-10-19T09:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime m_timeEnd1 = OffsetDateTime.parse("2020-10-19T18:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime m_timeStart2 = OffsetDateTime.parse("2020-10-20T09:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime m_timeEnd2 = OffsetDateTime.parse("2020-10-20T18:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime m_timeStart3 = OffsetDateTime.parse("2020-10-21T09:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime m_timeEnd3 = OffsetDateTime.parse("2020-10-21T18:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime m_timeStart4 = OffsetDateTime.parse("2020-10-22T09:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime m_timeEnd4 = OffsetDateTime.parse("2020-10-22T18:00+11:00", DateTimeStatic.getFormatter());
 			Entity_Schedule m_schedule1 = new Entity_Schedule(m_timeStart1, m_timeEnd1);
 			Entity_Schedule m_schedule2 = new Entity_Schedule(m_timeStart2, m_timeEnd2);
 			Entity_Schedule m_schedule3 = new Entity_Schedule(m_timeStart3, m_timeEnd3);
 			Entity_Schedule m_schedule4 = new Entity_Schedule(m_timeStart4, m_timeEnd4);
 			// Leslie Schedule(Skin check) -Mon(19th)->Wed(21st)->Fri(23rd) 10am to 5pm
-			OffsetDateTime l_timeStart1 = OffsetDateTime.parse("2020-10-19T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime l_timeEnd1 = OffsetDateTime.parse("2020-10-19T17:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime l_timeStart2 = OffsetDateTime.parse("2020-10-21T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime l_timeEnd2 = OffsetDateTime.parse("2020-10-21T17:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime l_timeStart3 = OffsetDateTime.parse("2020-10-23T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime l_timeEnd3 = OffsetDateTime.parse("2020-10-23T17:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime l_timeStart1 = OffsetDateTime.parse("2020-10-19T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime l_timeEnd1 = OffsetDateTime.parse("2020-10-19T17:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime l_timeStart2 = OffsetDateTime.parse("2020-10-21T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime l_timeEnd2 = OffsetDateTime.parse("2020-10-21T17:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime l_timeStart3 = OffsetDateTime.parse("2020-10-23T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime l_timeEnd3 = OffsetDateTime.parse("2020-10-23T17:00+11:00", DateTimeStatic.getFormatter());
 			Entity_Schedule l_schedule1 = new Entity_Schedule(l_timeStart1, l_timeEnd1);
 			Entity_Schedule l_schedule2 = new Entity_Schedule(l_timeStart2, l_timeEnd2);
 			Entity_Schedule l_schedule3 = new Entity_Schedule(l_timeStart3, l_timeEnd3);
 			// Karin Schedule(Long consult) -Tue(20th)->Fri(23rd) 8am to 4pm
-			OffsetDateTime k_timeStart1 = OffsetDateTime.parse("2020-10-20T08:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime k_timeEnd1 = OffsetDateTime.parse("2020-10-20T16:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime k_timeStart2 = OffsetDateTime.parse("2020-10-21T08:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime k_timeEnd2 = OffsetDateTime.parse("2020-10-21T16:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime k_timeStart3 = OffsetDateTime.parse("2020-10-22T08:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime k_timeEnd3 = OffsetDateTime.parse("2020-10-22T16:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime k_timeStart4 = OffsetDateTime.parse("2020-10-23T08:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime k_timeEnd4 = OffsetDateTime.parse("2020-10-23T16:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime k_timeStart1 = OffsetDateTime.parse("2020-10-20T08:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime k_timeEnd1 = OffsetDateTime.parse("2020-10-20T16:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime k_timeStart2 = OffsetDateTime.parse("2020-10-21T08:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime k_timeEnd2 = OffsetDateTime.parse("2020-10-21T16:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime k_timeStart3 = OffsetDateTime.parse("2020-10-22T08:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime k_timeEnd3 = OffsetDateTime.parse("2020-10-22T16:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime k_timeStart4 = OffsetDateTime.parse("2020-10-23T08:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime k_timeEnd4 = OffsetDateTime.parse("2020-10-23T16:00+11:00", DateTimeStatic.getFormatter());
 			Entity_Schedule k_schedule1 = new Entity_Schedule(k_timeStart1, k_timeEnd1);
 			Entity_Schedule k_schedule2 = new Entity_Schedule(k_timeStart2, k_timeEnd2);
 			Entity_Schedule k_schedule3 = new Entity_Schedule(k_timeStart3, k_timeEnd3);
 			Entity_Schedule k_schedule4 = new Entity_Schedule(k_timeStart4, k_timeEnd4);
 			// Lammy Schedule(Pap smear) -Mon(19th) and Thurs(22th) 10am to 2pm
-			OffsetDateTime lam_timeStart1 = OffsetDateTime.parse("2020-10-19T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime lam_timeEnd1 = OffsetDateTime.parse("2020-10-19T14:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime lam_timeStart2 = OffsetDateTime.parse("2020-10-22T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime lam_timeEnd2 = OffsetDateTime.parse("2020-10-22T14:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime lam_timeStart1 = OffsetDateTime.parse("2020-10-19T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime lam_timeEnd1 = OffsetDateTime.parse("2020-10-19T14:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime lam_timeStart2 = OffsetDateTime.parse("2020-10-22T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime lam_timeEnd2 = OffsetDateTime.parse("2020-10-22T14:00+11:00", DateTimeStatic.getFormatter());
 			Entity_Schedule lam_schedule1 = new Entity_Schedule(lam_timeStart1, lam_timeEnd1);
 			Entity_Schedule lam_schedule2 = new Entity_Schedule(lam_timeStart2, lam_timeEnd2);
 			// Rammy Schedule(Travel vac) -Mon(19th)->Wed(21th) 10am to 12am
-			OffsetDateTime Ram_timeStart1 = OffsetDateTime.parse("2020-10-19T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime Ram_timeEnd1 = OffsetDateTime.parse("2020-10-19T12:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime Ram_timeStart2 = OffsetDateTime.parse("2020-10-20T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime Ram_timeEnd2 = OffsetDateTime.parse("2020-10-20T12:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime Ram_timeStart3 = OffsetDateTime.parse("2020-10-21T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime Ram_timeEnd3 = OffsetDateTime.parse("2020-10-21T12:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime Ram_timeStart1 = OffsetDateTime.parse("2020-10-19T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime Ram_timeEnd1 = OffsetDateTime.parse("2020-10-19T12:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime Ram_timeStart2 = OffsetDateTime.parse("2020-10-20T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime Ram_timeEnd2 = OffsetDateTime.parse("2020-10-20T12:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime Ram_timeStart3 = OffsetDateTime.parse("2020-10-21T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime Ram_timeEnd3 = OffsetDateTime.parse("2020-10-21T12:00+11:00", DateTimeStatic.getFormatter());
 			Entity_Schedule Ram_schedule1 = new Entity_Schedule(Ram_timeStart1, Ram_timeEnd1);
 			Entity_Schedule Ram_schedule2 = new Entity_Schedule(Ram_timeStart2, Ram_timeEnd2);
 			Entity_Schedule Ram_schedule3 = new Entity_Schedule(Ram_timeStart3, Ram_timeEnd3);
 			// James Schedule(Standard consult) -Mon(19th)->Fri(23th) 10am to 7pm
-			OffsetDateTime j_timeStart1 = OffsetDateTime.parse("2020-10-19T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime j_timeEnd1 = OffsetDateTime.parse("2020-10-19T19:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime j_timeStart2 = OffsetDateTime.parse("2020-10-20T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime j_timeEnd2 = OffsetDateTime.parse("2020-10-20T19:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime j_timeStart3 = OffsetDateTime.parse("2020-10-21T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime j_timeEnd3 = OffsetDateTime.parse("2020-10-21T19:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime j_timeStart4 = OffsetDateTime.parse("2020-10-22T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime j_timeEnd4 = OffsetDateTime.parse("2020-10-22T19:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime j_timeStart5 = OffsetDateTime.parse("2020-10-23T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime j_timeEnd5 = OffsetDateTime.parse("2020-10-23T19:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime j_timeStart1 = OffsetDateTime.parse("2020-10-19T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime j_timeEnd1 = OffsetDateTime.parse("2020-10-19T19:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime j_timeStart2 = OffsetDateTime.parse("2020-10-20T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime j_timeEnd2 = OffsetDateTime.parse("2020-10-20T19:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime j_timeStart3 = OffsetDateTime.parse("2020-10-21T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime j_timeEnd3 = OffsetDateTime.parse("2020-10-21T19:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime j_timeStart4 = OffsetDateTime.parse("2020-10-22T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime j_timeEnd4 = OffsetDateTime.parse("2020-10-22T19:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime j_timeStart5 = OffsetDateTime.parse("2020-10-23T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime j_timeEnd5 = OffsetDateTime.parse("2020-10-23T19:00+11:00", DateTimeStatic.getFormatter());
 			Entity_Schedule j_schedule1 = new Entity_Schedule(j_timeStart1, j_timeEnd1);
 			Entity_Schedule j_schedule2 = new Entity_Schedule(j_timeStart2, j_timeEnd2);
 			Entity_Schedule j_schedule3 = new Entity_Schedule(j_timeStart3, j_timeEnd3);
 			Entity_Schedule j_schedule4 = new Entity_Schedule(j_timeStart4, j_timeEnd4);
 			Entity_Schedule j_schedule5 = new Entity_Schedule(j_timeStart5, j_timeEnd5);
 			// Fred Schedule(Long consult) -Mon(19th)->Thurs(22rd) 9am to 5pm
-			OffsetDateTime f_timeStart1 = OffsetDateTime.parse("2020-10-19T09:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime f_timeEnd1 = OffsetDateTime.parse("2020-10-19T17:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime f_timeStart2 = OffsetDateTime.parse("2020-10-20T09:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime f_timeEnd2 = OffsetDateTime.parse("2020-10-20T17:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime f_timeStart3 = OffsetDateTime.parse("2020-10-21T09:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime f_timeEnd3 = OffsetDateTime.parse("2020-10-21T17:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime f_timeStart4 = OffsetDateTime.parse("2020-10-22T09:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime f_timeEnd4 = OffsetDateTime.parse("2020-10-22T17:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime f_timeStart1 = OffsetDateTime.parse("2020-10-19T09:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime f_timeEnd1 = OffsetDateTime.parse("2020-10-19T17:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime f_timeStart2 = OffsetDateTime.parse("2020-10-20T09:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime f_timeEnd2 = OffsetDateTime.parse("2020-10-20T17:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime f_timeStart3 = OffsetDateTime.parse("2020-10-21T09:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime f_timeEnd3 = OffsetDateTime.parse("2020-10-21T17:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime f_timeStart4 = OffsetDateTime.parse("2020-10-22T09:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime f_timeEnd4 = OffsetDateTime.parse("2020-10-22T17:00+11:00", DateTimeStatic.getFormatter());
 			Entity_Schedule f_schedule1 = new Entity_Schedule(f_timeStart1, f_timeEnd1);
 			Entity_Schedule f_schedule2 = new Entity_Schedule(f_timeStart2, f_timeEnd2);
 			Entity_Schedule f_schedule3 = new Entity_Schedule(f_timeStart3, f_timeEnd3);
 			Entity_Schedule f_schedule4 = new Entity_Schedule(f_timeStart4, f_timeEnd4);
 			// Joel Schedule(Skin check) -Tue(20th)->Sat(24th) 10am to 5pm
-			OffsetDateTime joel_timeStart1 = OffsetDateTime.parse("2020-10-20T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime joel_timeEnd1 = OffsetDateTime.parse("2020-10-20T17:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime joel_timeStart2 = OffsetDateTime.parse("2020-10-21T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime joel_timeEnd2 = OffsetDateTime.parse("2020-10-21T17:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime joel_timeStart3 = OffsetDateTime.parse("2020-10-22T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime joel_timeEnd3 = OffsetDateTime.parse("2020-10-22T17:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime joel_timeStart4 = OffsetDateTime.parse("2020-10-23T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime joel_timeEnd4 = OffsetDateTime.parse("2020-10-23T17:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime joel_timeStart5 = OffsetDateTime.parse("2020-10-24T10:00+10:00", DateTimeStatic.getFormatter());
-			OffsetDateTime joel_timeEnd5 = OffsetDateTime.parse("2020-10-24T17:00+10:00", DateTimeStatic.getFormatter());
+			OffsetDateTime joel_timeStart1 = OffsetDateTime.parse("2020-10-20T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime joel_timeEnd1 = OffsetDateTime.parse("2020-10-20T17:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime joel_timeStart2 = OffsetDateTime.parse("2020-10-21T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime joel_timeEnd2 = OffsetDateTime.parse("2020-10-21T17:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime joel_timeStart3 = OffsetDateTime.parse("2020-10-22T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime joel_timeEnd3 = OffsetDateTime.parse("2020-10-22T17:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime joel_timeStart4 = OffsetDateTime.parse("2020-10-23T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime joel_timeEnd4 = OffsetDateTime.parse("2020-10-23T17:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime joel_timeStart5 = OffsetDateTime.parse("2020-10-24T10:00+11:00", DateTimeStatic.getFormatter());
+			OffsetDateTime joel_timeEnd5 = OffsetDateTime.parse("2020-10-24T17:00+11:00", DateTimeStatic.getFormatter());
 			Entity_Schedule joel_schedule1 = new Entity_Schedule(joel_timeStart1, joel_timeEnd1);
 			Entity_Schedule joel_schedule2 = new Entity_Schedule(joel_timeStart2, joel_timeEnd2);
 			Entity_Schedule joel_schedule3 = new Entity_Schedule(joel_timeStart3, joel_timeEnd3);
@@ -303,189 +303,189 @@ public class DemoApplication {
 			// Save Bookings
 			// Michelle bookings(standard consult 15min) -Mon(19th)->Thurs(22nd) 9am to 6pm
 			// Monday bookings
-			Entity_Booking m_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-12T17:00+10:00", DateTimeStatic.getFormatter()),
-														  OffsetDateTime.parse("2020-10-12T17:15+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking m_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T17:45+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-19T18:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking m_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T13:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-19T13:45+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking m_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-12T17:00+11:00", DateTimeStatic.getFormatter()),
+														  OffsetDateTime.parse("2020-10-12T17:15+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking m_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T17:45+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-19T18:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking m_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T13:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-19T13:45+11:00", DateTimeStatic.getFormatter()));
 			// Tuesday bookings
-			Entity_Booking m_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T10:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-20T10:15+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking m_bookng5 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T12:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-20T12:45+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking m_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T10:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-20T10:15+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking m_bookng5 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T12:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-20T12:45+11:00", DateTimeStatic.getFormatter()));
 			// Wednesday bookings
-			Entity_Booking m_bookng6 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T09:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-21T09:15+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking m_bookng7 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T14:45+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-21T15:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking m_bookng8 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T11:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-21T11:45+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking m_bookng6 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T09:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-21T09:15+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking m_bookng7 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T14:45+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-21T15:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking m_bookng8 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T11:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-21T11:45+11:00", DateTimeStatic.getFormatter()));
 			// Thursday bookings
-			Entity_Booking m_bookng9 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T09:45+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-22T10:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking m_bookng10 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T12:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-22T12:45+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking m_bookng9 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T09:45+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-22T10:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking m_bookng10 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T12:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-22T12:45+11:00", DateTimeStatic.getFormatter()));
 			// Leslie bookings(Skin check 60min) -Mon(19th)->Wed(21st)->Fri(23rd) 10am to 5pm
 			// Monday bookings
-			Entity_Booking l_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T10:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-19T11:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking l_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T14:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-19T15:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking l_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T10:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-19T11:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking l_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T14:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-19T15:00+11:00", DateTimeStatic.getFormatter()));
 			// Wednesday bookings
-			Entity_Booking l_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T12:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-21T13:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking l_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T16:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-21T17:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking l_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T12:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-21T13:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking l_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T16:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-21T17:00+11:00", DateTimeStatic.getFormatter()));
 			// Friday bookings
-			Entity_Booking l_bookng5 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T09:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-23T09:15+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking l_bookng6 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T14:45+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-23T15:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking l_bookng7 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T11:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-23T11:45+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking l_bookng5 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T09:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-23T09:15+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking l_bookng6 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T14:45+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-23T15:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking l_bookng7 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T11:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-23T11:45+11:00", DateTimeStatic.getFormatter()));
 			// Karin bookings(Long consult 30min) -Tue(20th)->Fri(23rd) 8am to 4pm
 			// Tuesday bookings
-			Entity_Booking k_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T08:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-20T08:30+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking k_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T10:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-20T11:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking k_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T15:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-20T16:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking k_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T08:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-20T08:30+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking k_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T10:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-20T11:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking k_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T15:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-20T16:00+11:00", DateTimeStatic.getFormatter()));
 			// Wednesday bookings
-			Entity_Booking k_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T09:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-21T09:30+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking k_bookng5 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T13:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-21T14:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking k_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T09:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-21T09:30+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking k_bookng5 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T13:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-21T14:00+11:00", DateTimeStatic.getFormatter()));
 			// Thursday bookings
-			Entity_Booking k_bookng6 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T09:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-22T09:30+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking k_bookng7 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T15:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-22T16:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking k_bookng6 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T09:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-22T09:30+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking k_bookng7 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T15:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-22T16:00+11:00", DateTimeStatic.getFormatter()));
 			// Friday bookings
-			Entity_Booking k_bookng8 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T10:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-23T11:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking k_bookng9 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T13:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-23T14:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking k_bookng10 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T14:30+10:00", DateTimeStatic.getFormatter()), 
-														   OffsetDateTime.parse("2020-10-23T15:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking k_bookng8 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T10:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-23T11:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking k_bookng9 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T13:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-23T14:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking k_bookng10 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T14:30+11:00", DateTimeStatic.getFormatter()), 
+														   OffsetDateTime.parse("2020-10-23T15:00+11:00", DateTimeStatic.getFormatter()));
 			// Lammy bookings(Pap smear 30min) -Mon(19th) and Thurs(22th) 10am to 2pm
 			// Monday bookings
-			Entity_Booking lam_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T10:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-19T11:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking lam_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T13:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-19T14:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking lam_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T10:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-19T11:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking lam_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T13:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-19T14:00+11:00", DateTimeStatic.getFormatter()));
 			// Thursday bookings
-			Entity_Booking lam_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T10:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-22T10:30+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking lam_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T11:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-22T12:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking lam_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T10:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-22T10:30+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking lam_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T11:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-22T12:00+11:00", DateTimeStatic.getFormatter()));
 			// Rammy bookings(Travel vac 10min) -Mon(19th)->Wed(21th) 10am to 12am
 			// Monday bookings
-			Entity_Booking Ram_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T10:30+10:00", DateTimeStatic.getFormatter()), 
-															OffsetDateTime.parse("2020-10-19T10:40+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking Ram_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T11:20+10:00", DateTimeStatic.getFormatter()), 
-															OffsetDateTime.parse("2020-10-19T11:30+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking Ram_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T10:30+11:00", DateTimeStatic.getFormatter()), 
+															OffsetDateTime.parse("2020-10-19T10:40+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking Ram_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T11:20+11:00", DateTimeStatic.getFormatter()), 
+															OffsetDateTime.parse("2020-10-19T11:30+11:00", DateTimeStatic.getFormatter()));
 			// Tuesday bookings
-			Entity_Booking Ram_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T10:50+10:00", DateTimeStatic.getFormatter()), 
-															OffsetDateTime.parse("2020-10-20T11:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking Ram_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T11:40+10:00", DateTimeStatic.getFormatter()), 
-															OffsetDateTime.parse("2020-10-20T11:50+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking Ram_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T10:50+11:00", DateTimeStatic.getFormatter()), 
+															OffsetDateTime.parse("2020-10-20T11:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking Ram_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T11:40+11:00", DateTimeStatic.getFormatter()), 
+															OffsetDateTime.parse("2020-10-20T11:50+11:00", DateTimeStatic.getFormatter()));
 			// Wednesday bookings
-			Entity_Booking Ram_bookng5 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T11:00+10:00", DateTimeStatic.getFormatter()), 
-															OffsetDateTime.parse("2020-10-21T11:10+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking Ram_bookng5 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T11:00+11:00", DateTimeStatic.getFormatter()), 
+															OffsetDateTime.parse("2020-10-21T11:10+11:00", DateTimeStatic.getFormatter()));
 			// James bookings(Standard consult 15min) -Mon(19th)->Fri(23th) 10am to 7pm
 			// Monday bookings
-			Entity_Booking j_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T10:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-19T10:15+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking j_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T10:45+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-19T11:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking j_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T14:45+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-19T15:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking j_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T18:45+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-19T19:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking j_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T10:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-19T10:15+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking j_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T10:45+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-19T11:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking j_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T14:45+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-19T15:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking j_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T18:45+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-19T19:00+11:00", DateTimeStatic.getFormatter()));
 			// Tuesday bookings
-			Entity_Booking j_bookng5 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T11:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-20T11:15+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking j_bookng6 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T12:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-20T12:45+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking j_bookng7 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T13:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-20T13:15+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking j_bookng8 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T15:45+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-20T16:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking j_bookng5 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T11:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-20T11:15+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking j_bookng6 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T12:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-20T12:45+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking j_bookng7 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T13:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-20T13:15+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking j_bookng8 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T15:45+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-20T16:00+11:00", DateTimeStatic.getFormatter()));
 			// Wednesday bookings
-			Entity_Booking j_bookng9 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T12:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-21T12:45+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking j_bookng9 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T12:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-21T12:45+11:00", DateTimeStatic.getFormatter()));
 			// Thursday bookings
-			Entity_Booking j_bookng10 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T10:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-22T10:15+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking j_bookng11 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T12:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-22T12:45+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking j_bookng12 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T15:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-22T15:15+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking j_bookng10 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T10:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-22T10:15+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking j_bookng11 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T12:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-22T12:45+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking j_bookng12 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T15:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-22T15:15+11:00", DateTimeStatic.getFormatter()));
 			// Friday bookings
-			Entity_Booking j_bookng13 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T13:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-23T13:15+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking j_bookng14 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T18:45+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-23T19:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking j_bookng13 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T13:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-23T13:15+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking j_bookng14 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T18:45+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-23T19:00+11:00", DateTimeStatic.getFormatter()));
 			// Fred bookings(Long consult 30min) -Mon(19th)->Thurs(22rd) 9am to 5pm
 			// Monday bookings
-			Entity_Booking f_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T09:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-19T09:30+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking f_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T10:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-19T11:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking f_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T14:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-19T14:30+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking f_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T09:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-19T09:30+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking f_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T10:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-19T11:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking f_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-19T14:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-19T14:30+11:00", DateTimeStatic.getFormatter()));
 			// Tuesday bookings
-			Entity_Booking f_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T12:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-20T12:30+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking f_bookng5 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T13:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-20T14:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking f_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T12:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-20T12:30+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking f_bookng5 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T13:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-20T14:00+11:00", DateTimeStatic.getFormatter()));
 			// Wednesday bookings
-			Entity_Booking f_bookng6 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T11:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-21T11:30+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking f_bookng7 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T16:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-21T17:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking f_bookng6 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T11:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-21T11:30+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking f_bookng7 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T16:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-21T17:00+11:00", DateTimeStatic.getFormatter()));
 			// Thursday bookings
-			Entity_Booking f_bookng8 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T10:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-22T10:30+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking f_bookng9 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T13:30+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-22T14:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking f_bookng10 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T15:00+10:00", DateTimeStatic.getFormatter()), 
-														   OffsetDateTime.parse("2020-10-22T15:30+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking f_bookng8 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T10:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-22T10:30+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking f_bookng9 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T13:30+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-22T14:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking f_bookng10 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T15:00+11:00", DateTimeStatic.getFormatter()), 
+														   OffsetDateTime.parse("2020-10-22T15:30+11:00", DateTimeStatic.getFormatter()));
 			// Joel bookings(Skin check 60min) -Tue(20th)->Sat(24th) 10am to 5pm
 			// Tuesday bookings
-			Entity_Booking joel_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T10:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-20T11:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking joel_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T11:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-20T12:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking joel_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T16:00+10:00", DateTimeStatic.getFormatter()), 
-														  OffsetDateTime.parse("2020-10-20T17:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking joel_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T10:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-20T11:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking joel_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T11:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-20T12:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking joel_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-20T16:00+11:00", DateTimeStatic.getFormatter()), 
+														  OffsetDateTime.parse("2020-10-20T17:00+11:00", DateTimeStatic.getFormatter()));
 			// Wednesday bookings
-			Entity_Booking joel_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T11:00+10:00", DateTimeStatic.getFormatter()), 
-															 OffsetDateTime.parse("2020-10-21T12:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking joel_bookng4 = new Entity_Booking(OffsetDateTime.parse("2020-10-21T11:00+11:00", DateTimeStatic.getFormatter()), 
+															 OffsetDateTime.parse("2020-10-21T12:00+11:00", DateTimeStatic.getFormatter()));
 			// Thursday bookings
-			Entity_Booking joel_bookng5 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T13:00+10:00", DateTimeStatic.getFormatter()), 
-															 OffsetDateTime.parse("2020-10-22T14:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking joel_bookng6 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T16:00+10:00", DateTimeStatic.getFormatter()), 
-															 OffsetDateTime.parse("2020-10-22T17:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking joel_bookng5 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T13:00+11:00", DateTimeStatic.getFormatter()), 
+															 OffsetDateTime.parse("2020-10-22T14:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking joel_bookng6 = new Entity_Booking(OffsetDateTime.parse("2020-10-22T16:00+11:00", DateTimeStatic.getFormatter()), 
+															 OffsetDateTime.parse("2020-10-22T17:00+11:00", DateTimeStatic.getFormatter()));
 			// Friday bookings
-			Entity_Booking joel_bookng7 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T14:00+10:00", DateTimeStatic.getFormatter()), 
-															 OffsetDateTime.parse("2020-10-23T15:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking joel_bookng7 = new Entity_Booking(OffsetDateTime.parse("2020-10-23T14:00+11:00", DateTimeStatic.getFormatter()), 
+															 OffsetDateTime.parse("2020-10-23T15:00+11:00", DateTimeStatic.getFormatter()));
 			// Saturday bookings
-			Entity_Booking joel_bookng8 = new Entity_Booking(OffsetDateTime.parse("2020-10-24T14:00+10:00", DateTimeStatic.getFormatter()), 
-															 OffsetDateTime.parse("2020-10-24T15:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking joel_bookng9 = new Entity_Booking(OffsetDateTime.parse("2020-10-24T15:00+10:00", DateTimeStatic.getFormatter()), 
-															 OffsetDateTime.parse("2020-10-24T16:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking joel_bookng8 = new Entity_Booking(OffsetDateTime.parse("2020-10-24T14:00+11:00", DateTimeStatic.getFormatter()), 
+															 OffsetDateTime.parse("2020-10-24T15:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking joel_bookng9 = new Entity_Booking(OffsetDateTime.parse("2020-10-24T15:00+11:00", DateTimeStatic.getFormatter()), 
+															 OffsetDateTime.parse("2020-10-24T16:00+11:00", DateTimeStatic.getFormatter()));
 
 			// Testing data OLD bookings
-			Entity_Booking test_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-09T15:00+10:00", DateTimeStatic.getFormatter()), 
-															OffsetDateTime.parse("2020-10-09T16:00+10:00", DateTimeStatic.getFormatter()));
-			Entity_Booking test_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-07T14:00+10:00", DateTimeStatic.getFormatter()), 
-															OffsetDateTime.parse("2020-10-07T15:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking test_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-09T15:00+11:00", DateTimeStatic.getFormatter()), 
+															OffsetDateTime.parse("2020-10-09T16:00+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking test_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-07T14:00+11:00", DateTimeStatic.getFormatter()), 
+															OffsetDateTime.parse("2020-10-07T15:00+11:00", DateTimeStatic.getFormatter()));
 			// Testing data upcoming bookings
-			Entity_Booking test_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-15T12:00+10:00", DateTimeStatic.getFormatter()), 
-															OffsetDateTime.parse("2020-10-15T12:30+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking test_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-15T12:00+11:00", DateTimeStatic.getFormatter()), 
+															OffsetDateTime.parse("2020-10-15T12:30+11:00", DateTimeStatic.getFormatter()));
 
 			// Save the bookings
 			BookingRepository.save(m_bookng1);

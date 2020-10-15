@@ -10,6 +10,48 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ApiService from "../../api/ApiService";
 import { formatDate as formatFullDate } from "../../utils";
+import Modal from "@material-ui/core/Modal";
+import { makeStyles } from "@material-ui/core/styles";
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "1px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
+
+function DayModal({ open, handleClose, body }) {
+  const classes = useStyles();
+  const [modalStyle] = React.useState(getModalStyle);
+
+  return (
+    <div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body(classes, modalStyle)}
+      </Modal>
+    </div>
+  );
+}
 
 class EmpSchedule extends Component {
   constructor() {
@@ -19,6 +61,7 @@ class EmpSchedule extends Component {
       startTime: null,
       endTime: null,
       schedule: "",
+      message: null,
     };
   }
 
@@ -31,7 +74,7 @@ class EmpSchedule extends Component {
   createSchedule = (data) => {
     ApiService.createSchedule(this, data)
       .then((res) => {
-        this.setState({ message: res.data });
+        this.setState({ showmodal: true });
       })
       .catch((e) => {
         alert(e.response.data.errors);
@@ -123,6 +166,20 @@ class EmpSchedule extends Component {
             Add Schedule
           </button>
         </div>
+        <DayModal
+          open={this.state.showmodal}
+          handleClose={() => this.setState({ showmodal: false })}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          body={(classes, modalStyle) => (
+            <div style={modalStyle} className={classes.paper}>
+              <h2 id="simple-modal-title">ALERT!</h2>
+              <p id="simple-modal-description">
+                Created Schedule Successfully!
+              </p>
+            </div>
+          )}
+        />
       </>
     );
   }
