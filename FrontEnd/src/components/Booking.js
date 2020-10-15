@@ -30,7 +30,7 @@ class Booking extends Component {
     };
   }
   calculateDateRange = () => {
-    const formatDate = (d) =>
+    const formatInputDate = (d) =>
       `${d.getFullYear()}-${formatPad(d.getMonth() + 1)}-${formatPad(
         d.getDate()
       )}`;
@@ -38,7 +38,10 @@ class Booking extends Component {
     now.setDate(now.getDate() + 1);
     const in7 = new Date(now);
     in7.setDate(now.getDate() + 6);
-    this.setState({ maxDate: formatDate(in7), minDate: formatDate(now) });
+    this.setState({
+      maxDate: formatInputDate(in7),
+      minDate: formatInputDate(now),
+    });
   };
 
   componentDidMount() {
@@ -107,7 +110,6 @@ class Booking extends Component {
       if (name === "date") {
         this.getBookedTimeslots().then((bookedTimeslots) => {
           this.getEmpSchedule().then((scheduleData) => {
-            debugger;
             this.generateAvailableTimes(
               bookedTimeslots,
               this.filterSchedule(scheduleData)
@@ -124,7 +126,7 @@ class Booking extends Component {
   parseScheduleDatetime = (scheduleDateTime) => {
     const [date, startTime] = scheduleDateTime.split("@");
     const [year, month, day] = date.split("-");
-    const [hour, minute] = startTime.split(":").map(Number);
+    const [hour, minute] = startTime.split(":");
     const datetime = new Date();
     datetime.setUTCFullYear(year);
     datetime.setUTCMonth(month - 1);
@@ -161,14 +163,14 @@ class Booking extends Component {
   generateAvailableTimes = (bookedTimeslots, schedule) => {
     // no schedule for current employee, return
     if (!schedule) return;
-
+    debugger;
     const excludedTimes = {};
     for (let booking of bookedTimeslots) {
-      const slot = booking.startTime;
-      const timeAMPM = slot.split(" ");
-      const time = timeAMPM[0].split(":").map(Number);
-      time[0] = timeAMPM[1] === "pm" ? time[0] + 12 : time[0];
-      const key = time[0] + ":" + time[1];
+      booking.startTime = booking.startTime.split(" ")[0];
+      const [, timeStr] = this.parseScheduleDatetime(
+        booking.date + "@" + booking.startTime
+      );
+      const key = timeStr;
       console.log(key);
       excludedTimes[key] = "bongbing";
     }

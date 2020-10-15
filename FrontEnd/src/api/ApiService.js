@@ -110,7 +110,7 @@ class ApiService {
 
   fetchAdminBookings(component) {
     return axios
-      .get(USER_API_BASE_URL + "/api/booking/getAllBookings", {
+      .get(USER_API_BASE_URL + "/api/booking/getUpcomingBookings", {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));

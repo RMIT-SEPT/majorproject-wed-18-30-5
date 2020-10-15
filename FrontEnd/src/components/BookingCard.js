@@ -1,7 +1,32 @@
 import React from "react";
 import { Card, ListGroup } from "react-bootstrap";
 
+const parseBookingDateTimes = ({ date, startTime, endTime }) => {
+  const [year, month, day] = date.split("-");
+  const [hour, minute_AMPM] = startTime.split(":");
+  const [minute] = minute_AMPM.split(" ");
+  const datetime = new Date();
+  datetime.setUTCFullYear(year);
+  datetime.setUTCMonth(month - 1);
+  datetime.setUTCDate(day - 1);
+  datetime.setUTCHours(hour);
+  datetime.setUTCMinutes(minute);
+  const dateTZ = [
+    datetime.getFullYear(),
+    datetime.getMonth() + 1,
+    datetime.getDate() + 1,
+  ].join("-");
+  const startTimeTZ = [datetime.getHours(), datetime.getMinutes()].join(":");
+  const [hourEnd, minute_AMPMEnd] = endTime.split(":");
+  const [minuteEnd] = minute_AMPMEnd.split(" ");
+  datetime.setUTCHours(hourEnd);
+  datetime.setUTCMinutes(minuteEnd);
+  const endTimeTZ = [datetime.getHours(), datetime.getMinutes()].join(":");
+  return [dateTZ, startTimeTZ, endTimeTZ];
+};
+
 function BookingCard({ cancelButton, booking, render }) {
+  const [date, startTime, endTime] = parseBookingDateTimes(booking);
   return (
     <Card>
       <Card.Body>
@@ -18,11 +43,10 @@ function BookingCard({ cancelButton, booking, render }) {
           </ListGroup.Item>
           <ListGroup.Item>
             {" "}
-            <b>Date : </b> {booking.date}{" "}
+            <b>Date : </b> {date}{" "}
           </ListGroup.Item>
           <ListGroup.Item>
-            <b>Time From : </b> {booking.startTime} <b> To : </b>{" "}
-            {booking.endTime}{" "}
+            <b>Time From : </b> {startTime} <b> To : </b> {endTime}
           </ListGroup.Item>
         </ListGroup>
       </Card.Body>

@@ -93,10 +93,10 @@ class EmpSchedule extends Component {
     const end_time = endTime.split(":").map(Number);
     const startDateTime = new Date(date);
     const endDateTime = new Date(date);
-    startDateTime.setUTCHours(start_time[0]);
-    startDateTime.setUTCMinutes(start_time[1]);
-    endDateTime.setUTCHours(end_time[0]);
-    endDateTime.setUTCMinutes(end_time[1]);
+    startDateTime.setHours(start_time[0]);
+    startDateTime.setMinutes(start_time[1]);
+    endDateTime.setHours(end_time[0]);
+    endDateTime.setMinutes(end_time[1]);
     const data = {
       startDateTime: formatFullDate(startDateTime),
       endDateTime: formatFullDate(endDateTime),
@@ -111,7 +111,7 @@ class EmpSchedule extends Component {
         <header>
           <NavBarAdmin />
         </header>
-        <Datetime />;
+        <Datetime />
         <div className="col-md-6 mx-auto text-center">
           <div className="header-title">
             <h1 className="wv-heading--title">

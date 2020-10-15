@@ -74,26 +74,6 @@ class MyEmpSchedule extends Component {
     });
   };
 
-  parseScheduleDatetime = (scheduleDateTime) => {
-    return scheduleDateTime.split("@");
-  };
-
-  filterSchedule = (scheduleData) => {
-    for (let schedule of scheduleData) {
-      const [date, startTime] = this.parseScheduleDatetime(
-        schedule.startDateTime
-      );
-      const [endTime] = this.parseScheduleDatetime(schedule.endDateTime);
-      if (date === this.state.date) {
-        const [startHour, startMinute] = startTime.split(":").map(Number);
-        const [endHour, endMinute] = endTime.split(":").map(Number);
-        return { startHour, startMinute, endHour, endMinute };
-      }
-    }
-    // get todays schedule
-    return null;
-  };
-
   useStyles = makeStyles((theme) => ({
     paper: {
       position: "absolute",
