@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.wed18305.assignment1.model.Entity_Service;
-import com.fasterxml.jackson.datatype.jsr310.ser.OffsetDateTimeSerializer;
 import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.model.Entity_Schedule;
 import com.wed18305.assignment1.model.Entity_User;
@@ -80,7 +79,15 @@ public class User_Service {
     // What Bookings has a Customer Made? may be null
     public Iterable<Entity_Booking> findUserBookings(Long id) {
         Entity_User user = userRepository.findById(id).get();
-        return user.getBookings();
+        ArrayList<Entity_Booking> bookings = new ArrayList<Entity_Booking>();
+
+        for (Entity_Booking booking : user.getBookings()) {
+
+            // Does Booking Exist Within the Appropriate Time Frame?
+            if (bookingWillRunInSevenDays(booking)       || 
+                bookingRanLessThanSevenDaysAgo(booking)) { bookings.add(booking); }
+        }
+        return bookings;
     }
 
     public Iterable<Entity_Booking> findUpcomingUserBookings(Long id) {
@@ -173,6 +180,16 @@ public class User_Service {
         OffsetDateTime start = booking.getStartDateTime();
         //  now -> start                  start -> sevenDays
         return start.compareTo(now) >= 0 && start.compareTo(sevenDaysFromNow) <= 0;
+    }
+
+    private boolean bookingRanLessThanSevenDaysAgo(Entity_Booking booking) {
+
+        // Did Booking Finish Less Than 7 Days Ago?
+        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime sevenDaysAgo = now.minusWeeks(1);
+        OffsetDateTime end = booking.getEndDateTime();
+        //  sevenDaysAgo -> end                 end -> now
+        return end.compareTo(sevenDaysAgo) >= 0 && end.compareTo(now) <= 0;
     }
 
     private Iterable<Entity_Booking> returnCompleted(Long id, Long approvalStatus) {

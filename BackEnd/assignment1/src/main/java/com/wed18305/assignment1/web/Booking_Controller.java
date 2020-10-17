@@ -1,11 +1,8 @@
 package com.wed18305.assignment1.web;
 
 import java.security.Principal;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -16,12 +13,10 @@ import com.wed18305.assignment1.Responses.Response;
 import com.wed18305.assignment1.Responses.Response_Booking;
 import com.wed18305.assignment1.Responses.Response_CreateBooking;
 import com.wed18305.assignment1.Responses.Response_Timeslots;
-import com.jayway.jsonpath.Option;
 import com.wed18305.assignment1.Requests.Booking_Request;
 import com.wed18305.assignment1.Requests.Delete_Request;
 import com.wed18305.assignment1.Requests.Get_Request;
 import com.wed18305.assignment1.Requests.Timeslot_Request;
-import com.wed18305.assignment1.Requests.User_Request;
 import com.wed18305.assignment1.model.Entity_Booking;
 import com.wed18305.assignment1.model.Entity_Schedule;
 import com.wed18305.assignment1.services.Booking_Service;
@@ -31,9 +26,7 @@ import com.wed18305.assignment1.model.Entity_UserType.UserTypeID;
 import com.wed18305.assignment1.services.User_Service;
 import com.wed18305.assignment1.tools.Container_Users;
 
-import org.assertj.core.data.Offset;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -470,18 +463,18 @@ public class Booking_Controller {
         Entity_User curUser = user.get();
         Iterable<Entity_Booking> bookings =  null;
         Response_Booking bkgResponse = null;
-        try {
+        // try {
             // Get Certain Upcoming Bookings Based on UserType
                  if (isAdmin(curUser))    { bookings = bookingService.findAllUpcoming();                          } 
             else if (isEmployee(curUser)) { bookings = userService.findApprovedUpcomingBookings(curUser.getId()); }
             else if (isCustomer(curUser)) { bookings = userService.findUpcomingUserBookings    (curUser.getId()); }
         
             bkgResponse = new Response_Booking(bookings);
-        }
-        catch (Exception e) {
-            Response response = new Response(false, "ERROR!", e.getMessage(), null);
-            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
-        }
+        // }
+        // catch (Exception e) {
+        //     Response response = new Response(false, "ERROR!", e.getMessage(), null);
+        //     return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        // }
 
         // Any Bookings Found?
         if (!bookings.iterator().hasNext()) { // If size < 1

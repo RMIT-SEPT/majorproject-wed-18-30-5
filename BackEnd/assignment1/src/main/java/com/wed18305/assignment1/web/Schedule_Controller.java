@@ -159,7 +159,8 @@ public class Schedule_Controller {
      * @param result
      * @return
      */
-    @GetMapping("getSchedule")
+    @CrossOrigin("http://localhost:3000")
+    @PostMapping("getSchedule")
     public ResponseEntity<Response> getSchedule(@Valid @RequestBody Get_Request gr, BindingResult result){
         // Binding validation checks
         if (result.hasErrors()) {
@@ -208,7 +209,7 @@ public class Schedule_Controller {
     @GetMapping("updateSchedule")
     public ResponseEntity<Response> updateSchedule(@Valid @RequestBody Delete_Request dr, BindingResult result){
         //TODO implement
-        //Success TODO only temp
+        //Success
         Response response = new Response(true, "schedule(s) found!", null, null);
         return new ResponseEntity<Response>(response, HttpStatus.OK);
     }

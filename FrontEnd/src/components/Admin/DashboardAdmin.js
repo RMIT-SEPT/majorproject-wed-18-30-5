@@ -22,7 +22,7 @@ class DashboardAdmin extends Component {
   }
 
   reloadBookingList = () => {
-    ApiService.fetchAdminBookings(this).then((res) => {
+    ApiService.fetchBookings(this).then((res) => {
       this.setState({ bookings: Array.from(res.data.body.bookings) });
       debugger;
     });

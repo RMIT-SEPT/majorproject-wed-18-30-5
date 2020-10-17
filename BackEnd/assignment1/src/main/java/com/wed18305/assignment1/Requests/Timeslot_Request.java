@@ -2,11 +2,7 @@ package com.wed18305.assignment1.Requests;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import com.wed18305.assignment1.config.DateTimeStatic;
 
 public class Timeslot_Request{
 

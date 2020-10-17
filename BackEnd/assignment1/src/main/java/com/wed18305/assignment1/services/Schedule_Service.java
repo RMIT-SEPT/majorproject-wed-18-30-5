@@ -39,7 +39,7 @@ public class Schedule_Service {
 
     //DELETION
     public void deleteById(Long id){
-        //remove any reference to this schedule, TODO check this works properly
+        //remove any reference to this schedule
         Optional<Entity_Schedule> schedule = schRepository.findById(id);
         if(schedule.isPresent()){
             schedule.get().getEmployees().clear();
@@ -47,7 +47,7 @@ public class Schedule_Service {
         schRepository.deleteById(id);
     }
     public void deleteAll(Iterable<Entity_Schedule> schedules){
-        //remove any reference to this schedule, TODO check this works properly
+        //remove any reference to this schedule
         for (Entity_Schedule schedule : schedules) {
             schedule.getEmployees().clear();
         }

@@ -1,14 +1,14 @@
 import React, { Component } from "react";
+import AdminNav from "./AdminNav";
 import { CardColumns } from "react-bootstrap";
-import EmployeeNav from "./EmployeeNav";
-import BookingCard from "../BookingCard";
 import ApiService from "../../api/ApiService";
+import BookingCard from "../BookingCard";
 
-export default class EmpBookings extends Component {
+class PastBookingsAdmin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bookings: [],
+      pastbookings: [],
       message: null,
     };
   }
@@ -18,22 +18,24 @@ export default class EmpBookings extends Component {
   }
 
   reloadBookingList = () => {
-    ApiService.fetchEmployeeBookings(this).then((res) => {
-      debugger;
-      this.setState({ bookings: Array.from(res.data.body.bookings) });
+    ApiService.fetchPastBookings(this).then((res) => {
+      this.setState({ pastbookings: Array.from(res.data.body.bookings) });
     });
   };
-
   render() {
     return (
       <>
         <header>
-          <EmployeeNav />
+          <AdminNav />
         </header>
+
         <div className="active-booking-wrapper">
           <CardColumns>
-            {this.state.bookings.map((booking) => (
-              <BookingCard key={booking.id} booking={booking}></BookingCard>
+            {this.state.pastbookings.map((pastbookings) => (
+              <BookingCard
+                key={pastbookings.id}
+                booking={pastbookings}
+              ></BookingCard>
             ))}
           </CardColumns>
         </div>
@@ -41,3 +43,5 @@ export default class EmpBookings extends Component {
     );
   }
 }
+
+export default PastBookingsAdmin;

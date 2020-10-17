@@ -110,7 +110,7 @@ class ApiService {
 
   fetchAdminBookings(component) {
     return axios
-      .get(USER_API_BASE_URL + "/api/booking/getAllBookings", {
+      .get(USER_API_BASE_URL + "/api/booking/getUpcomingBookings", {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));
@@ -134,6 +134,22 @@ class ApiService {
   getBookedTimeslots(component, employee) {
     return axios
       .post(USER_API_BASE_URL + "/api/booking/getBookedTimeslots", employee, {
+        withCredentials: true,
+      })
+      .then(handleLoginRedirect(component));
+  }
+
+  createSchedule(component, data) {
+    return axios
+      .post(USER_API_BASE_URL + "/api/schedule/createSchedule", data, {
+        withCredentials: true,
+      })
+      .then(handleLoginRedirect(component));
+  }
+
+  getSchedule(component, data) {
+    return axios
+      .post(USER_API_BASE_URL + "/api/schedule/getSchedule", data, {
         withCredentials: true,
       })
       .then(handleLoginRedirect(component));
