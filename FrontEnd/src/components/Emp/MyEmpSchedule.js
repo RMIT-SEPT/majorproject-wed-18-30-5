@@ -130,7 +130,9 @@ class MyEmpSchedule extends Component {
         );
         const [startHour, startMinute] = startTime.split(":").map(Number);
         const [endHour, endMinute] = endTime.split(":").map(Number);
-        return { startHour, startMinute, endDate, endHour, endMinute };
+        const state = { startHour, startMinute, endDate, endHour, endMinute };
+        Object.keys(state).forEach(k => state[k] = formatPad(state[k]));
+        return state;
       }
     }
     // get todays schedule
@@ -186,12 +188,16 @@ class MyEmpSchedule extends Component {
                 <p id="simple-modal-description">
                   {this.state.startHour === "" ?
              ("No Schedules Allocated For This Date.") :
-                    (<span>Starting @ {
-                      formatPad(this.state.startHour)}:{
-                        formatPad(this.state.startMinute)}0 AND Finishing @ {
-                        formatPad(this.state.endHour)}:{
-                        formatPad(this.state.endMinute)}
-                    </span>)
+                    (
+                      <span>
+                        Starting @{" "}
+                        {this.state.startHour}:
+                        {this.state.startMinute}
+                        {" "}AND Finishing @{" "}
+                        {this.state.endHour}:
+                        {this.state.endMinute}
+                      </span>
+                    )
             }
                 </p>
               </div>
