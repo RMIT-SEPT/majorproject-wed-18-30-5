@@ -267,6 +267,14 @@ h2 {
   margin-top: 0px !important;
   margin-bottom: 0px !important;
 }
+
+.calender-cmp {
+  margin-left: 10%;
+}
+
+.time-cmp {
+  margin-top: 10%;
+}
 @media screen and (max-width: 480px) {
   h1 {
     font-size: 26px;

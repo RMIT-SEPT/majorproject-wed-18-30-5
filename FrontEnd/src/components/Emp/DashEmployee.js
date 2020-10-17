@@ -1,16 +1,31 @@
 import React, { Component } from "react";
+import { CardColumns } from "react-bootstrap";
 import EmployeeNav from "./EmployeeNav";
-import { Table, Card, CardDeck } from "react-bootstrap";
+import BookingCard from "../BookingCard";
 import ApiService from "../../api/ApiService";
 
-class DashEmployee extends Component {
+export default class EmpBookings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pastbookings: [],
+      bookings: [],
       message: null,
     };
   }
+
+  componentDidMount() {
+    this.reloadBookingList();
+  }
+
+  reloadBookingList = () => {
+    ApiService.fetchBookings(this).then((res) => {
+      debugger;
+      this.setState({ bookings: Array.from(res.data.body.bookings) });
+    }).catch(err => {
+      console.log(err);
+      this.setState({ bookings: [] });
+    });
+  };
 
   render() {
     return (
@@ -18,38 +33,17 @@ class DashEmployee extends Component {
         <header>
           <EmployeeNav />
         </header>
-        <div className="pending-booking-wrapper">
-          <p>My schedule</p>
-          <form>
-            <CardDeck>
-              <Card>
-                {/* <Card.Img variant="top" src="holder.js/100px160" /> */}
-                <Card.Body>
-                  <Card.Title>Service Name</Card.Title>
-                  <Card.Text>
-                    <ul>
-                      <li>
-                        <lable>Customer Name : </lable>
-                      </li>
-                      <li>
-                        <lable>Start-Date : </lable>
-                      </li>
-                      <li>
-                        <lable>End-Date : </lable>
-                      </li>
-                    </ul>
-                  </Card.Text>
-                </Card.Body>
-                <Card.Footer>
-                  <small className="text-muted">Last updated 3 mins ago</small>
-                </Card.Footer>
-              </Card>
-            </CardDeck>
-          </form>
+        <div className="active-booking-wrapper">
+          <CardColumns>
+            {this.state.bookings.length < 1 ?
+              <span className="ml-auto mr-auto" style={{ color: "grey" }}>No bookings</span>
+            :
+              this.state.bookings.map((booking) => (
+              <BookingCard key={booking.id} booking={booking}></BookingCard>
+            ))}
+          </CardColumns>
         </div>
       </>
     );
   }
 }
-
-export default DashEmployee;

@@ -83,9 +83,11 @@ export default function SignIn() {
       setSubmit(false);
     } else if (loginResult) {
       if (loginResult.message === "admin") {
-        history.push("/dashboardadmin");
+        history.push("/dasboardadmin");
       } else if (loginResult.message === "customer") {
         history.push("/home");
+      } else if (loginResult.message === "employee") {
+        history.push("/dashemployee");
       }
     }
   }, [loginResult, setSubmit, history]);

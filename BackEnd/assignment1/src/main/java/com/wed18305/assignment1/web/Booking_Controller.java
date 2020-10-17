@@ -463,18 +463,18 @@ public class Booking_Controller {
         Entity_User curUser = user.get();
         Iterable<Entity_Booking> bookings =  null;
         Response_Booking bkgResponse = null;
-        try {
+        // try {
             // Get Certain Upcoming Bookings Based on UserType
                  if (isAdmin(curUser))    { bookings = bookingService.findAllUpcoming();                          } 
             else if (isEmployee(curUser)) { bookings = userService.findApprovedUpcomingBookings(curUser.getId()); }
             else if (isCustomer(curUser)) { bookings = userService.findUpcomingUserBookings    (curUser.getId()); }
         
             bkgResponse = new Response_Booking(bookings);
-        }
-        catch (Exception e) {
-            Response response = new Response(false, "ERROR!", e.getMessage(), null);
-            return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
-        }
+        // }
+        // catch (Exception e) {
+        //     Response response = new Response(false, "ERROR!", e.getMessage(), null);
+        //     return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+        // }
 
         // Any Bookings Found?
         if (!bookings.iterator().hasNext()) { // If size < 1

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { formatDate as formatFullDate } from "../utils";
 import ApiService from "../api/ApiService";
 import { withRouter } from "react-router-dom";
 import "../App.css";
@@ -25,10 +26,11 @@ class Booking extends Component {
       startHour: 8,
       endHour: 18,
       timeslots: [],
+      loading: false,
     };
   }
   calculateDateRange = () => {
-    const formatDate = (d) =>
+    const formatInputDate = (d) =>
       `${d.getFullYear()}-${formatPad(d.getMonth() + 1)}-${formatPad(
         d.getDate()
       )}`;
@@ -36,7 +38,10 @@ class Booking extends Component {
     now.setDate(now.getDate() + 1);
     const in7 = new Date(now);
     in7.setDate(now.getDate() + 6);
-    this.setState({ maxDate: formatDate(in7), minDate: formatDate(now) });
+    this.setState({
+      maxDate: formatInputDate(in7),
+      minDate: formatInputDate(now),
+    });
   };
 
   componentDidMount() {
@@ -49,6 +54,16 @@ class Booking extends Component {
       const schemas = Array.from(res.data.body);
       this.setState({ schemas }, this.reloadEmployeeList);
     });
+  };
+
+  getEmpSchedule = async () => {
+    if (this.state.employee && this.state.date) {
+      const res = await ApiService.getSchedule(this, {
+        id: Number(this.state.employee),
+      });
+      return Array.from(res.data.body);
+    }
+    return Promise.resolve([]);
   };
 
   reloadEmployeeList = () => {
@@ -66,17 +81,21 @@ class Booking extends Component {
     }
   };
 
-  getBookedTimeslots = () => {
+  getBookedTimeslots = async () => {
     if (this.state.employee && this.state.date) {
       const employee = {
         userID: this.state.employee,
         date: this.state.date,
       };
-      ApiService.getBookedTimeslots(this, employee).then((res) => {
-        const timeslots = Array.from(res.data.body.bookedTimes);
-        this.generateAvailableTimes(timeslots);
-      });
+      try {
+        const res = await ApiService.getBookedTimeslots(this, employee);
+        return Array.from(res.data.body.bookedTimes);
+      } catch (e) {
+        console.log(e.response.data.message);
+        return [];
+      }
     }
+    return [];
   };
 
   onChange = (e) => {
@@ -89,7 +108,14 @@ class Booking extends Component {
         this.reloadEmployeeList();
       }
       if (name === "date") {
-        this.getBookedTimeslots();
+        this.getBookedTimeslots().then((bookedTimeslots) => {
+          this.getEmpSchedule().then((scheduleData) => {
+            this.generateAvailableTimes(
+              bookedTimeslots,
+              this.filterSchedule(scheduleData)
+            );
+          });
+        });
       }
       if (name === "time") {
         this.setTimeslot(value);
@@ -97,37 +123,71 @@ class Booking extends Component {
     });
   };
 
-  /**
-   * @param {Date} date object to format
-   * @return {string} with format like this '2020-09-07T17:00+10:00'
-   */
-  formatDate = (date) => {
-    const year = date.getUTCFullYear();
-    const month = formatPad(date.getUTCMonth());
-    const day = formatPad(date.getUTCDate());
-    const hour = formatPad(date.getUTCHours());
-    const minute = formatPad(date.getUTCMinutes());
-    debugger;
-    return `${year}-${month}-${day}T${hour}:${minute}+00:00`;
+  parseScheduleDatetime = (scheduleDateTime) => {
+    const [date, startTime] = scheduleDateTime.split("@");
+    const [year, month, day] = date.split("-");
+    const [hour, minute] = startTime.split(":");
+    const datetime = new Date();
+    datetime.setUTCFullYear(year);
+    datetime.setUTCMonth(month - 1);
+    datetime.setUTCDate(day - 1);
+    datetime.setUTCHours(hour);
+    datetime.setUTCMinutes(minute);
+    const dateTZ = [
+      datetime.getFullYear(),
+      datetime.getMonth() + 1,
+      datetime.getDate() + 1,
+    ].join("-");
+    const timeTZ = [datetime.getHours(), datetime.getMinutes()].join(":");
+    return [dateTZ, timeTZ];
   };
 
-  generateAvailableTimes = (excludedTimeslots) => {
+  filterSchedule = (scheduleData) => {
+    for (let schedule of scheduleData) {
+      const [date, startTime] = this.parseScheduleDatetime(
+        schedule.startDateTime
+      );
+      const [endDate, endTime] = this.parseScheduleDatetime(
+        schedule.endDateTime
+      );
+      if (date === this.state.date) {
+        const [startHour, startMinute] = startTime.split(":").map(Number);
+        const [endHour, endMinute] = endTime.split(":").map(Number);
+        return { startHour, startMinute, endDate, endHour, endMinute };
+      }
+    }
+    // get todays schedule
+    return null;
+  };
+
+  generateAvailableTimes = (bookedTimeslots, schedule) => {
+    // no schedule for current employee, return
+    if (!schedule) return;
+    debugger;
     const excludedTimes = {};
-    for (let booking of excludedTimeslots) {
-      const slot = booking.startTime;
-      const timeAMPM = slot.split(" ");
-      const time = timeAMPM[0].split(":").map(Number);
-      time[0] = timeAMPM[1] === "pm" ? time[0] + 12 : time[0];
-      const key = time[0] + ":" + time[1];
+    for (let booking of bookedTimeslots) {
+      booking.startTime = booking.startTime.split(" ")[0];
+      const [, timeStr] = this.parseScheduleDatetime(
+        booking.date + "@" + booking.startTime
+      );
+      const key = timeStr;
       console.log(key);
       excludedTimes[key] = "bongbing";
     }
     const formatTime = (time) => `${time.getHours()}:${time.getMinutes()}`;
     const availableTimes = [];
-    const service = this.state.schemas[this.state.service];
+    const service = this.state.schemas[this.state.service - 1];
     for (
-      let time = new Date(0, 0, 0, this.state.startHour, 0, 0, 0);
-      time.getHours() < this.state.endHour;
+      let time = new Date(
+        0,
+        0,
+        0,
+        schedule.startHour,
+        schedule.startMinute,
+        0,
+        0
+      );
+      time.getHours() < schedule.endHour;
 
     ) {
       const key = time.getHours() + ":" + time.getMinutes();
@@ -141,7 +201,6 @@ class Booking extends Component {
   };
 
   setTimeslot = (index) => {
-    debugger;
     const timeslot = this.state.availableTimes[index];
     this.setState({ starttime: timeslot.start, endtime: timeslot.end });
   };
@@ -149,16 +208,17 @@ class Booking extends Component {
   onsubmit = (e) => {
     e.preventDefault();
     const date = this.state.date.split("-").map(Number);
+    date[1] = date[1] - 1;
+    date[2] = date[2] - 1;
     const start_time = this.state.starttime.split(":").map(Number);
     const end_time = this.state.endtime.split(":").map(Number);
     const start_date = new Date(...date, ...start_time);
     const end_date = new Date(...date, ...end_time);
     const booking = {
-      startDateTime: this.formatDate(start_date),
-      endDateTime: this.formatDate(end_date),
+      startDateTime: formatFullDate(start_date),
+      endDateTime: formatFullDate(end_date),
       user_ids: [Number(this.state.employee)],
     };
-    debugger;
     ApiService.createBooking(this, booking).then((res) => {
       console.log(booking);
       this.setState({ message: "Booking Created!" });
