@@ -697,6 +697,7 @@ public class Booking_ControllerTests{
 
 	/**
 	 * returns isOk for success
+	 * Approved bookings coming up in less than a week ago already implemented [i.e. 'validFutureBooking'].
 	 * @throws Exception
 	 */
 	@Test
@@ -751,6 +752,7 @@ public class Booking_ControllerTests{
 
 	/**
 	 * returns isOk for success
+	 * Approved bookings completed less than a week ago already implemented [i.e. 'validPastBooking']
 	 * @throws Exception
 	 */
 	@Test
