@@ -8,7 +8,6 @@
 - Sulakshana, Moditha (s3756843)
 - Yao, Boyan (s3694150)
 - Anning, Michael (s3720132)
-- Hollis-London, Jack (s3585034)
 
 ## Records
 

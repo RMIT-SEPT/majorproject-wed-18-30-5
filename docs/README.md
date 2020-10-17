@@ -23,6 +23,22 @@
 
 
 # Quick Start
+## Project Start -Local using H2 database
+###### Front End
+ * navigate to FrontEnd folder in command line
+ * type: npm install
+ * type: npm start
+###### Back End
+ * navigate to BackEnd/assignment1 in command line
+ * type: ./mvnw spring-boot:run
+###### Web Browser
+ * navigate to localhost:3000
+ 
+## Project Start -Local using docker-compose MySQL
+ * navigate to project root in command line
+ * type: docker-compose build (if you need to)
+ * type: docker-compose up -d
+ * navigate to localhost:3000 on a web browser after about 2 minutes
 
 ## Back-End
 ###### Running SpringBoot with startup testing data.
