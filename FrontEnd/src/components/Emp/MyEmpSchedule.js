@@ -8,6 +8,9 @@ import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import ApiService from "../../api/ApiService";
 
+const formatPad = (num) => String(num).padStart("2", "0");
+
+
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -58,20 +61,80 @@ class MyEmpSchedule extends Component {
       setOpen: false,
       scheduleData: [],
       date: "",
-      startHour: 8,
-      endHour: 18,
+      startHour: "", 
+      startMinute: "", 
+      endDate: "", 
+      endHour: "", 
+      endMinute: ""
     };
   }
 
   onChange = (date, time) => this.setState({ date, time });
 
+  componentDidMount() {
+    this.reloadSchedule();
+  }
+
   reloadSchedule = () => {
     ApiService.getSchedule(this, {
-      id: Number(5),
+      id: 5,
     }).then((res) => {
       const scheduleData = Array.from(res.data.body);
-      this.setState({ scheduleData }, this.reloadSchedule);
+      this.setState({scheduleData});
     });
+  };
+
+  formatDate = (date) => `${date.getFullYear()}:${date.getMonth()}:${date.getDate()}`;
+
+  parseScheduleDatetime = (scheduleDateTime) => {
+    const [date, startTime] = scheduleDateTime.split("@");
+    const [year, month, day] = date.split("-");
+    const [hour, minute] = startTime.split(":");
+    const datetime = new Date();
+    datetime.setUTCFullYear(year);
+    datetime.setUTCMonth(month - 1);
+    datetime.setUTCDate(day - 1);
+    datetime.setUTCHours(hour);
+    datetime.setUTCMinutes(minute);
+    return datetime;
+  };
+
+  splitDateTimes = (datetime) => {
+    const dateTZ = [
+      datetime.getFullYear(),
+      datetime.getMonth() + 1,
+      datetime.getDate() + 1,
+    ].join("-");
+    const timeTZ = [datetime.getHours(), datetime.getMinutes()].join(":");
+    return [dateTZ, timeTZ];
+  }
+
+  filterSchedule = (scheduleData, selectedDate = this.state.date) => {
+    for (let schedule of scheduleData) {
+      const startDatetime = this.parseScheduleDatetime(
+        schedule.startDateTime
+      );
+      const endDatetime = this.parseScheduleDatetime(
+        schedule.endDateTime
+      );
+      if (
+        startDatetime.getFullYear() === selectedDate.getFullYear() &&
+        startDatetime.getMonth() === selectedDate.getMonth() &&
+        startDatetime.getDate() === selectedDate.getDate()
+      ) {
+        const [, startTime] = this.splitDateTimes(
+          startDatetime
+        );
+        const [endDate, endTime] = this.splitDateTimes(
+          endDatetime
+        );
+        const [startHour, startMinute] = startTime.split(":").map(Number);
+        const [endHour, endMinute] = endTime.split(":").map(Number);
+        return { startHour, startMinute, endDate, endHour, endMinute };
+      }
+    }
+    // get todays schedule
+    return { startHour: "", startMinute: "", endDate: "", endHour: "", endMinute: "" };
   };
 
   useStyles = makeStyles((theme) => ({
@@ -97,12 +160,20 @@ class MyEmpSchedule extends Component {
           </div>
         </div>
         <div>
+     
           <Calendar
             className="text-center ml-auto mr-auto"
+            minDate={new Date()}
             onChange={(e) =>
               this.onChange({ target: { name: "date", value: e } })
             }
-            onClickDay={() => this.setState({ showmodal: true })}
+            onClickDay={(e) => {
+              console.log(e);
+              this.setState(({ scheduleData }) => ({
+                showmodal: true,
+                ...this.filterSchedule(scheduleData,e)
+              }))
+            }}
           />
           <DayModal
             open={this.state.showmodal}
@@ -111,9 +182,17 @@ class MyEmpSchedule extends Component {
             aria-describedby="simple-modal-description"
             body={(classes, modalStyle) => (
               <div style={modalStyle} className={classes.paper}>
-                <h2 id="simple-modal-title">Text in a modal</h2>
+                <h2 id="simple-modal-title">Employee Schedule:</h2>
                 <p id="simple-modal-description">
-                  {this.startHour} AND {this.endHour}
+                  {this.state.startHour === "" ?
+             ("No Schedules Allocated For This Date.") :
+                    (<span>Starting @ {
+                      formatPad(this.state.startHour)}:{
+                        formatPad(this.state.startMinute)}0 AND Finishing @ {
+                        formatPad(this.state.endHour)}:{
+                        formatPad(this.state.endMinute)}
+                    </span>)
+            }
                 </p>
               </div>
             )}
