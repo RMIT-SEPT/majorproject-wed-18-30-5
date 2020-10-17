@@ -23,7 +23,7 @@ public class Delete_Request{
      * May return null if not Long so ALWAYS check
      * @return String[] or null
      */
-    public String[] getString() {
+    public String[] getInput() {
         return this.input;
     }
     /**
