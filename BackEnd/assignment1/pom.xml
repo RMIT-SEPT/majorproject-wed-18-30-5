@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.wed18305</groupId>
 	<artifactId>assignment1</artifactId>
-	<version>0.2.0</version> <!--0.MilestoneValue.minorVersion-->
+	<version>0.3.0</version> <!--0.MilestoneValue.minorVersion-->
 	<name>WED18305</name>
 	<description>WED18305 group assignment</description>
 
