@@ -7,11 +7,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
+import java.util.ArrayList;
 
 import javax.servlet.http.Cookie;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,42 +99,6 @@ public class Booking_ControllerTests{
 		}
 		return false;
 	}
-	/**
-	 * If the login is unsuccessful the session and cookie variables will be null
-	 * Always make sure you check if your login was success
-	 */
-	protected boolean startCustomerDelete1Session() {//Jacky is customer
-		try {
-			ResultActions result = mvc.perform(MockMvcRequestBuilders
-											.post("/login").contentType(MediaType.APPLICATION_FORM_URLENCODED)
-											.content(buildUrlEncodedFormEntity("username", "delete1", "password", "1234")));
-			this.session = (MockHttpSession) result.andReturn().getRequest().getSession();
-			this.cookies = result.andReturn().getResponse().getCookies();
-			return true;				
-		} catch (Exception e) {
-			this.session = null;
-			this.cookies = null;
-		}
-		return false;
-    }
-	/**
-	 * If the login is unsuccessful the session and cookie variables will be null
-	 * Always make sure you check if your login was success
-	 */
-	protected boolean startSession(String username, String password){//Custom user
-		try {
-			ResultActions result = mvc.perform(MockMvcRequestBuilders
-											.post("/login").contentType(MediaType.APPLICATION_FORM_URLENCODED)
-											.content(buildUrlEncodedFormEntity("username", username, "password", password)));
-			this.session = (MockHttpSession) result.andReturn().getRequest().getSession();
-			this.cookies = result.andReturn().getResponse().getCookies();
-			return true;			
-		} catch (Exception e) {
-			this.session = null;
-			this.cookies = null;
-		}
-		return false;
-	}
 
 	@BeforeEach
     protected void endSession() {
@@ -160,8 +126,7 @@ public class Booking_ControllerTests{
 		return result.toString();
 	}
 
-
-	//Tests
+	// Tests
 
 	/**
 	 * returns isCreated for success
@@ -171,155 +136,102 @@ public class Booking_ControllerTests{
 	public void postBooking() throws Exception {
 		// Creating a JSONObject object
 		JSONObject booking = new JSONObject();
-		booking.put("startDateTime", "2020-09-07T17:00+10:00");
-		booking.put("endDateTime", "2020-09-07T19:00+10:00");
-		booking.put("user_ids", "[5]");
+		booking.put("startDateTime", "2020-10-15T00:00+10:00");
+		booking.put("endDateTime", 	 "2020-10-15T00:00+10:00");
+		booking.put("user_ids", new JSONArray(new String[] {"5"})); // Put JSONArray in JSONObject: https://stackoverflow.com/questions/12142238/add-jsonarray-to-jsonobject#12144534
 
-		String contentSTRING = booking.toString();
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/booking/createBooking")
-				.contentType(MediaType.APPLICATION_JSON).content(contentSTRING);
-		mvc.perform(builder).andExpect(status().isBadRequest())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON));
-	}
-
-	/**
-	 * returns isBadRequest for success
-	 * @throws Exception
-	 */
-	@Test
-	public void postCustomer_NoName() throws Exception {
-		// Creating a JSONObject object
-		JSONObject customer = new JSONObject();
-		customer.put("name", "");
-		customer.put("username", "s3561388@customer");
-		customer.put("password", "1234");
-		customer.put("contactNumber", "0425000000");
-
-		String contentSTRING = customer.toString();
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
-				.contentType(MediaType.APPLICATION_JSON).content(contentSTRING);
-		mvc.perform(builder).andExpect(status().isBadRequest())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("name is required"));
-	}
-
-	@Test
-	/**
-	 * returns isBadRequest for success
-	 * @throws Exception
-	 */
-	public void postCustomer_NoUsername() throws Exception {
-		// Creating a JSONObject object
-		JSONObject customer = new JSONObject();
-		customer.put("name", "neil kennedy");
-		customer.put("username", "");
-		customer.put("password", "1234");
-		customer.put("contactNumber", "0425000000");
-		
-		String contentSTRING = customer.toString();
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
-																	  .contentType(MediaType.APPLICATION_JSON)
-																	  .content(contentSTRING);
-		mvc.perform(builder).andExpect(status().isBadRequest())
-							.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("username is required"));
-	}
-
-	/**
-	 * returns isBadRequest for success
-	 * @throws Exception
-	 */
-	@Test
-	public void postCustomer_NoPassword() throws Exception {
-		// Creating a JSONObject object
-		JSONObject customer = new JSONObject();
-		customer.put("name", "neil kennedy");
-		customer.put("username", "s3561388@customer");
-		customer.put("password", "");
-		customer.put("contactNumber", "0425000000");
-		
-		String contentSTRING = customer.toString();
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
-																	  .contentType(MediaType.APPLICATION_JSON)
-																	  .content(contentSTRING);
-		mvc.perform(builder).andExpect(status().isBadRequest())
-							.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("password is required"));
-	}
-
-	/**
-	 * returns isBadRequest for success
-	 * @throws Exception
-	 */
-	@Test
-	public void postCustomer_NoContactNumber() throws Exception {
-		// Creating a JSONObject object
-		JSONObject customer = new JSONObject();
-		customer.put("name", "neil kennedy");
-		customer.put("username", "s3561388@customer");
-		customer.put("password", "1234");
-		customer.put("contactNumber", "");
-
-		String contentSTRING = customer.toString();
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createCustomer")
-				.contentType(MediaType.APPLICATION_JSON).content(contentSTRING);
-		mvc.perform(builder).andExpect(status().isBadRequest())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("contact number is required"));
-	}
-
-	/**
-	 * returns isForbidden for success
-	 * @throws Exception
-	 */
-	@Test
-	public void postEmployee_NOTloggedIn() throws Exception {
-		// Creating a JSONObject object
-		JSONObject employee = new JSONObject();
-		employee.put("name", "neil kennedy");
-		employee.put("username", "s3561388@employee");
-		employee.put("password", "1234");
-		employee.put("contactNumber", "0425000000");
-
-		String contentSTRING = employee.toString();
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createEmployee")
-																	.contentType(MediaType.APPLICATION_JSON)
-																	.content(contentSTRING);
-		mvc.perform(builder).andExpect(status().isForbidden());
-	}
-
-	/**
-	 * returns isCreated for success
-	 * @throws Exception
-	 */
-	@Test
-	public void postEmployee_loggedIn_Admin() throws Exception {
-		// Creating a JSONObject object
-		JSONObject employee = new JSONObject();
-		employee.put("name", "neil kennedy");
-		employee.put("username", "s3561388@employee");
-		employee.put("password", "1234");
-		employee.put("contactNumber", "0425000000");
-
-		//Create Session
-		if(startAdminSession()){
-			String contentSTRING = employee.toString();
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createEmployee")
+		// Login Via Session
+		if (startCustomerSession()) {
+			String contentSTRING = booking.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/booking/createBooking")
 																		.session(session)
 																		.cookie(cookies)
 																		.contentType(MediaType.APPLICATION_JSON)
 																		.content(contentSTRING);
-			mvc.perform(builder).andExpect(status().isCreated())
+			mvc.perform(builder)
+							.andExpect(status().isCreated())
 							.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("true"))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.body.username").value("s3561388@employee"));
-		}else{
-			throw new Exception("Login failed - postEmployee_loggedIn_Admin");
+							.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("true"));
 		}
+		else { throw new Exception("Login failed - postBooking"); }
+	}
+
+	/**
+	 * returns isBadRequest for success
+	 * @throws Exception
+	 */
+	@Test
+	public void postBooking_NoUserID() throws Exception {
+		// Creating a JSONObject object
+		JSONObject booking = new JSONObject();
+		booking.put("startDateTime", "2020-10-15T00:00+10:00");
+		booking.put("endDateTime", 	 "2020-10-15T00:00+10:00");
+		booking.put("user_ids", null); // Put JSONArray in JSONObject: https://stackoverflow.com/questions/12142238/add-jsonarray-to-jsonobject#12144534
+
+		// Login Via Session
+		if (startCustomerSession()) {
+			String contentSTRING = booking.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/booking/createBooking")
+																		.session(session)
+																		.cookie(cookies)
+																		.contentType(MediaType.APPLICATION_JSON)
+																		.content(contentSTRING);
+			mvc.perform(builder)
+							.andExpect(status().isBadRequest())
+							.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+							.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"));
+		}
+		else { throw new Exception("Login failed - postBooking_NoUserID"); }
+	}
+
+	/**
+	 * returns isOk for success
+	 * @throws Exception
+	 */
+	@Test
+	public void approveBooking() throws Exception {
+		// Creating a JSONObject object
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "1");
+
+		// Login Via Session
+		if (startAdminSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/approveBooking")
+																		.session(session)
+																		.cookie(cookies)
+																		.contentType(MediaType.APPLICATION_JSON)
+																		.content(contentSTRING);
+			mvc.perform(builder)
+							.andExpect(status().isAccepted())
+							.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		}
+		else { throw new Exception("Login failed - approveBooking"); }
+	}
+
+	/**
+	 * returns isBadRequest for success
+	 * @throws Exception
+	 */
+	@Test
+	public void approveNonExistantBooking() throws Exception {
+		// Creating a JSONObject object
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "99");
+
+		// Login Via Session
+		if (startAdminSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/approveBooking")
+																		.session(session)
+																		.cookie(cookies)
+																		.contentType(MediaType.APPLICATION_JSON)
+																		.content(contentSTRING);
+			mvc.perform(builder)
+							.andExpect(status().isBadRequest())
+							.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		}
+		else { throw new Exception("Login failed - approveNonExistantBooking"); }
 	}
 
 	/**
@@ -327,26 +239,22 @@ public class Booking_ControllerTests{
 	 * @throws Exception
 	 */
 	@Test
-	public void postEmployee_loggedIn_Customer() throws Exception {
+	public void approveBooking_Employee() throws Exception {
 		// Creating a JSONObject object
-		JSONObject employee = new JSONObject();
-		employee.put("name", "neil kennedy");
-		employee.put("username", "s3561388@employee");
-		employee.put("password", "1234");
-		employee.put("contactNumber", "0425000000");
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "1");
 
-		//Create Session
-		if(startCustomerSession()){
-			String contentSTRING = employee.toString();
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createEmployee")
+		// Login Via Session
+		if (startEmployeeSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/approveBooking")
 																		.session(session)
 																		.cookie(cookies)
 																		.contentType(MediaType.APPLICATION_JSON)
 																		.content(contentSTRING);
 			mvc.perform(builder).andExpect(status().isForbidden());
-		}else{
-			throw new Exception("Login failed - postEmployee_loggedIn_Customer");
 		}
+		else { throw new Exception("Login failed - approveBooking_Employee"); }
 	}
 
 	/**
@@ -354,26 +262,47 @@ public class Booking_ControllerTests{
 	 * @throws Exception
 	 */
 	@Test
-	public void postEmployee_loggedIn_Employee() throws Exception {
+	public void approveBooking_Customer() throws Exception {
 		// Creating a JSONObject object
-		JSONObject employee = new JSONObject();
-		employee.put("name", "neil kennedy");
-		employee.put("username", "s3561388@employee");
-		employee.put("password", "1234");
-		employee.put("contactNumber", "0425000000");
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "1");
 
-		//Create Session
-		if(startEmployeeSession()){
-			String contentSTRING = employee.toString();
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createEmployee")
+		// Login Via Session
+		if (startCustomerSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/approveBooking")
 																		.session(session)
 																		.cookie(cookies)
 																		.contentType(MediaType.APPLICATION_JSON)
 																		.content(contentSTRING);
 			mvc.perform(builder).andExpect(status().isForbidden());
-		}else{
-			throw new Exception("Login failed - postEmployee_loggedIn_Employee");
 		}
+		else { throw new Exception("Login failed - approveBooking_Customer"); }
+	}
+
+	/**
+	 * returns isOk for success
+	 * @throws Exception
+	 */
+	@Test
+	public void denyBooking() throws Exception {
+		// Creating a JSONObject object
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "1");
+
+		// Login Via Session
+		if (startAdminSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/denyBooking")
+																		.session(session)
+																		.cookie(cookies)
+																		.contentType(MediaType.APPLICATION_JSON)
+																		.content(contentSTRING);
+			mvc.perform(builder)
+							.andExpect(status().isAccepted())
+							.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		}
+		else { throw new Exception("Login failed - denyBooking"); }
 	}
 
 	/**
@@ -381,119 +310,24 @@ public class Booking_ControllerTests{
 	 * @throws Exception
 	 */
 	@Test
-	public void postEmployee_NoName() throws Exception {
+	public void denyNonExistantBooking() throws Exception {
 		// Creating a JSONObject object
-		JSONObject customer = new JSONObject();
-		customer.put("name", "");
-		customer.put("username", "s3561388@employee");
-		customer.put("password", "1234");
-		customer.put("contactNumber", "0425000000");
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "99");
 
-		//Create Session
-		if(startAdminSession()){
-			String contentSTRING = customer.toString();
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createEmployee")
+		// Login Via Session
+		if (startAdminSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/denyBooking")
 																		.session(session)
 																		.cookie(cookies)
 																		.contentType(MediaType.APPLICATION_JSON)
 																		.content(contentSTRING);
-			mvc.perform(builder).andExpect(status().isBadRequest())
-								.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("name is required"));
-		}else{
-			throw new Exception("Login failed - postEmployee_NoName");
+			mvc.perform(builder)
+							.andExpect(status().isBadRequest())
+							.andExpect(content().contentType(MediaType.APPLICATION_JSON));
 		}
-	}
-
-	/**
-	 * returns isBadRequest for success
-	 * @throws Exception
-	 */
-	@Test
-	public void postEmployee_NoUsername() throws Exception {
-		// Creating a JSONObject object
-		JSONObject customer = new JSONObject();
-		customer.put("name", "neil kennedy");
-		customer.put("username", "");
-		customer.put("password", "1234");
-		customer.put("contactNumber", "0425000000");
-		
-		//Create Session
-		if(startAdminSession()){
-			String contentSTRING = customer.toString();
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createEmployee")
-																		.session(session)
-																		.cookie(cookies)
-																		.contentType(MediaType.APPLICATION_JSON)
-																		.content(contentSTRING);
-			mvc.perform(builder).andExpect(status().isBadRequest())
-								.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("username is required"));
-		}else{
-			throw new Exception("Login failed - postEmployee_NoName");
-		}
-	}
-
-	/**
-	 * returns isBadRequest for success
-	 * @throws Exception
-	 */
-	@Test
-	public void postEmployee_NoPassword() throws Exception {
-		// Creating a JSONObject object
-		JSONObject customer = new JSONObject();
-		customer.put("name", "neil kennedy");
-		customer.put("username", "s3561388@employee");
-		customer.put("password", "");
-		customer.put("contactNumber", "0425000000");
-		
-		//Create Session
-		if(startAdminSession()){
-			String contentSTRING = customer.toString();
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createEmployee")
-																		.session(session)
-																		.cookie(cookies)
-																		.contentType(MediaType.APPLICATION_JSON)
-																		.content(contentSTRING);
-			mvc.perform(builder).andExpect(status().isBadRequest())
-								.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("password is required"));
-		}else{
-			throw new Exception("Login failed - postEmployee_NoPassword");
-		}
-	}
-
-	/**
-	 * returns isBadRequest for success
-	 * @throws Exception
-	 */
-	@Test
-	public void postEmployee_NoContactNumber() throws Exception {
-		// Creating a JSONObject object
-		JSONObject customer = new JSONObject();
-		customer.put("name", "neil kennedy");
-		customer.put("username", "s3561388@employee");
-		customer.put("password", "1234");
-		customer.put("contactNumber", "");
-
-		//Create Session
-		if(startAdminSession()){
-			String contentSTRING = customer.toString();
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createEmployee")
-																		.session(session)
-																		.cookie(cookies)
-																		.contentType(MediaType.APPLICATION_JSON)
-																		.content(contentSTRING);
-			mvc.perform(builder).andExpect(status().isBadRequest())
-								.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("contact number is required"));
-		}else{
-			throw new Exception("Login failed - postEmployee_NoContactNumber");
-		}
+		else { throw new Exception("Login failed - denyNonExistantBooking"); }
 	}
 
 	/**
@@ -501,76 +335,22 @@ public class Booking_ControllerTests{
 	 * @throws Exception
 	 */
 	@Test
-	public void postAdmin_NOTloggedIn() throws Exception {
+	public void denyBooking_Employee() throws Exception {
 		// Creating a JSONObject object
-		JSONObject employee = new JSONObject();
-		employee.put("name", "neil kennedy");
-		employee.put("username", "s3561388@admin");
-		employee.put("password", "1234");
-		employee.put("contactNumber", "0425000000");
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "1");
 
-		String contentSTRING = employee.toString();
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createAdmin")
-																	.contentType(MediaType.APPLICATION_JSON)
-																	.content(contentSTRING);
-		mvc.perform(builder).andExpect(status().isForbidden());
-	}
-
-	/**
-	 * returns isCreated for success
-	 * @throws Exception
-	 */
-	@Test
-	public void postAdmin_loggedIn_Admin() throws Exception {
-		// Creating a JSONObject object
-		JSONObject employee = new JSONObject();
-		employee.put("name", "neil kennedy");
-		employee.put("username", "s3561388@admin");
-		employee.put("password", "1234");
-		employee.put("contactNumber", "0425000000");
-
-		//Create Session
-		if(startAdminSession()){
-			String contentSTRING = employee.toString();
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createAdmin")
-																		.session(session)
-																		.cookie(cookies)
-																		.contentType(MediaType.APPLICATION_JSON)
-																		.content(contentSTRING);
-			mvc.perform(builder).andExpect(status().isCreated())
-							.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("true"))
-							.andExpect(MockMvcResultMatchers.jsonPath("$.body.username").value("s3561388@admin"));
-		}else{
-			throw new Exception("Login failed - postAdmin_loggedIn_Admin");
-		}
-	}
-
-	/**
-	 * returns isForbidden for success
-	 * @throws Exception
-	 */
-	@Test
-	public void postAdmin_loggedIn_Customer() throws Exception {
-		// Creating a JSONObject object
-		JSONObject employee = new JSONObject();
-		employee.put("name", "neil kennedy");
-		employee.put("username", "s3561388@admin");
-		employee.put("password", "1234");
-		employee.put("contactNumber", "0425000000");
-
-		//Create Session
-		if(startCustomerSession()){
-			String contentSTRING = employee.toString();
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createAdmin")
+		// Login Via Session
+		if (startEmployeeSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/denyBooking")
 																		.session(session)
 																		.cookie(cookies)
 																		.contentType(MediaType.APPLICATION_JSON)
 																		.content(contentSTRING);
 			mvc.perform(builder).andExpect(status().isForbidden());
-		}else{
-			throw new Exception("Login failed - postAdmin_loggedIn_Customer");
 		}
+		else { throw new Exception("Login failed - denyBooking_Employee"); }
 	}
 
 	/**
@@ -578,26 +358,47 @@ public class Booking_ControllerTests{
 	 * @throws Exception
 	 */
 	@Test
-	public void postAdmin_loggedIn_Employee() throws Exception {
+	public void denyBooking_Customer() throws Exception {
 		// Creating a JSONObject object
-		JSONObject employee = new JSONObject();
-		employee.put("name", "neil kennedy");
-		employee.put("username", "s3561388@admin");
-		employee.put("password", "1234");
-		employee.put("contactNumber", "0425000000");
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "1");
 
-		//Create Session
-		if(startEmployeeSession()){
-			String contentSTRING = employee.toString();
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createAdmin")
+		// Login Via Session
+		if (startCustomerSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/denyBooking")
 																		.session(session)
 																		.cookie(cookies)
 																		.contentType(MediaType.APPLICATION_JSON)
 																		.content(contentSTRING);
 			mvc.perform(builder).andExpect(status().isForbidden());
-		}else{
-			throw new Exception("Login failed - postAdmin_loggedIn_Employee");
 		}
+		else { throw new Exception("Login failed - denyBooking_Customer"); }
+	}
+
+	/**
+	 * returns isOk for success
+	 * @throws Exception
+	 */
+	@Test
+	public void completeBooking() throws Exception {
+		// Creating a JSONObject object
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "1");
+
+		// Login Via Session
+		if (startAdminSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/completeBooking")
+																		.session(session)
+																		.cookie(cookies)
+																		.contentType(MediaType.APPLICATION_JSON)
+																		.content(contentSTRING);
+			mvc.perform(builder)
+							.andExpect(status().isAccepted())
+							.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		}
+		else { throw new Exception("Login failed - completeBooking"); }
 	}
 
 	/**
@@ -605,119 +406,24 @@ public class Booking_ControllerTests{
 	 * @throws Exception
 	 */
 	@Test
-	public void postAdmin_NoName() throws Exception {
+	public void completeNonExistantBooking() throws Exception {
 		// Creating a JSONObject object
-		JSONObject customer = new JSONObject();
-		customer.put("name", "");
-		customer.put("username", "s3561388@admin");
-		customer.put("password", "1234");
-		customer.put("contactNumber", "0425000000");
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "99");
 
-		//Create Session
-		if(startAdminSession()){
-			String contentSTRING = customer.toString();
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createAdmin")
+		// Login Via Session
+		if (startAdminSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/completeBooking")
 																		.session(session)
 																		.cookie(cookies)
 																		.contentType(MediaType.APPLICATION_JSON)
 																		.content(contentSTRING);
-			mvc.perform(builder).andExpect(status().isBadRequest())
-								.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("name is required"));
-		}else{
-			throw new Exception("Login failed - postAdmin_NoName");
+			mvc.perform(builder)
+							.andExpect(status().isBadRequest())
+							.andExpect(content().contentType(MediaType.APPLICATION_JSON));
 		}
-	}
-
-	/**
-	 * returns isBadRequest for success
-	 * @throws Exception
-	 */
-	@Test
-	public void postAdmin_NoUsername() throws Exception {
-		// Creating a JSONObject object
-		JSONObject customer = new JSONObject();
-		customer.put("name", "neil kennedy");
-		customer.put("username", "");
-		customer.put("password", "1234");
-		customer.put("contactNumber", "0425000000");
-		
-		//Create Session
-		if(startAdminSession()){
-			String contentSTRING = customer.toString();
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createAdmin")
-																		.session(session)
-																		.cookie(cookies)
-																		.contentType(MediaType.APPLICATION_JSON)
-																		.content(contentSTRING);
-			mvc.perform(builder).andExpect(status().isBadRequest())
-								.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("username is required"));
-		}else{
-			throw new Exception("Login failed - postAdmin_NoName");
-		}
-	}
-
-	/**
-	 * returns isBadRequest for success
-	 * @throws Exception
-	 */
-	@Test
-	public void postAdmin_NoPassword() throws Exception {
-		// Creating a JSONObject object
-		JSONObject customer = new JSONObject();
-		customer.put("name", "neil kennedy");
-		customer.put("username", "s3561388@admin");
-		customer.put("password", "");
-		customer.put("contactNumber", "0425000000");
-		
-		//Create Session
-		if(startAdminSession()){
-			String contentSTRING = customer.toString();
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createAdmin")
-																		.session(session)
-																		.cookie(cookies)
-																		.contentType(MediaType.APPLICATION_JSON)
-																		.content(contentSTRING);
-			mvc.perform(builder).andExpect(status().isBadRequest())
-								.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("password is required"));
-		}else{
-			throw new Exception("Login failed - postAdmin_NoPassword");
-		}
-	}
-
-	/**
-	 * returns isBadRequest for success
-	 * @throws Exception
-	 */
-	@Test
-	public void postAdmin_NoContactNumber() throws Exception {
-		// Creating a JSONObject object
-		JSONObject customer = new JSONObject();
-		customer.put("name", "neil kennedy");
-		customer.put("username", "s3561388@admin");
-		customer.put("password", "1234");
-		customer.put("contactNumber", "");
-
-		//Create Session
-		if(startAdminSession()){
-			String contentSTRING = customer.toString();
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/createAdmin")
-																		.session(session)
-																		.cookie(cookies)
-																		.contentType(MediaType.APPLICATION_JSON)
-																		.content(contentSTRING);
-			mvc.perform(builder).andExpect(status().isBadRequest())
-								.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.errors[:2].defaultMessage").value("contact number is required"));
-		}else{
-			throw new Exception("Login failed - postAdmin_NoContactNumber");
-		}
+		else { throw new Exception("Login failed - completeNonExistantBooking"); }
 	}
 
 	/**
@@ -725,80 +431,443 @@ public class Booking_ControllerTests{
 	 * @throws Exception
 	 */
 	@Test
-	public void deleteCustomer_NOTloggedIn() throws Exception {
+	public void completeBooking_Employee() throws Exception {
+		// Creating a JSONObject object
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "1");
+
+		// Login Via Session
+		if (startEmployeeSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/completeBooking")
+																		.session(session)
+																		.cookie(cookies)
+																		.contentType(MediaType.APPLICATION_JSON)
+																		.content(contentSTRING);
+			mvc.perform(builder).andExpect(status().isForbidden());
+		}
+		else { throw new Exception("Login failed - completeBooking_Employee"); }
+	}
+
+	/**
+	 * returns isForbidden for success
+	 * @throws Exception
+	 */
+	@Test
+	public void completeBooking_Customer() throws Exception {
+		// Creating a JSONObject object
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "1");
+
+		// Login Via Session
+		if (startCustomerSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/completeBooking")
+																		.session(session)
+																		.cookie(cookies)
+																		.contentType(MediaType.APPLICATION_JSON)
+																		.content(contentSTRING);
+			mvc.perform(builder).andExpect(status().isForbidden());
+		}
+		else { throw new Exception("Login failed - completeBooking_Customer"); }
+	}
+
+	/**
+	 * returns isOk for success
+	 * @throws Exception
+	 */
+	@Test
+	public void cancelBooking() throws Exception {
+		// Creating a JSONObject object
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "1");
+
+		// Login Via Session
+		if (startAdminSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/cancelBooking")
+																		.session(session)
+																		.cookie(cookies)
+																		.contentType(MediaType.APPLICATION_JSON)
+																		.content(contentSTRING);
+			mvc.perform(builder)
+							.andExpect(status().isAccepted())
+							.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		}
+		else { throw new Exception("Login failed - cancelBooking"); }
+	}
+
+	/**
+	 * returns isBadRequest for success
+	 * @throws Exception
+	 */
+	@Test
+	public void cancelNonExistantBooking() throws Exception {
+		// Creating a JSONObject object
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "99");
+
+		// Login Via Session
+		if (startAdminSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/cancelBooking")
+																		.session(session)
+																		.cookie(cookies)
+																		.contentType(MediaType.APPLICATION_JSON)
+																		.content(contentSTRING);
+			mvc.perform(builder)
+							.andExpect(status().isBadRequest())
+							.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		}
+		else { throw new Exception("Login failed - cancelNonExistantBooking"); }
+	}
+
+	/**
+	 * returns isForbidden for success
+	 * @throws Exception
+	 */
+	@Test
+	public void cancelBooking_Employee() throws Exception {
+		// Creating a JSONObject object
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "1");
+
+		// Login Via Session
+		if (startEmployeeSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/cancelBooking")
+																		.session(session)
+																		.cookie(cookies)
+																		.contentType(MediaType.APPLICATION_JSON)
+																		.content(contentSTRING);
+			mvc.perform(builder).andExpect(status().isForbidden());
+		}
+		else { throw new Exception("Login failed - cancelBooking_Employee"); }
+	}
+
+	/**
+	 * returns isForbidden for success
+	 * @throws Exception
+	 */
+	@Test
+	public void cancelBooking_Customer() throws Exception {
+		// Creating a JSONObject object
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("id", "1");
+
+		// Login Via Session
+		if (startCustomerSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.patch("/api/booking/cancelBooking")
+																		.session(session)
+																		.cookie(cookies)
+																		.contentType(MediaType.APPLICATION_JSON)
+																		.content(contentSTRING);
+			mvc.perform(builder).andExpect(status().isForbidden());
+		}
+		else { throw new Exception("Login failed - cancelBooking_Customer"); }
+	}
+
+	/**
+	 * returns isOk for success
+	 * @throws Exception
+	 */
+	@Test
+	public void getAllBookings() throws Exception {
+		// Create Session
+		if (startAdminSession()) {
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/booking/getAllBookings")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON);
+			mvc.perform(builder)
+							.andExpect(status().isOk())
+							.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+			System.out.println(builder.toString());
+		}
+		else { new Exception("Login failed - getAllBookings"); }
+	}
+
+	/**
+	 * returns isForbidden for success
+	 * @throws Exception
+	 */
+	@Test
+	public void getAllBookings_AsEmployee() throws Exception {
+		// Create Session
+		if (startEmployeeSession()) {
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/booking/getAllBookings")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON);
+			mvc.perform(builder).andExpect(status().isForbidden());
+		}
+		else { new Exception("Login failed - getAllBookings_AsEmployee"); }
+	}
+
+	/**
+	 * returns isForbidden for success
+	 * @throws Exception
+	 */
+	@Test
+	public void getAllBookings_AsCustomer() throws Exception {
+		// Create Session
+		if (startCustomerSession()) {
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/booking/getAllBookings")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON);
+			mvc.perform(builder).andExpect(status().isForbidden());
+		}
+		else { new Exception("Login failed - getAllBookings_AsCustomer"); }
+	}
+
+	/**
+	 * returns isOk for success
+	 * @throws Exception
+	 */
+	@Test
+	public void getUserBookings_Customer() throws Exception {
+		// Create Session
+		if (startCustomerSession()) {
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/booking/getUserBookings")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON);
+			mvc.perform(builder)
+							.andExpect(status().isOk())
+							.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		}
+		else { new Exception("Login failed - getUserBookings_Customer"); }
+	}
+
+	/**
+	 * returns isOk for success
+	 * @throws Exception
+	 */
+	@Test
+	public void getUserBookings_Employee() throws Exception {
+		// Create Session
+		if (startCustomerSession()) {
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/booking/getUserBookings")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON);
+			mvc.perform(builder).andExpect(status().isOk())
+					.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		}
+		else { new Exception("Login failed - getUserBookings_Employee"); }
+	}
+
+	/**
+	 * returns isForbidden for success
+	 * @throws Exception
+	 */
+	@Test
+	public void getUserBookings_Admin() throws Exception {
+		// Create Session
+		if (startAdminSession()) {
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/booking/getUserBookings")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON);
+			mvc.perform(builder).andExpect(status().isForbidden());
+		}
+		else { new Exception("Login failed - getUserBookings_Admin"); }
+	}
+
+	/**
+	 * returns isOk for success
+	 * @throws Exception
+	 */
+	@Test
+	public void getAllUpcomingBookings() throws Exception {
+		// Create Session
+		if (startAdminSession()) {
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/booking/getUpcomingBookings")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON);
+			mvc.perform(builder).andExpect(status().isOk())
+					.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		}
+		else { new Exception("Login failed - getAllUpcomingBookings"); }
+	}
+
+	/**
+	 * returns isOk for success
+	 * Approved bookings coming up in less than a week ago already implemented [i.e. 'validFutureBooking'].
+	 * @throws Exception
+	 */
+	@Test
+	public void getUpcomingEmployeesBookings() throws Exception {
+		// Create Session
+		if (startEmployeeSession()) {
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/booking/getUpcomingBookings")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON);
+			mvc.perform(builder).andExpect(status().isOk())
+					.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		}
+		else { new Exception("Login failed - getUpcomingEmployeesBookings"); }
+	}
+
+	/**
+	 * returns isOk for success
+	 * @throws Exception
+	 */
+	@Test
+	public void getUpcomingCustomersBookings() throws Exception {
+		// Create Session
+		if (startCustomerSession()) {
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/booking/getUpcomingBookings")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON);
+			mvc.perform(builder).andExpect(status().isOk())
+					.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		}
+		else { new Exception("Login failed - getUpcomingCustomersBookings"); }
+	}
+
+	/**
+	 * returns isOk for success
+	 * @throws Exception
+	 */
+	@Test
+	public void getAllCompletedBookings() throws Exception {
+		// Create Session
+		if (startAdminSession()) {
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/booking/getCompletedBookings")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON);
+			mvc.perform(builder).andExpect(status().isOk())
+					.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		}
+		else { new Exception("Login failed - getAllCompletedBookings"); }
+	}
+
+	/**
+	 * returns isOk for success
+	 * Approved bookings completed less than a week ago already implemented [i.e. 'validPastBooking']
+	 * @throws Exception
+	 */
+	@Test
+	public void getCompletedEmployeesBookings() throws Exception {
+		// Create Session
+		if (startEmployeeSession()) {
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/booking/getCompletedBookings")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON);
+			mvc.perform(builder).andExpect(status().isOk())
+					.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		}
+		else { new Exception("Login failed - getCompletedEmployeesBookings"); }
+	}
+
+	/**
+	 * returns isOk for success
+	 * @throws Exception
+	 */
+	@Test
+	public void getCompletedCustomersBookings() throws Exception {
+		// Create Session
+		if (startCustomerSession()) {
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/booking/getCompletedBookings")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON);
+			mvc.perform(builder).andExpect(status().isOk())
+					.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		}
+		else { new Exception("Login failed - getCompletedCustomersBookings"); }
+	}
+
+	/**
+	 * returns isOk for success
+	 * Currently running this test causes ones ran after it to have no
+	 * cookies. Don't know why, but will turn off testing for now.
+	 * @throws Exception
+	 */
+	//@Test
+	public void deleteBooking() throws Exception {
+		// Creating a JSONObject object
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("input", new JSONArray(new String[] {"1"}));
+
+		// Create Session
+		if (startAdminSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.delete("/api/booking/deleteBooking")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON)
+																			.content(contentSTRING);
+			mvc.perform(builder).andExpect(status().isOk())
+					.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		}
+		else { new Exception("Login failed - deleteBooking_LoggedIn"); }
+	}
+
+	/**
+	 * returns isForbidden for success
+	 * @throws Exception
+	 */
+	@Test
+	public void deleteBooking_LoggedInAsEmployee() throws Exception {
+		// Creating a JSONObject object
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("input", new JSONArray(new String[] {"1"}));
+
+		// Create Session
+		if (startEmployeeSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.delete("/api/booking/deleteBooking")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON)
+																			.content(contentSTRING);
+			mvc.perform(builder).andExpect(status().isForbidden());
+		}
+		else { new Exception("Login failed - deleteBooking_LoggedInAsEmployee"); }
+	}
+
+	/**
+	 * returns isForbidden for success
+	 * @throws Exception
+	 */
+	@Test
+	public void deleteBooking_LoggedInAsCustomer() throws Exception {
+		// Creating a JSONObject object
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("input", new JSONArray(new String[] {"1"}));
+
+		// Create Session
+		if (startCustomerSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.delete("/api/booking/deleteBooking")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON)
+																			.content(contentSTRING);
+			mvc.perform(builder).andExpect(status().isForbidden());
+		}
+		else { new Exception("Login failed - deleteBooking_LoggedInAsCustomer"); }
+	}
+
+	/*
+	 * returns isForbidden for success
+	 * @throws Exception
+	 */
+	@Test
+	public void deleteBooking_NOTloggedIn() throws Exception {
 		//Delete logged in customer
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/deleteCustomer");
+		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/booking/deleteBooking");
 		mvc.perform(builder).andExpect(status().isForbidden());
-	}
-
-	/**
-	 * returns isOk for success
-	 * @throws Exception
-	 */
-	@Test
-	public void deleteCustomer_loggedIn_Customer() throws Exception {
-		//Create Session
-		if(startCustomerDelete1Session()){
-			//Delete logged in customer
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/deleteCustomer")
-																			.session(session)
-																			.cookie(cookies);
-			mvc.perform(builder).andExpect(status().isOk())
-					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-					.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("true"));
-		}else{
-			throw new Exception("Login failed - deleteCustomer_loggedIn_Customer");
-		}
-	}
-
-	/**
-	 * returns isForbidden for success
-	 * @throws Exception
-	 */
-	@Test
-	public void deleteCustomer_loggedIn_Admin() throws Exception {
-		//Create Session
-		 if(startAdminSession()){
-			//Delete logged in customer
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/deleteCustomer")
-																			.session(session)
-																			.cookie(cookies);
-			mvc.perform(builder).andExpect(status().isForbidden());
-		}else{
-			throw new Exception("Login failed - deleteCustomer_loggedIn_Admin");
-		}
-	}
-
-	/**
-	 * returns isForbidden for success
-	 * @throws Exception
-	 */
-	@Test
-	public void deleteCustomer_loggedIn_Employee() throws Exception {
-		//Create Session
-		 if(startEmployeeSession()){
-			//Delete logged in customer
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/deleteCustomer")
-																			.session(session)
-																			.cookie(cookies);
-			mvc.perform(builder).andExpect(status().isForbidden());
-		}else{
-			throw new Exception("Login failed - deleteCustomer_loggedIn_Employee");
-		}
-	}
-
-	/**
-	 * returns isOk for success
-	 * @throws Exception
-	 */
-	@Test
-	public void Login_Success() throws Exception {
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/login")
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.content(buildUrlEncodedFormEntity("username", "Palmer", "password", "1234"));
-		mvc.perform(builder).andExpect(status().isOk())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("true"));
 	}
 
 	/**
@@ -806,188 +875,46 @@ public class Booking_ControllerTests{
 	 * @throws Exception
 	 */
 	@Test
-	public void Login_Failure() throws Exception {
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/login")
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.content(buildUrlEncodedFormEntity("username", "Palmer", "password", ""));
-		mvc.perform(builder).andExpect(status().isBadRequest())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("false"))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.errors").value("Bad credentials"));
-	}
- 
-	/**
-	 * returns isForbidden for success
-	 * @throws Exception
-	 */
-	@Test
-	public void getEmployees_NOTloggedIn() throws Exception {
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/user/getEmployees");
-		mvc.perform(builder).andExpect(status().isForbidden());
-	}
-
-	/**
-	 * returns isOk for success
-	 * @throws Exception
-	 */
-	@Test
-	public void getEmployees_loggedIn_Admin() throws Exception {
-		//Create Session
-		if(startAdminSession()){
-			//get employees
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/user/getEmployees")
-																		.session(session)
-																		.cookie(cookies);
-			mvc.perform(builder).andExpect(status().isOk())
-								.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("true"));
-		}else{
-			throw new Exception("Login failed - getEmployees_loggedIn_Admin");
-		}
-	}
-
-	/**
-	 * returns isForbidden for success
-	 * @throws Exception
-	 */
-	@Test
-	public void getEmployees_loggedIn_Employee() throws Exception {
-		//Create Session
-		if(startEmployeeSession()){
-			//get employees
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/user/getEmployees")
-																		.session(session)
-																		.cookie(cookies);
-			mvc.perform(builder).andExpect(status().isForbidden());
-		}else{
-			throw new Exception("Login failed - getEmployees_loggedIn_Admin");
-		}
-	}
-
-	/**
-	 * returns isOk for success
-	 * @throws Exception
-	 */
-	@Test
-	public void getEmployees_loggedIn_Customer() throws Exception {
-		//Create Session
-		if(startCustomerSession()){
-			//get employees
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/user/getEmployees")
-																		.session(session)
-																		.cookie(cookies);
-			mvc.perform(builder).andExpect(status().isOk())
-								.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("true"));
-		}else{
-			throw new Exception("Login failed - getEmployees_loggedIn_Customer");
-		}
-	}
-
-	/**
-	 * returns isOk for success
-	 * @throws Exception
-	 */
-	@Test
-	public void deleteUser_loggedIn_Admin() throws Exception {
+	public void deleteBooking_NoBookingID() throws Exception {
 		// Creating a JSONObject object
-		JSONObject input = new JSONObject();
-		JSONArray inputIDS = new JSONArray();
-		inputIDS.put(7);
-		inputIDS.put(9);
-		input.put("input", inputIDS);
-		String contentSTRING = input.toString();
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("input", null);
 
-		//Create Session
-		if(startAdminSession()){
-			//delte employees
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/user/deleteUser")
-																		.session(session)
-																		.cookie(cookies)
-																		.contentType(MediaType.APPLICATION_JSON)
-																	  	.content(contentSTRING);
-			mvc.perform(builder).andExpect(status().isOk())
-								.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-								.andExpect(MockMvcResultMatchers.jsonPath("$.success").value("true"));
-		}else{
-			throw new Exception("Login failed - deleteUser_loggedIn_Admin");
+		// Create Session
+		if (startAdminSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.delete("/api/booking/deleteBooking")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON)
+																			.content(contentSTRING);
+			mvc.perform(builder).andExpect(status().isBadRequest())
+					.andExpect(content().contentType(MediaType.APPLICATION_JSON));
 		}
+		else { new Exception("Login failed - deleteBooking_NoBookingID"); }
 	}
 
 	/**
-	 * returns isForbidden for success
+	 * returns isBadRequest for success
 	 * @throws Exception
 	 */
 	@Test
-	public void deleteUser_loggedIn_Customer() throws Exception {
+	public void deleteBooking_BookingNonExistant() throws Exception {
 		// Creating a JSONObject object
-		JSONObject delete = new JSONObject();
-		JSONArray inputIDS = new JSONArray();
-		inputIDS.put(7);
-		inputIDS.put(9);
-		delete.put("input", inputIDS);
-		String contentSTRING = delete.toString();
+		JSONObject bookingID = new JSONObject();
+		bookingID.put("input", new JSONArray(new String[] {"99"}));
 
-		//Create Session
-		if(startCustomerSession()){
-			//delte employees
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/user/deleteUser")
-																		.session(session)
-																		.cookie(cookies)
-																		.contentType(MediaType.APPLICATION_JSON)
-																	  	.content(contentSTRING);
-			mvc.perform(builder).andExpect(status().isForbidden());
-		}else{
-			throw new Exception("Login failed - deleteUser_loggedIn_Customer");
+		// Create Session
+		if (startAdminSession()) {
+			String contentSTRING = bookingID.toString();
+			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.delete("/api/booking/deleteBooking")
+																			.session(session)
+																			.cookie(cookies)
+																			.contentType(MediaType.APPLICATION_JSON)
+																			.content(contentSTRING);
+			mvc.perform(builder).andExpect(status().isBadRequest())
+					.andExpect(content().contentType(MediaType.APPLICATION_JSON));
 		}
-	}
-
-	/**
-	 * returns isForbidden for success
-	 * @throws Exception
-	 */
-	@Test
-	public void deleteUser_loggedIn_Employee() throws Exception {
-		// Creating a JSONObject object
-		JSONObject delete = new JSONObject();
-		JSONArray inputIDS = new JSONArray();
-		inputIDS.put(7);
-		inputIDS.put(9);
-		delete.put("input", inputIDS);
-		String contentSTRING = delete.toString();
-
-		//Create Session
-		if(startEmployeeSession()){
-			//delte employees
-			MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/user/deleteUser")
-																		.session(session)
-																		.cookie(cookies)
-																		.contentType(MediaType.APPLICATION_JSON)
-																	  	.content(contentSTRING);
-			mvc.perform(builder).andExpect(status().isForbidden());
-		}else{
-			throw new Exception("Login failed - deleteUser_loggedIn_Employee");
-		}
-	}
-
-	/**
-	 * returns isForbidden for success
-	 * @throws Exception
-	 */
-	@Test
-	public void deleteUser_NOTloggedIn() throws Exception {
-		// Creating a JSONObject object
-		JSONObject delete = new JSONObject();
-		JSONArray inputIDS = new JSONArray();
-		inputIDS.put(7);
-		inputIDS.put(9);
-		delete.put("input", inputIDS);
-		String contentSTRING = delete.toString();
-
-		//delete employees
-		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/user/deleteUser")
-																	.contentType(MediaType.APPLICATION_JSON)
-																	.content(contentSTRING);
-		mvc.perform(builder).andExpect(status().isForbidden());
+		else { new Exception("Login failed - deleteBooking_BookingNonExistant"); }
 	}
 }

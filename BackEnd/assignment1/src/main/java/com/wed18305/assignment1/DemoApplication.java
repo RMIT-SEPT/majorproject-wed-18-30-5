@@ -40,17 +40,17 @@ public class DemoApplication {
       TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 	}
 	
-//	@Bean
-//	public CookieSerializer cookieSerializer() {
-//		DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-//		serializer.setCookieName("JSESSIONID");
-//		serializer.setCookiePath("/");
-//		serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
-//		serializer.setSameSite("None");
-//		serializer.setUseHttpOnlyCookie(true);
-//		serializer.setUseSecureCookie(false);
-//		return serializer;
-//	}
+	@Bean
+	public CookieSerializer cookieSerializer() {
+		DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+		//serializer.setCookieName("JSESSIONID"); 
+		//serializer.setCookiePath("/"); 
+		//serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
+		serializer.setSameSite("None");
+		//serializer.setUseHttpOnlyCookie(true);
+		serializer.setUseSecureCookie(false);
+		return serializer;
+	}
 
 	//Comment out CommandLineRunner when not using it for testing OR when using mySQL
 	@Bean
@@ -479,13 +479,28 @@ public class DemoApplication {
 															 OffsetDateTime.parse("2020-10-24T16:00+11:00", DateTimeStatic.getFormatter()));
 
 			// Testing data OLD bookings
-			Entity_Booking test_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-09T15:00+11:00", DateTimeStatic.getFormatter()), 
-															OffsetDateTime.parse("2020-10-09T16:00+11:00", DateTimeStatic.getFormatter()));
-			Entity_Booking test_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-07T14:00+11:00", DateTimeStatic.getFormatter()), 
-															OffsetDateTime.parse("2020-10-07T15:00+11:00", DateTimeStatic.getFormatter()));
-			// Testing data upcoming bookings
-			Entity_Booking test_bookng3 = new Entity_Booking(OffsetDateTime.parse("2020-10-15T12:00+11:00", DateTimeStatic.getFormatter()), 
-															OffsetDateTime.parse("2020-10-15T12:30+11:00", DateTimeStatic.getFormatter()));
+			Entity_Booking test_bookng1 = new Entity_Booking(OffsetDateTime.parse("2020-10-09T15:00+10:00", DateTimeStatic.getFormatter()), 
+															OffsetDateTime.parse("2020-10-09T16:00+10:00", DateTimeStatic.getFormatter()));
+			Entity_Booking test_bookng2 = new Entity_Booking(OffsetDateTime.parse("2020-10-07T14:00+10:00", DateTimeStatic.getFormatter()), 
+															OffsetDateTime.parse("2020-10-07T15:00+10:00", DateTimeStatic.getFormatter()));
+			
+			// Testing Old/Completed Bookings
+			OffsetDateTime withinSevenDaysAgo = OffsetDateTime.now().minusDays(4);
+			OffsetDateTime beyondSevenDaysAgo = OffsetDateTime.now().minusWeeks(1);
+			Entity_Booking validPastBooking   = new Entity_Booking(withinSevenDaysAgo, withinSevenDaysAgo.plusHours(1));
+			Entity_Booking invalidPastBooking = new Entity_Booking(beyondSevenDaysAgo, beyondSevenDaysAgo.plusHours(1));
+			
+			validPastBooking.approveBooking();
+			invalidPastBooking.approveBooking();
+			
+			// Testing Upcoming Bookings
+			OffsetDateTime withinSevenDays = OffsetDateTime.now().plusDays(4);
+			OffsetDateTime beyondSevenDays = OffsetDateTime.now().plusWeeks(1);
+			Entity_Booking validFutureBooking   = new Entity_Booking(withinSevenDays, withinSevenDays.plusHours(1));
+			Entity_Booking invalidFutureBooking = new Entity_Booking(beyondSevenDays, beyondSevenDays.plusHours(1));
+			
+			validFutureBooking.approveBooking();
+			invalidFutureBooking.approveBooking();
 
 			// Save the bookings
 			BookingRepository.save(m_bookng1);
@@ -559,7 +574,10 @@ public class DemoApplication {
 			BookingRepository.save(joel_bookng9);
 			BookingRepository.save(test_bookng1);
 			BookingRepository.save(test_bookng2);
-			BookingRepository.save(test_bookng3);
+			BookingRepository.save(validPastBooking);
+			BookingRepository.save(invalidPastBooking);
+			BookingRepository.save(validFutureBooking);
+			BookingRepository.save(invalidFutureBooking);
 
 			//Add bookings to Employees
 			michelleEmployee.getBookings().add(test_bookng1);
@@ -573,6 +591,10 @@ public class DemoApplication {
 			michelleEmployee.getBookings().add(m_bookng8);
 			michelleEmployee.getBookings().add(m_bookng9);
 			michelleEmployee.getBookings().add(m_bookng10);
+			michelleEmployee.getBookings().add(validPastBooking);
+			michelleEmployee.getBookings().add(invalidPastBooking);
+			michelleEmployee.getBookings().add(validFutureBooking);
+			michelleEmployee.getBookings().add(invalidFutureBooking);
 			leslieEmployee.getBookings().add(l_bookng1);
 			leslieEmployee.getBookings().add(l_bookng2);
 			leslieEmployee.getBookings().add(l_bookng3);
@@ -613,7 +635,7 @@ public class DemoApplication {
 			jamesEmployee.getBookings().add(j_bookng12);
 			jamesEmployee.getBookings().add(j_bookng13);
 			jamesEmployee.getBookings().add(j_bookng14);
-			jamesEmployee.getBookings().add(test_bookng3);
+			jamesEmployee.getBookings().add(validFutureBooking);
 			fredEmployee.getBookings().add(f_bookng1);
 			fredEmployee.getBookings().add(f_bookng2);
 			fredEmployee.getBookings().add(f_bookng3);
@@ -637,7 +659,10 @@ public class DemoApplication {
 			//Add bookings to customers
 			jackCustomer.getBookings().add(test_bookng1);
 			jackCustomer.getBookings().add(test_bookng2);
-			jackCustomer.getBookings().add(test_bookng3);
+			jackCustomer.getBookings().add(validPastBooking);
+			jackCustomer.getBookings().add(invalidPastBooking);
+			jackCustomer.getBookings().add(validFutureBooking);
+			jackCustomer.getBookings().add(invalidFutureBooking);
 			jackCustomer.getBookings().add(m_bookng1);
 			jackCustomer.getBookings().add(m_bookng4);
 			jackCustomer.getBookings().add(m_bookng7);

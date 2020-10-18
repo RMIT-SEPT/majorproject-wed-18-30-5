@@ -21,6 +21,9 @@ export default class EmpBookings extends Component {
     ApiService.fetchBookings(this).then((res) => {
       debugger;
       this.setState({ bookings: Array.from(res.data.body.bookings) });
+    }).catch(err => {
+      console.log(err);
+      this.setState({ bookings: [] });
     });
   };
 
@@ -32,7 +35,10 @@ export default class EmpBookings extends Component {
         </header>
         <div className="active-booking-wrapper">
           <CardColumns>
-            {this.state.bookings.map((booking) => (
+            {this.state.bookings.length < 1 ?
+              <span className="ml-auto mr-auto" style={{ color: "grey" }}>No bookings</span>
+            :
+              this.state.bookings.map((booking) => (
               <BookingCard key={booking.id} booking={booking}></BookingCard>
             ))}
           </CardColumns>

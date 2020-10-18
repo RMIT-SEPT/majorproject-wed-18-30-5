@@ -20,14 +20,14 @@ public class Booking_Service {
     }
 
     public Iterable<Entity_Booking> findAll() {
-		return bookingRepository.findAll();
+		return bookingRepository.findAllByOrderByStartDateTime();
     }
     
     public Iterable<Entity_Booking> findAllUpcoming() {
 
         ArrayList<Entity_Booking> bookings = new ArrayList<>();
 
-        for (Entity_Booking booking : bookingRepository.findAll()) {
+        for (Entity_Booking booking : bookingRepository.findAllByOrderByStartDateTime()) {
 
             // Is Booking to be Run in Less than 7 Days?
             OffsetDateTime now = OffsetDateTime.now();
@@ -46,7 +46,7 @@ public class Booking_Service {
 
         ArrayList<Entity_Booking> bookings = new ArrayList<>();
 
-        for (Entity_Booking booking : bookingRepository.findAll()) {
+        for (Entity_Booking booking : bookingRepository.findAllByOrderByStartDateTime()) {
 
             // Did Booking Finish Less Than 7 Days Ago?
             OffsetDateTime now = OffsetDateTime.now();

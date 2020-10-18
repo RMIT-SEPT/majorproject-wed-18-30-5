@@ -11,4 +11,6 @@ public interface Booking_Repository extends CrudRepository<Entity_Booking, Long>
     Iterable<Entity_Booking> findAllById(Iterable<Long> iterable);
 
     Optional<Entity_Booking> findById(Long id);
+
+    Iterable<Entity_Booking> findAllByOrderByStartDateTime();
 }
