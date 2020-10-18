@@ -7,4 +7,4 @@ FROM openjdk:8-jre-alpine
 WORKDIR /app
 # Update the version in the name if you change the pom.xml version.
 COPY --from=MAVEN_BUILD /build/target/assignment1-0.3.0.jar /app/
-ENTRYPOINT ["java", "-jar", "assignment1-0.2.0.jar"]
+ENTRYPOINT ["java", "-jar", "assignment1-0.3.0.jar"]
