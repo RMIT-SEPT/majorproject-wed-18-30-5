@@ -40,17 +40,17 @@ public class DemoApplication {
       TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 	}
 	
-//	@Bean
-//	public CookieSerializer cookieSerializer() {
-//		DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-//		serializer.setCookieName("JSESSIONID");
-//		serializer.setCookiePath("/");
-//		serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
-//		serializer.setSameSite("None");
-//		serializer.setUseHttpOnlyCookie(true);
-//		serializer.setUseSecureCookie(false);
-//		return serializer;
-//	}
+	@Bean
+	public CookieSerializer cookieSerializer() {
+		DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+		//serializer.setCookieName("JSESSIONID"); 
+		//serializer.setCookiePath("/"); 
+		//serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
+		serializer.setSameSite("None");
+		//serializer.setUseHttpOnlyCookie(true);
+		serializer.setUseSecureCookie(false);
+		return serializer;
+	}
 
 	//Comment out CommandLineRunner when not using it for testing OR when using mySQL
 	@Bean

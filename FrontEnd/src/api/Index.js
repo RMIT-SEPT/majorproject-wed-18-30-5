@@ -11,6 +11,9 @@ import axios from 'axios';
  *
  */
 
+//const USER_API_BASE_URL = "http://localhost:8080";
+const USER_API_BASE_URL = "http://18.233.136.173:8080";
+
 export const makeUseFetch = (url, options) => (callback = undefined) => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
@@ -52,7 +55,7 @@ export const makeUseFetch = (url, options) => (callback = undefined) => {
 export const Api = {
   login: {
     post: (formData) =>
-      makeUseFetch("http://localhost:8080/login", {
+      makeUseFetch(USER_API_BASE_URL + "/login", {
         method: "POST",
         data: formData,
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -61,7 +64,7 @@ export const Api = {
   },
   Signup: {
     post: (jsonData) =>
-      makeUseFetch("http://localhost:8080/api/user/createCustomer", {
+      makeUseFetch(USER_API_BASE_URL + "/api/user/createCustomer", {
         method: "POST",
         headers: {
           Accept: "application/json",

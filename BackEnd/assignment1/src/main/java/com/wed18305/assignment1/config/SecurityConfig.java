@@ -76,13 +76,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationFilter;
 	}
 
-	/**
-	 * When using mySQL comment this out
-	 */
-	@Override
-	public void configure(WebSecurity web) {
-		web.ignoring().requestMatchers(PathRequest.toH2Console());
-	}
+	// /**
+	//  * When using mySQL comment this out
+	//  */
+	// @Override
+	// public void configure(WebSecurity web) {
+	// 	web.ignoring().requestMatchers(PathRequest.toH2Console());
+	// }
 
 	/*
 	 * Tip: When testing, login through Postman, so it holds all session data.
@@ -113,7 +113,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/service/createService").hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/schedule/createSchedule").hasAuthority(UserTypeID.getAdmin())
 			.antMatchers("/api/schedule/deleteSchedule").hasAuthority(UserTypeID.getAdmin())
-				.antMatchers( "api/booking/getBookedTimeslots").hasAuthority(UserTypeID.getCustomer())
+			.antMatchers( "api/booking/getBookedTimeslots").hasAuthority(UserTypeID.getCustomer())
 			.anyRequest().authenticated()
             .and()
 			.logout().permitAll()

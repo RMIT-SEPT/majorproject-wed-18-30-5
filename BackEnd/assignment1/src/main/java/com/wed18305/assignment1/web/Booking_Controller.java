@@ -220,7 +220,7 @@ public class Booking_Controller {
         // Attempt to Find Booking by ID
         Optional<Entity_Booking> book = bookingService.findById(gr.getId());
         Response_Booking bkgResponse = null;
-        if (book.isEmpty()) {
+        if (book.isPresent()) {
             Response response = new Response(false, "ERROR!", "Booking doesn't exist!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
@@ -258,7 +258,7 @@ public class Booking_Controller {
 
         // Attempt to Find Booking by ID
         Optional<Entity_Booking> book = bookingService.findById(gr.getId());
-        if (book.isEmpty()) {
+        if (book.isPresent()) {
             Response response = new Response(false, "ERROR!", "Booking doesn't exist!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
@@ -297,7 +297,7 @@ public class Booking_Controller {
 
         // Attempt to Find Booking by ID
         Optional<Entity_Booking> book = bookingService.findById(gr.getId());
-        if (book.isEmpty()) {
+        if (book.isPresent()) {
             Response response = new Response(false, "ERROR!", "Booking doesn't exist!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
@@ -336,7 +336,7 @@ public class Booking_Controller {
 
         // Attempt to Find Booking by ID
         Optional<Entity_Booking> book = bookingService.findById(gr.getId());
-        if (book.isEmpty()) {
+        if (book.isPresent()) {
             Response response = new Response(false, "ERROR!", "Booking doesn't exist!", null);
             return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
         }
