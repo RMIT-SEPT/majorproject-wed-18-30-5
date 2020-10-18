@@ -11,8 +11,8 @@ import axios from 'axios';
  *
  */
 
-//const USER_API_BASE_URL = "http://localhost:8080";
-const USER_API_BASE_URL = "http://18.233.136.173:8080";
+const USER_API_BASE_URL = "http://localhost:8080";
+//const USER_API_BASE_URL = "http://18.233.136.173:8080";
 
 export const makeUseFetch = (url, options) => (callback = undefined) => {
   const [response, setResponse] = useState(null);

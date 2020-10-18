@@ -18,8 +18,8 @@ public class LogoutSuccess implements LogoutSuccessHandler {
         Response newresponse = new Response(true, "login",null, null);
         response.setContentType("application/json");
         response.setStatus(HttpStatus.OK.value());
-        //response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        response.setHeader("Access-Control-Allow-Origin", "http://3.93.88.182");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        //response.setHeader("Access-Control-Allow-Origin", "http://3.93.88.182");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Credentials", "true");
